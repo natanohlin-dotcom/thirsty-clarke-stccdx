@@ -80,3 +80,36 @@ textarea:focus {
   color: #666;
   margin-bottom: 1rem;
 }
+/* Stil för nedladdningsknappen */
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 28px;
+  background-color: #000000; /* Svart knapp för auktoritet */
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 16px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-download:hover {
+  transform: translateY(-2px);
+  background-color: #222222;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-download:active {
+  transform: translateY(0);
+}
+
+/* Gör ikonen i knappen lite levande */
+.btn-download svg {
+  transition: transform 0.3s ease;
+}
+
+.btn-download:hover svg {
+  transform: translateY(2px);
+}
