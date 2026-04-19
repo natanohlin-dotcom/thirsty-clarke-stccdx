@@ -88,6 +88,16 @@ const GOOGLE_SCRIPT_URL =
 document.getElementById("repairForm").addEventListener("submit", function (e) {
   e.preventDefault(); // Stoppar sidan från att laddas om
 
+  // --- HONUNGS CHECK ---
+  const botCheck = document.getElementById("form-botcheck").value;
+  if (botCheck !== "") {
+    console.log("Bot detected! Silently ignoring.");
+    // bot upptäckt, vi skickar inget.
+    alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
+    document.getElementById("repairForm").reset();
+    goToStep(1);
+    return; // Avbryter hela funktionen här!
+  }
   // Hitta knappen och ändra texten så användaren ser att något händer
   const submitBtn = document.querySelector('#step3 button[type="submit"]');
   const originalText = submitBtn.innerHTML;
