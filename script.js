@@ -156,215 +156,145 @@ document.getElementById("repairForm").addEventListener("submit", function (e) {
 //BATTERI-DATABAS (Fyll på med nya modeller enligt samma format)
 const batteryData = [
   {
-    brand: "ECORIDE 2009-2016",
-    model: "AE battery / King-CO m.fl.",
+    brand: "Biltema pakethållare",
+    model: "Förekommer på många cyklar, inte bara från biltema.",
+    voltage: "36V eller 24V",
+    original_cap: "Varierande",
+    isMulti: true,
+    images: ["photos/biltema-pakethall.png"],
+    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vis laddning och på cykelns display under cykling. OBS! Strömbrytaren kommer inte att fungera efter reparation. Se till att du har en strömbrytare på din cykel-display (se bild ovan), annars hör av dig för att få en ny strömbrytare monterad!",
+    groups: [
+      {
+        name: "Om ditt batteri är 36V",
+        voltage: "36V",
+        original_cap: "10Ah",
+        prices: [
+          {
+            cap: "10Ah",
+            desc: "Originalkapacitet",
+            price: "3 500 kr",
+            badge: true,
+          },
+          {
+            cap: "14Ah",
+            desc: "40% extra räckvidd",
+            price: "4 250 kr",
+            badge: true,
+          },
+        ],
+      },
+      {
+        name: "Om ditt batteri är 24V",
+        voltage: "24V",
+        original_cap: "10Ah",
+        prices: [
+          {
+            cap: "10Ah",
+            desc: "Originalkapacitet",
+            price: "2 750 kr",
+            badge: true,
+          },
+          {
+            cap: "15Ah",
+            desc: "50% extra räckvidd",
+            price: "3 500 kr",
+            badge: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    brand: "Biltema sadelstolpe",
+    model: "Förekommer på fler cyklar",
+    voltage: "24V",
+    original_cap: "10Ah",
+    images: ["photos/biltema-sadelstolp.png"],
+    prices: [
+      {
+        cap: "10Ah",
+        desc: "Originalkapacitet",
+        price: "2 750 kr",
+        badge: true,
+      },
+      {
+        cap: "15Ah",
+        desc: "50% extra räckvidd",
+        price: "3 500 kr",
+        badge: true,
+      },
+    ],
+    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vid laddning eller på cykelns display under cykling. Strömbrytaren på batteriet kommer inte att fungera efter reparation. Se till att du har en strömbrytare på din cykel-display (se bild ovan), annars hör av dig för att få en ny strömbrytare monterad!",
+  },
+  {
+    brand: "PROTANIUM",
+    model: "Förekommer bland annat på cyklar från Biltema och IKEA",
     voltage: "36V",
     original_cap: "10Ah",
     images: [
       "https://placehold.co/600x600/E8E6E1/A3A3A3?text=EcoRide+2009-2016",
     ],
     prices: [
-      { cap: "10Ah", desc: "Originalkapacitet", price: "3 600 kr" },
       {
-        cap: "13.5Ah",
-        desc: "35% extra räckvidd",
-        price: "4 100 kr",
+        cap: "10Ah",
+        desc: "Originalkapacitet",
+        price: "3 500 kr",
         badge: true,
       },
-      { cap: "17.0Ah", desc: "70% extra räckvidd*", price: "4 600 kr" },
-      { cap: "20.0Ah", desc: "100% extra räckvidd*", price: "5 600 kr" },
+      {
+        cap: "14Ah",
+        desc: "40% extra räckvidd",
+        price: "4 250 kr",
+        badge: true,
+      },
     ],
-    note: "*17Ah och 20Ah gäller endast de längre skalen där metallhöljet är ca 34-36cm långt.",
+    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vid laddning eller på cykelns display under cykling.",
   },
   {
-    brand: "Reention Brilliance",
-    model: "Cargobike, Evobike, Lifebike m.fl.",
+    brand: "TranzX pakethållare",
+    model: "Förekommer bland annat på cyklar Crescent",
+    voltage: "24V",
+    original_cap: "10Ah",
+    images: [
+      "https://placehold.co/600x600/E8E6E1/A3A3A3?text=EcoRide+2009-2016",
+    ],
+    prices: [
+      { cap: "10Ah", desc: "Original kapacitet", price: "2 750 kr" },
+      {
+        cap: "15Ah",
+        desc: "50% extra räckvidd",
+        price: "3 500 kr",
+      },
+      {
+        cap: "20Ah",
+        desc: "100% extra räckvidd",
+        price: "4 250 kr",
+      },
+    ],
+  },
+  {
+    brand: "Batavus äldre variant",
+    model: "Förekommer på äldre cyklar från Batavus",
     voltage: "36V",
     original_cap: "10Ah",
     images: [
-      "https://placehold.co/600x600/F3F2EE/A3A3A3?text=Reention+Brilliance",
+      "https://placehold.co/600x600/E8E6E1/A3A3A3?text=EcoRide+2009-2016",
     ],
     prices: [
-      { cap: "10Ah", desc: "Originalkapacitet", price: "4 000 kr" },
       {
-        cap: "13.5Ah",
-        desc: "35% extra räckvidd",
-        price: "4 500 kr",
-        badge: true,
-      },
-      { cap: "17.0Ah", desc: "70% extra räckvidd", price: "5 100 kr" },
-    ],
-    note: "OBS! Strömbrytaren behövs normalt inte så denna kopplas endast in som tillval (350 kr extra). Du stänger istället av på styret.",
-  },
-  {
-    brand: "Shan Shan Haibao II",
-    model: "SSE-027, SSE-028 (Sjösala, Jula, Peak)",
-    voltage: "Varierande",
-    original_cap: "10Ah",
-    isMulti: true,
-    images: ["https://placehold.co/600x600/E8E6E1/A3A3A3?text=Haibao+II"],
-    note: "OBS! Strömbrytaren behövs normalt inte så dessa kopplas inte in igen. Du stänger av på styret.",
-    groups: [
-      {
-        name: "36V Versionen",
-        voltage: "36V",
-        original_cap: "10Ah",
-        prices: [
-          { cap: "10Ah", desc: "Originalkapacitet", price: "4 000 kr" },
-          {
-            cap: "13.5Ah",
-            desc: "35% extra räckvidd",
-            price: "4 600 kr",
-            badge: true,
-          },
-        ],
-      },
-      {
-        name: "24V Versionen",
-        voltage: "24V",
-        original_cap: "10Ah",
-        prices: [
-          { cap: "10Ah", desc: "Originalkapacitet", price: "3 200 kr" },
-          {
-            cap: "13.5Ah",
-            desc: "60% extra räckvidd",
-            price: "3 600 kr",
-            badge: true,
-          },
-          { cap: "17.0Ah", desc: "90% extra räckvidd", price: "4 100 kr" },
-        ],
-      },
-    ],
-  },
-  {
-    brand: "Biltema 36V",
-    model: "Art. 27-1402100 (Project Ares 115)",
-    voltage: "36V",
-    original_cap: "Varierande",
-    isMulti: true,
-    images: ["https://placehold.co/600x600/F3F2EE/A3A3A3?text=Biltema+36V"],
-    note: "OBS! Strömbrytare på pakethållare och indikator går inte att koppla in efter renovering. Kolla spänning på styret istället.",
-    groups: [
-      {
-        name: "Om ditt original är 10Ah",
-        voltage: "36V",
-        original_cap: "10Ah",
-        prices: [
-          { cap: "10Ah", desc: "Originalkapacitet", price: "3 600 kr" },
-          {
-            cap: "13.5Ah",
-            desc: "35% extra räckvidd",
-            price: "4 100 kr",
-            badge: true,
-          },
-        ],
-      },
-      {
-        name: "Om ditt original är 7.8Ah",
-        voltage: "36V",
-        original_cap: "7.8Ah",
-        prices: [
-          { cap: "10Ah", desc: "35% extra räckvidd", price: "3 600 kr" },
-          {
-            cap: "13.5Ah",
-            desc: "80% extra räckvidd",
-            price: "4 100 kr",
-            badge: true,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    brand: "Giant Twist",
-    model: "Standard (Flesta årsmodeller)",
-    voltage: "36V",
-    original_cap: "10Ah",
-    images: ["https://placehold.co/600x600/E8E6E1/A3A3A3?text=Giant+Twist"],
-    prices: [
-      { cap: "10Ah", desc: "Originalkapacitet", price: "3 600 kr" },
-      {
-        cap: "13.5Ah",
-        desc: "35% extra räckvidd",
-        price: "4 100 kr",
-        badge: true,
-      },
-      { cap: "19.0Ah", desc: "90% extra räckvidd", price: "4 600 kr" },
-      { cap: "23.0Ah", desc: "130% extra räckvidd", price: "5 600 kr" },
-    ],
-    note: "OBS! Den gamla laddaren fungerar inte efter renovering men priset inkluderar en helt ny, passande laddare.",
-  },
-  {
-    brand: "Clas Ohlson / Off Course",
-    model: "Jeve VA3610 ITCPAMA",
-    voltage: "36V",
-    original_cap: "10Ah",
-    // Här lägger du till bilderna (fungerar med 1 eller flera)
-    images: [
-      "https://placehold.co/600x600/E8E6E1/A3A3A3?text=Bild+1",
-      "https://placehold.co/600x600/F3F2EE/A3A3A3?text=Bild+2",
-    ],
-    prices: [
-      { cap: "10Ah", desc: "Originalkapacitet", price: "3 600 kr" },
-      {
-        cap: "13.5Ah",
-        desc: "35% extra räckvidd",
-        price: "4 100 kr",
+        cap: "10Ah",
+        desc: "Originalkapacitet",
+        price: "3 800 kr",
         badge: true,
       },
       {
-        cap: "17.0Ah",
-        desc: "70% extra räckvidd",
-        price: "5 600 kr",
-        badge: false,
+        cap: "14Ah",
+        desc: "40% extra räckvidd",
+        price: "4 550 kr",
+        badge: true,
       },
     ],
-  },
-  {
-    brand: "ECORIDE 2016-2023",
-    model: "P11, P14, P17 samt B1 m.fl.",
-    isMulti: true,
-    images: [
-      "https://placehold.co/600x600/E8E6E1/A3A3A3?text=Bild+1",
-      // Har du bara en bild? Då döljs pilarna automatiskt!
-    ],
-    note: "OBS! Indikatorn kan ej kopplas in igen. Vi kan installera brytare för 500 kr extra.",
-    groups: [
-      {
-        name: "P11, P14, P17",
-        voltage: "36V",
-        original_cap: "11Ah",
-        prices: [
-          { cap: "13.5Ah", desc: "+20% räckvidd", price: "4 100 kr" },
-          { cap: "17.0Ah", desc: "+50% räckvidd", price: "4 600 kr" },
-          { cap: "20.0Ah", desc: "+80% räckvidd", price: "5 600 kr" },
-        ],
-      },
-      {
-        name: "Modell B1",
-        voltage: "36V",
-        original_cap: "14.5Ah",
-        images: [
-          "https://placehold.co/600x600/E8E6E1/A3A3A3?text=EcoRide+Batteri",
-          // Har du bara en bild? Då döljs pilarna automatiskt!
-        ],
-        prices: [
-          { cap: "17.0Ah", desc: "+20% räckvidd", price: "4 600 kr" },
-          { cap: "20.0Ah", desc: "+45% räckvidd", price: "5 600 kr" },
-        ],
-      },
-    ],
-  },
-  {
-    brand: "PROMOVEC",
-    model: "No. 50651, 50637, 50172 m.fl.",
-    seasonOnly: "Endast lågsäsong (Nov - Feb)",
-    voltage: "36V",
-    images: ["https://placehold.co/600x600/E8E6E1/A3A3A3?text=Giant+Twist"],
-    original_cap: "10Ah",
-    prices: [
-      { cap: "13.5Ah", desc: "Upp till 120% extra kraft", price: "5 100 kr" },
-    ],
+    note: "OBS! Originalladdaren kommer inte att fungera efter reparation. Ny laddare ingår i priset!",
   },
 ];
 
@@ -413,7 +343,7 @@ function generatePriceRow(
 ) {
   // 1. Skapa HTML för badge om den finns
   const badgeHtml = priceObj.badge
-    ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full uppercase tracking-tighter whitespace-nowrap shadow-sm">Bäst val</span>`
+    ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full uppercase tracking-tighter whitespace-nowrap shadow-sm">Finns i lager</span>`
     : ``;
 
   // 2. Skapa HTML för beskrivningen
