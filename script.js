@@ -230,10 +230,9 @@ const batteryData = [
     brand: "PROTANIUM",
     model: "Förekommer bland annat på cyklar från Biltema och IKEA",
     voltage: "36V",
+    images: ["photos/biltema-sadelstolp.png", "photos/biltema-pakethall.png"],
     original_cap: "10Ah",
-    images: [
-      "https://placehold.co/600x600/E8E6E1/A3A3A3?text=EcoRide+2009-2016",
-    ],
+
     prices: [
       {
         cap: "10Ah",
@@ -255,9 +254,6 @@ const batteryData = [
     model: "Förekommer bland annat på cyklar Crescent",
     voltage: "24V",
     original_cap: "10Ah",
-    images: [
-      "https://placehold.co/600x600/E8E6E1/A3A3A3?text=EcoRide+2009-2016",
-    ],
     prices: [
       { cap: "10Ah", desc: "Original kapacitet", price: "2 750 kr" },
       {
@@ -277,9 +273,6 @@ const batteryData = [
     model: "Förekommer på äldre cyklar från Batavus",
     voltage: "36V",
     original_cap: "10Ah",
-    images: [
-      "https://placehold.co/600x600/E8E6E1/A3A3A3?text=EcoRide+2009-2016",
-    ],
     prices: [
       {
         cap: "10Ah",
@@ -343,7 +336,7 @@ function generatePriceRow(
 ) {
   // 1. Skapa HTML för badge om den finns
   const badgeHtml = priceObj.badge
-    ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full uppercase tracking-tighter whitespace-nowrap shadow-sm">Finns i lager</span>`
+    ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full tracking-tighter whitespace-nowrap shadow-sm">I lager</span>`
     : ``;
 
   // 2. Skapa HTML för beskrivningen
@@ -450,7 +443,9 @@ function renderBatteries(data) {
         <div class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
             
             ${imageSection} <div class="flex-1 w-full flex flex-col justify-center"> <div class="mb-8">
-                    <h2 class="text-3xl font-medium mb-1">${b.brand}</h2>
+                    <h2 class="text-3xl font-medium uppercase mb-1">${
+                      b.brand
+                    }</h2>
                     <p class="text-gray-400 text-sm font-mono uppercase tracking-widest">${
                       b.model
                     }</p>
@@ -511,6 +506,60 @@ function renderBatteries(data) {
   });
 
   lucide.createIcons();
+}
+// Håller koll på vilken bild som visas i vilka sliders
+const standaloneSliders = {};
+
+function moveStandaloneSlide(sliderId, step) {
+  const slider = document.getElementById(sliderId);
+  if (!slider) return;
+
+  const images = slider.querySelectorAll('.slider-img');
+  
+  if (standaloneSliders[sliderId] === undefined) {
+    standaloneSliders[sliderId] = 0;
+  }
+
+  let newIndex = standaloneSliders[sliderId] + step;
+
+  // Snurra runt om vi når slutet eller början
+  if (newIndex >= images.length) newIndex = 0;
+  if (newIndex < 0) newIndex = images.length - 1;
+
+  goToStandaloneSlide(sliderId, newIndex);
+}
+
+function goToStandaloneSlide(sliderId, index) {
+  const slider = document.getElementById(sliderId);
+  if (!slider) return;
+
+  const images = slider.querySelectorAll('.slider-img');
+  const dots = slider.querySelectorAll('.slider-dot');
+
+  // Uppdatera minnet
+  standaloneSliders[sliderId] = index;
+
+  // Växla bilder
+  images.forEach((img, i) => {
+    if (i === index) {
+      img.classList.remove('opacity-0');
+      img.classList.add('opacity-100');
+    } else {
+      img.classList.remove('opacity-100');
+      img.classList.add('opacity-0');
+    }
+  });
+
+  // Växla färg på prickarna
+  dots.forEach((dot, i) => {
+    if (i === index) {
+      dot.classList.remove('bg-black/20');
+      dot.classList.add('bg-black');
+    } else {
+      dot.classList.remove('bg-black');
+      dot.classList.add('bg-black/20');
+    }
+  });
 }
 // Kör rendering vid start
 renderBatteries(batteryData);
