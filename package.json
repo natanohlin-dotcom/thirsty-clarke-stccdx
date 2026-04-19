@@ -1,5 +1,12 @@
 {
-    "name": "batterilabbet",
+    "name": "batteriservice",
     "version": "1.0.0",
-    "description": "Batterilabbet hemsida"
+    "description": "Batteriservice hemsida",
+    "main": "index.html",
+    "scripts": {
+      "start": "serve --no-clipboard ."
+    },
+    "devDependencies": {
+      "serve": "^14.2.0"
+    }
   }
