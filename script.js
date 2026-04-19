@@ -514,8 +514,8 @@ function moveStandaloneSlide(sliderId, step) {
   const slider = document.getElementById(sliderId);
   if (!slider) return;
 
-  const images = slider.querySelectorAll('.slider-img');
-  
+  const images = slider.querySelectorAll(".slider-img");
+
   if (standaloneSliders[sliderId] === undefined) {
     standaloneSliders[sliderId] = 0;
   }
@@ -533,8 +533,8 @@ function goToStandaloneSlide(sliderId, index) {
   const slider = document.getElementById(sliderId);
   if (!slider) return;
 
-  const images = slider.querySelectorAll('.slider-img');
-  const dots = slider.querySelectorAll('.slider-dot');
+  const images = slider.querySelectorAll(".slider-img");
+  const dots = slider.querySelectorAll(".slider-dot");
 
   // Uppdatera minnet
   standaloneSliders[sliderId] = index;
@@ -542,22 +542,22 @@ function goToStandaloneSlide(sliderId, index) {
   // Växla bilder
   images.forEach((img, i) => {
     if (i === index) {
-      img.classList.remove('opacity-0');
-      img.classList.add('opacity-100');
+      img.classList.remove("opacity-0");
+      img.classList.add("opacity-100");
     } else {
-      img.classList.remove('opacity-100');
-      img.classList.add('opacity-0');
+      img.classList.remove("opacity-100");
+      img.classList.add("opacity-0");
     }
   });
 
   // Växla färg på prickarna
   dots.forEach((dot, i) => {
     if (i === index) {
-      dot.classList.remove('bg-black/20');
-      dot.classList.add('bg-black');
+      dot.classList.remove("bg-black/20");
+      dot.classList.add("bg-black");
     } else {
-      dot.classList.remove('bg-black');
-      dot.classList.add('bg-black/20');
+      dot.classList.remove("bg-black");
+      dot.classList.add("bg-black/20");
     }
   });
 }
