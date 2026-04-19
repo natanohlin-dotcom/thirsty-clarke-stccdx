@@ -81,9 +81,9 @@ function goToStep(step) {
     .scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-// Hantera formulärets inskick (Simulering)
+// Hantera formulärets inskick
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxWVov5g6DQvnlijeTS-1p5CZ1hSUlGtWt72UrsZwuultlxVL62oY0pGmWJ57X5hFFs0Q/exec";
+  "https://script.google.com/macros/s/AKfycbzkMVMoEkDyO4YiJn1h-nk8CvCMXcksuCXw6KRWdQbnlT23QE4oqGXDyhzv28YtnpNEaw/exec";
 
 document.getElementById("repairForm").addEventListener("submit", function (e) {
   e.preventDefault(); // Stoppar sidan från att laddas om
