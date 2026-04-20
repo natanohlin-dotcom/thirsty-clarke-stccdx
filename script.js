@@ -616,5 +616,28 @@ function goToStandaloneSlide(sliderId, index) {
     }
   });
 }
+// Mobil drop-down meny
+document.addEventListener("DOMContentLoaded", function () {
+  // --- KOD FÖR MOBILMENYN ---
+  const mobileBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const mobileLinks = document.querySelectorAll(".mobile-link");
+
+  // Körs bara om knapparna faktiskt finns på sidan
+  if (mobileBtn && mobileMenu) {
+    // Öppna/stäng menyn när man klickar på hamburgaren
+    mobileBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+
+    // Stäng menyn automatiskt när kunden klickar på en specifik länk
+    mobileLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.add("hidden");
+      });
+    });
+  }
+  // ----------------------------
+});
 // Kör rendering vid start
 renderBatteries(batteryData);
