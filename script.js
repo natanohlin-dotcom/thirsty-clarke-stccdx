@@ -85,72 +85,85 @@ function goToStep(step) {
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbzkMVMoEkDyO4YiJn1h-nk8CvCMXcksuCXw6KRWdQbnlT23QE4oqGXDyhzv28YtnpNEaw/exec";
 
-document.getElementById("repairForm").addEventListener("submit", function (e) {
-  e.preventDefault(); // Stoppar sidan från att laddas om
+document.addEventListener("DOMContentLoaded", function () {
+  const repairForm = document.getElementById("repairForm");
 
-  // --- HONUNGS CHECK ---
-  const botCheck = document.getElementById("form-botcheck").value;
-  if (botCheck !== "") {
-    console.log("Bot detected! Silently ignoring.");
-    // bot upptäckt, vi skickar inget.
-    alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
-    document.getElementById("repairForm").reset();
-    goToStep(1);
-    return; // Avbryter hela funktionen här!
-  }
-  // Hitta knappen och ändra texten så användaren ser att något händer
-  const submitBtn = document.querySelector('#step3 button[type="submit"]');
-  const originalText = submitBtn.innerHTML;
-  submitBtn.innerHTML = "Skickar in förfrågan...";
-  submitBtn.disabled = true;
-  submitBtn.classList.add("opacity-50");
+  // Dörrvakten: Kör bara detta om vi är på sidan där formuläret faktiskt finns
+  if (repairForm) {
+    repairForm.addEventListener("submit", function (e) {
+      e.preventDefault(); // Stoppar sidan från att laddas om.
 
-  // Kolla vilket fraktalternativ som är valt
-  let shippingChoice = document.getElementById("ship-self").checked
-    ? document.getElementById("ship-self").value
-    : document.getElementById("ship-label").value;
+      // --- HONUNGS CHECK ---
+      const botCheck = document.getElementById("form-botcheck").value;
+      if (botCheck !== "") {
+        console.log("Bot detected! Silently ignoring.");
+        // bot upptäckt, vi skickar inget.
+        alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
+        document.getElementById("repairForm").reset();
+        goToStep(1);
+        return; // Avbryter hela funktionen här!
+      }
+      // Hitta knappen och ändra texten så användaren ser att något händer
+      const submitBtn = document.querySelector('#step3 button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = "Skickar in förfrågan...";
+      submitBtn.disabled = true;
+      submitBtn.classList.add("opacity-50");
 
-  // Samla all data med FormData
-  const formData = new FormData();
-  formData.append("brand", document.getElementById("form-brand").value);
-  formData.append("model", document.getElementById("form-model").value);
-  formData.append("voltage", document.getElementById("form-voltage").value);
-  formData.append("capacity", document.getElementById("form-capacity").value);
-  formData.append("problem", document.getElementById("form-problem").value);
-  formData.append("name", document.getElementById("form-name").value);
-  formData.append("email", document.getElementById("form-email").value);
-  formData.append("phone", document.getElementById("form-phone").value);
-  formData.append("address", document.getElementById("form-address").value);
-  formData.append("postcode", document.getElementById("form-postcode").value);
-  formData.append("city", document.getElementById("form-city").value);
-  formData.append("shipping", shippingChoice);
+      // Kolla vilket fraktalternativ som är valt
+      let shippingChoice = document.getElementById("ship-self").checked
+        ? document.getElementById("ship-self").value
+        : document.getElementById("ship-label").value;
 
-  // Skicka datan till Google Sheets
-  fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => {
-      // Lyckat!
-      alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
-
-      // Återställ formuläret
-      document.getElementById("repairForm").reset();
-      goToStep(1);
-    })
-    .catch((error) => {
-      // Något gick fel
-      console.error("Error!", error.message);
-      alert(
-        "Något gick fel. Vänligen försök igen eller kontakta oss via e-post."
+      // Samla all data med FormData
+      const formData = new FormData();
+      formData.append("brand", document.getElementById("form-brand").value);
+      formData.append("model", document.getElementById("form-model").value);
+      formData.append("voltage", document.getElementById("form-voltage").value);
+      formData.append(
+        "capacity",
+        document.getElementById("form-capacity").value
       );
-    })
-    .finally(() => {
-      // Återställ knappen oavsett om det gick bra eller dåligt
-      submitBtn.innerHTML = originalText;
-      submitBtn.disabled = false;
-      submitBtn.classList.remove("opacity-50");
+      formData.append("problem", document.getElementById("form-problem").value);
+      formData.append("name", document.getElementById("form-name").value);
+      formData.append("email", document.getElementById("form-email").value);
+      formData.append("phone", document.getElementById("form-phone").value);
+      formData.append("address", document.getElementById("form-address").value);
+      formData.append(
+        "postcode",
+        document.getElementById("form-postcode").value
+      );
+      formData.append("city", document.getElementById("form-city").value);
+      formData.append("shipping", shippingChoice);
+
+      // Skicka datan till Google Sheets
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          // Lyckat!
+          alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
+
+          // Återställ formuläret
+          document.getElementById("repairForm").reset();
+          goToStep(1);
+        })
+        .catch((error) => {
+          // Något gick fel
+          console.error("Error!", error.message);
+          alert(
+            "Något gick fel. Vänligen försök igen eller kontakta oss via e-post."
+          );
+        })
+        .finally(() => {
+          // Återställ knappen oavsett om det gick bra eller dåligt
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+          submitBtn.classList.remove("opacity-50");
+        });
     });
+  }
 });
 
 //BATTERI-DATABAS (Fyll på med nya modeller enligt samma format)
@@ -291,29 +304,69 @@ const batteryData = [
   },
 ];
 
-// NY FUNKTION: Sköter autofyllning och navigering
-function selectBatteryOption(brand, model, selectedCap, originalCap, voltage) {
-  // 1. Växla till formulär-fliken (startsidan)
-  switchPage("main", "skicka-in");
-
-  // 2. Fyll i fälten
-  document.getElementById("form-brand").value = brand;
-  document.getElementById("form-model").value = model;
-  document.getElementById("form-capacity").value = originalCap;
-
-  // NYTT: Fyller i spänningen dolt från klicket
-  document.getElementById("form-voltage").value = voltage;
-
-  // 3. Om kunden valt en uppgradering, fyll i felbeskrivningen
-  const problemField = document.getElementById("form-problem");
+window.selectBatteryOption = function (
+  brand,
+  model,
+  selectedCap,
+  originalCap,
+  voltage
+) {
+  // 1. Förbered felbeskrivningen
+  let problemText = "";
   if (selectedCap !== originalCap) {
-    problemField.value = `Uppgradera kapaciteten till ${selectedCap}.`;
-  } else {
-    problemField.value = ""; // Rensa om det är standard-reparation
+    problemText = `Uppgradera kapaciteten till ${selectedCap}.`;
   }
 
-  console.log("Formulär autofyllt för:", brand, model, voltage);
-}
+  // 2. Packa in all data i ett minnespaket
+  const batteryData = {
+    brand: brand,
+    model: model,
+    capacity: originalCap,
+    voltage: voltage,
+    problem: problemText,
+  };
+
+  // Spara paketet i webbläsarens minne
+  sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
+
+  console.log("Sparar ner batteridata i minnet:", batteryData);
+
+  // 3. Byt sida till index.html och hoppa ner till formuläret
+  window.location.href = "/index.html#skicka-in";
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  const repairForm = document.getElementById("repairForm");
+
+  if (repairForm) {
+    // Kolla om kunden kommer från batteri-sidan
+    const savedData = sessionStorage.getItem("prefilledBattery");
+
+    if (savedData) {
+      // Packa upp datan
+      const battery = JSON.parse(savedData);
+
+      // Fyll i formuläret automatiskt
+      if (document.getElementById("form-brand"))
+        document.getElementById("form-brand").value = battery.brand || "";
+      if (document.getElementById("form-model"))
+        document.getElementById("form-model").value = battery.model || "";
+      if (document.getElementById("form-voltage"))
+        document.getElementById("form-voltage").value = battery.voltage || "";
+      if (document.getElementById("form-capacity"))
+        document.getElementById("form-capacity").value = battery.capacity || "";
+      if (document.getElementById("form-problem"))
+        document.getElementById("form-problem").value = battery.problem || "";
+
+      // Rensa minnet
+      sessionStorage.removeItem("prefilledBattery");
+    }
+
+    repairForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+    });
+  }
+});
 
 // Sökfunktion
 function filterBatteries() {
@@ -374,6 +427,8 @@ function generatePriceRow(
 
 function renderBatteries(data) {
   const container = document.getElementById("battery-container");
+  // Avbryt funktionen direkt om vi inte är på startsidan där containern finns
+  if (!container) return;
   const noResults = document.getElementById("no-results");
   container.innerHTML = "";
 

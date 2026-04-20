@@ -1,27 +1,60 @@
 <!DOCTYPE html>
 <html lang="sv">
   <head>
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
-    <link rel="manifest" href="assets/site.webmanifest">
-    
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/android-chrome-512x512.png"
+    />
+    <link rel="manifest" href="assets/site.webmanifest" />
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Batterilabbet | Renovera & laga elcykelbatteri</title>
-    <meta name="description" content="Kasta inte ditt trasiga elcykelbatteri! Vi på Batterilabbet renoverar, byter celler och reparerar ditt cykelbatteri till nyskick. Spara pengar och miljö med modern batteriteknik." />
-    <meta property="og:title" content="Batterilabbet | Experter på elcykelbatterier" />
-    <meta property="og:description" content="Istället för att slänga ett dyrt elcykelbatteri renoverar vi det till nyskick." />
+    <meta
+      name="description"
+      content="Kasta inte ditt trasiga elcykelbatteri! Vi på Batterilabbet renoverar, byter celler och reparerar ditt cykelbatteri till nyskick. Spara pengar och miljö med modern batteriteknik."
+    />
+    <meta
+      property="og:title"
+      content="Batterilabbet | Experter på elcykelbatterier"
+    />
+    <meta
+      property="og:description"
+      content="Istället för att slänga ett dyrt elcykelbatteri renoverar vi det till nyskick."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.batterilabbet.se/" />
 
     <meta property="og:site_name" content="Batterilabbet" />
 
     <link rel="canonical" href="https://www.batterilabbet.se/" />
-  
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -46,50 +79,33 @@
       <div
         class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-8 py-4 border border-black/5 shadow-sm"
       >
-        <button
-          onclick="switchPage('main')"
+        <a
+          href="/index.html"
           class="text-xl font-semibold tracking-tighter hover:opacity-70 transition"
+          >batterilabbet.</a
         >
-          batterilabbet.
-        </button>
         <div class="hidden md:flex gap-8 text-sm font-medium">
-          <button
-            onclick="switchPage('main', 'hur-det-funkar')"
-            class="hover:opacity-60 transition"
+          <a
+            href="/index.html#hur-det-funkar"
+            class="hover:opacity-60 transition cursor-pointer"
+            >Hur fungerar det</a
           >
-            Hur fungerar det
-          </button>
-          <button
-            onclick="switchPage('renovera')"
-            class="hover:opacity-60 transition"
+          <a href="/reparation.html" class="hover:opacity-60 transition"
+            >Om batterirenovering</a
           >
-            Reparation
-          </button>
-          <button
-            onclick="switchPage('omoss')"
-            class="hover:opacity-60 transition"
+          <a href="/om-oss.html" class="hover:opacity-60 transition">Om oss</a>
+          <a href="/certifiering.html" class="hover:opacity-60 transition"
+            >Certifiering</a
           >
-            Om oss
-          </button>
-          <button
-            onclick="switchPage('certifiering')"
-            class="hover:opacity-60 transition"
+          <a href="/kontakt.html" class="hover:opacity-60 transition"
+            >Kontakt</a
           >
-            Certifiering
-          </button>
-          <button
-            onclick="switchPage('kontakt')"
-            class="hover:opacity-60 transition"
-          >
-            Kontakt
-          </button>
         </div>
-        <button
-          onclick="switchPage('reparation')"
+        <a
+          href="/hitta-din-modell.html"
           class="bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:scale-105 transition"
+          >Hitta din modell</a
         >
-          Hitta din modell
-        </button>
       </div>
     </nav>
 
@@ -103,177 +119,360 @@
           </h1>
           <p class="text-xl md:text-2xl text-gray-500 mb-12 leading-relaxed">
             Vi reparerar elcykelbatterier med precision och hållbarhet. Enkelt
-            för dig, bra för planeten. Kom igång genom att hitta din modell bland
-            de vanligaste vi tar emot, eller genom att fylla i formuläret själv.
+            för dig, bra för planeten. Kom igång genom att hitta din modell
+            bland de vanligaste vi tar emot, eller genom att fylla i formuläret
+            själv.
           </p>
           <div class="flex flex-col md:flex-row justify-center gap-4">
-            <button
-              onclick="switchPage('reparation')"
+            <a
+              href="/hitta-din-modell.html"
               class="btn-primary px-10 py-5 rounded-full text-lg font-medium"
+              >Hitta din modell</a
             >
-              Hitta ditt modell
-            </button>
-            <button
-              onclick="switchPage('main', 'hur-det-funkar')"
+            <a
+              href="/reparation.html"
               class="bg-white border border-black/10 px-10 py-5 rounded-full text-lg font-medium hover:bg-gray-50 transition"
+              >Varför renovera?</a
             >
-              Se hur det går till
-            </button>
           </div>
         </div>
       </section>
 
       <section id="hur-det-funkar" class="py-24 px-6 scroll-mt-24">
         <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8">
-                
-                <div class="glass-card p-8 lg:p-10">
-                    <i data-lucide="edit-3" class="mb-6 w-8 h-8"></i>
-                    <h3 class="text-xl font-medium mb-4">1. Boka online</h3>
-                    <p class="text-gray-500">Fyll i formuläret nedan med information om ditt batteri och felet.</p>
-                </div>
-
-                <div class="glass-card p-8 lg:p-10">
-                    <i data-lucide="package" class="mb-6 w-8 h-8"></i>
-                    <h3 class="text-xl font-medium mb-4">2. Skicka in</h3>
-                    <p class="text-gray-500">Du får instruktioner om hur du packar och skickar batteriet till oss.</p>
-                </div>
-
-                <div class="glass-card p-8 lg:p-10">
-                    <i data-lucide="search" class="mb-6 w-8 h-8 text-black"></i>
-                    <h3 class="text-xl font-medium mb-4">3. Felsökning</h3>
-                    <p class="text-gray-500">Vi analyserar celler och kretskort noggrant för att hitta den exakta felkällan.</p>
-                </div>
-
-                <div class="glass-card p-8 lg:p-10">
-                    <i data-lucide="zap" class="mb-6 w-8 h-8"></i>
-                    <h3 class="text-xl font-medium mb-4">4. Vi reparerar</h3>
-                    <p class="text-gray-500">Våra tekniker byter celler eller reparerar kretskortet med originaldelar.</p>
-                </div>
-
-                <div class="glass-card p-8 lg:p-10">
-                    <i data-lucide="truck" class="mb-6 w-8 h-8"></i>
-                    <h3 class="text-xl font-medium mb-4">5. Retur</h3>
-                    <p class="text-gray-500">Batteriet testas och skickas tillbaka till dig, redo för många nya mil.</p>
-                </div>
-                
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8"
+          >
+            <div class="glass-card p-8 lg:p-10">
+              <i data-lucide="edit-3" class="mb-6 w-8 h-8"></i>
+              <h3 class="text-xl font-medium mb-4">1. Boka online</h3>
+              <p class="text-gray-500">
+                Fyll i formuläret nedan med information om ditt batteri och
+                felet.
+              </p>
             </div>
-        </div>
-    </section>
 
-    <section id="skicka-in" class="py-24 px-6 bg-[#F3F2EE] scroll-mt-24">
-      <div class="max-w-3xl mx-auto">
+            <div class="glass-card p-8 lg:p-10">
+              <i data-lucide="package" class="mb-6 w-8 h-8"></i>
+              <h3 class="text-xl font-medium mb-4">2. Skicka in</h3>
+              <p class="text-gray-500">
+                Du får instruktioner om hur du packar och skickar batteriet till
+                oss.
+              </p>
+            </div>
+
+            <div class="glass-card p-8 lg:p-10">
+              <i data-lucide="search" class="mb-6 w-8 h-8 text-black"></i>
+              <h3 class="text-xl font-medium mb-4">3. Felsökning</h3>
+              <p class="text-gray-500">
+                Vi analyserar celler och kretskort noggrant för att hitta den
+                exakta felkällan.
+              </p>
+            </div>
+
+            <div class="glass-card p-8 lg:p-10">
+              <i data-lucide="zap" class="mb-6 w-8 h-8"></i>
+              <h3 class="text-xl font-medium mb-4">4. Vi reparerar</h3>
+              <p class="text-gray-500">
+                Våra tekniker byter celler eller reparerar kretskortet med
+                originaldelar.
+              </p>
+            </div>
+
+            <div class="glass-card p-8 lg:p-10">
+              <i data-lucide="truck" class="mb-6 w-8 h-8"></i>
+              <h3 class="text-xl font-medium mb-4">5. Retur</h3>
+              <p class="text-gray-500">
+                Batteriet testas och skickas tillbaka till dig, redo för många
+                nya mil.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="skicka-in" class="py-24 px-6 bg-[#F3F2EE] scroll-mt-24">
+        <div class="max-w-3xl mx-auto">
           <div class="text-center mb-16">
-              <h2 class="text-4xl font-medium mb-4">Skicka in ditt batteri</h2>
-              <p class="text-gray-500 text-lg">Fyll i stegen nedan för att påbörja ditt ärende.</p>
+            <h2 class="text-4xl font-medium mb-4">Skicka in ditt batteri</h2>
+            <p class="text-gray-500 text-lg">
+              Fyll i stegen nedan för att påbörja ditt ärende.
+            </p>
           </div>
 
           <div class="glass-card p-8 md:p-12 shadow-xl bg-white">
-              <div class="flex gap-2 mb-12">
-                  <div id="p-1" class="h-1 flex-1 bg-black rounded-full transition-all duration-500"></div>
-                  <div id="p-2" class="h-1 flex-1 bg-gray-200 rounded-full transition-all duration-500"></div>
-                  <div id="p-3" class="h-1 flex-1 bg-gray-200 rounded-full transition-all duration-500"></div>
-              </div>
+            <div class="flex gap-2 mb-12">
+              <div
+                id="p-1"
+                class="h-1 flex-1 bg-black rounded-full transition-all duration-500"
+              ></div>
+              <div
+                id="p-2"
+                class="h-1 flex-1 bg-gray-200 rounded-full transition-all duration-500"
+              ></div>
+              <div
+                id="p-3"
+                class="h-1 flex-1 bg-gray-200 rounded-full transition-all duration-500"
+              ></div>
+            </div>
 
-              <form id="repairForm">
-                <div id="step1" class="form-step space-y-6">
-                  <h3 class="text-2xl font-medium mb-8">Information om batteriet</h3>
-                  <div class="grid md:grid-cols-2 gap-4">
-                      <div class="space-y-2">
-                          <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Märke</label>
-                          <input type="text" id="form-brand" placeholder="t.ex. Bosch, Shimano" class="w-full" required>
-                      </div>
-                      <div class="space-y-2">
-                          <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Modell</label>
-                          <input type="text" id="form-model" placeholder="t.ex. PowerPack 500" class="w-full" required>
-                      </div>
+            <form id="repairForm">
+              <div id="step1" class="form-step space-y-6">
+                <h3 class="text-2xl font-medium mb-8">
+                  Information om batteriet
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >Märke</label
+                    >
+                    <input
+                      type="text"
+                      id="form-brand"
+                      placeholder="t.ex. Bosch, Shimano"
+                      class="w-full"
+                      required
+                    />
                   </div>
-                  <div class="grid md:grid-cols-2 gap-4">
-                      <div class="space-y-2">
-                          <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Spänning (V)</label>
-                          <input type="text" id="form-voltage" placeholder="36V" class="w-full">
-                      </div>
-                      <div class="space-y-2">
-                          <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Kapacitet (Ah) (Nuvarande)</label>
-                          <input type="text" id="form-capacity" placeholder="13.4Ah" class="w-full">
-                      </div>
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >Modell</label
+                    >
+                    <input
+                      type="text"
+                      id="form-model"
+                      placeholder="t.ex. PowerPack 500"
+                      class="w-full"
+                      required
+                    />
                   </div>
-                  <div class="space-y-2 pt-4">
-                      <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Felbeskrivning</label>
-                      <textarea id="form-problem" rows="4" placeholder="Beskriv problemet..." class="w-full"></textarea>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >Spänning (V)</label
+                    >
+                    <input
+                      type="text"
+                      id="form-voltage"
+                      placeholder="36V"
+                      class="w-full"
+                    />
                   </div>
-                  <button type="button" onclick="goToStep(2)" class="w-full btn-primary py-5 rounded-2xl font-medium mt-8">Nästa steg</button>
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >Kapacitet (Ah) (Nuvarande)</label
+                    >
+                    <input
+                      type="text"
+                      id="form-capacity"
+                      placeholder="13.4Ah"
+                      class="w-full"
+                    />
+                  </div>
+                </div>
+                <div class="space-y-2 pt-4">
+                  <label
+                    class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                    >Felbeskrivning</label
+                  >
+                  <textarea
+                    id="form-problem"
+                    rows="4"
+                    placeholder="Beskriv problemet..."
+                    class="w-full"
+                  ></textarea>
+                </div>
+                <button
+                  type="button"
+                  onclick="goToStep(2)"
+                  class="w-full btn-primary py-5 rounded-2xl font-medium mt-8"
+                >
+                  Nästa steg
+                </button>
               </div>
 
               <div id="step2" class="form-step hidden-step space-y-6">
                 <h3 class="text-2xl font-medium mb-8">Dina kontaktuppgifter</h3>
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Fullständigt namn</label>
-                    <input type="text" id="form-name" placeholder="Förnamn Efternamn" class="w-full" required>
+                  <label
+                    class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                    >Fullständigt namn</label
+                  >
+                  <input
+                    type="text"
+                    id="form-name"
+                    placeholder="Förnamn Efternamn"
+                    class="w-full"
+                    required
+                  />
                 </div>
-                <div class="absolute w-0 h-0 opacity-0 -z-10 overflow-hidden" aria-hidden="true">
+                <div
+                  class="absolute w-0 h-0 opacity-0 -z-10 overflow-hidden"
+                  aria-hidden="true"
+                >
                   <label>Lämna detta fält tomt om du är människa</label>
-                  <input type="text" id="form-botcheck" name="botcheck" tabindex="-1" autocomplete="off">
-              </div>
+                  <input
+                    type="text"
+                    id="form-botcheck"
+                    name="botcheck"
+                    tabindex="-1"
+                    autocomplete="off"
+                  />
+                </div>
                 <div class="grid md:grid-cols-2 gap-4">
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-gray-400">E-post</label>
-                        <input type="email" id="form-email" placeholder="namn@epost.se" class="w-full" required>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Telefon</label>
-                        <input type="tel" id="form-phone" placeholder="070-000 00 00" class="w-full" required>
-                    </div>
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >E-post</label
+                    >
+                    <input
+                      type="email"
+                      id="form-email"
+                      placeholder="namn@epost.se"
+                      class="w-full"
+                      required
+                    />
+                  </div>
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >Telefon</label
+                    >
+                    <input
+                      type="tel"
+                      id="form-phone"
+                      placeholder="070-000 00 00"
+                      class="w-full"
+                      required
+                    />
+                  </div>
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Adress</label>
-                    <input type="text" id="form-address" placeholder="Gatuadress" class="w-full">
+                  <label
+                    class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                    >Adress</label
+                  >
+                  <input
+                    type="text"
+                    id="form-address"
+                    placeholder="Gatuadress"
+                    class="w-full"
+                  />
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Postnummer</label>
-                        <input type="text" id="form-postcode" placeholder="Postnummer" class="w-full">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Ort</label>
-                        <input type="text" id="form-city" placeholder="Ort" class="w-full">
-                    </div>
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >Postnummer</label
+                    >
+                    <input
+                      type="text"
+                      id="form-postcode"
+                      placeholder="Postnummer"
+                      class="w-full"
+                    />
+                  </div>
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >Ort</label
+                    >
+                    <input
+                      type="text"
+                      id="form-city"
+                      placeholder="Ort"
+                      class="w-full"
+                    />
+                  </div>
                 </div>
                 <div class="flex gap-4 pt-8">
-                    <button type="button" onclick="goToStep(1)" class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
-                    <button type="button" onclick="goToStep(3)" class="flex-[2] btn-primary py-5 rounded-2xl font-medium shadow-sm">Sista steget</button>
+                  <button
+                    type="button"
+                    onclick="goToStep(1)"
+                    class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition"
+                  >
+                    Bakåt
+                  </button>
+                  <button
+                    type="button"
+                    onclick="goToStep(3)"
+                    class="flex-[2] btn-primary py-5 rounded-2xl font-medium shadow-sm"
+                  >
+                    Sista steget
+                  </button>
                 </div>
               </div>
-        
-            <div id="step3" class="form-step hidden-step space-y-6">
+
+              <div id="step3" class="form-step hidden-step space-y-6">
                 <h3 class="text-2xl font-medium mb-8">Fraktval</h3>
                 <div class="space-y-4">
-                    <label class="flex items-center p-6 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
-                        <input type="radio" name="shipping" id="ship-self" value="Skickar in själv" class="w-4 h-4 mr-4" checked>
-                        <div>
-                            <p class="font-medium">Jag skickar in själv</p>
-                            <p class="text-sm text-gray-500">Vi skickar adressinstruktioner via mail.</p>
-                        </div>
-                    </label>
-                    <label class="flex items-center p-6 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
-                        <input type="radio" name="shipping" id="ship-label" value="Vill ha fraktsedel (149kr)" class="w-4 h-4 mr-4">
-                        <div>
-                            <p class="font-medium">Skicka mig en fraktsedel (149 kr)</p>
-                            <p class="text-sm text-gray-500">Vi mailar en förbetald QR-kod för PostNord.</p>
-                        </div>
-                    </label>
+                  <label
+                    class="flex items-center p-6 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+                  >
+                    <input
+                      type="radio"
+                      name="shipping"
+                      id="ship-self"
+                      value="Skickar in själv"
+                      class="w-4 h-4 mr-4"
+                      checked
+                    />
+                    <div>
+                      <p class="font-medium">Jag lämnar in hos er i Uppsala</p>
+                      <p class="text-sm text-gray-500">
+                        Vi skickar vidare instruktioner via mail.
+                      </p>
+                    </div>
+                  </label>
+                  <label
+                    class="flex items-center p-6 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+                  >
+                    <input
+                      type="radio"
+                      name="shipping"
+                      id="ship-label"
+                      value="Vill ha fraktsedel (149kr)"
+                      class="w-4 h-4 mr-4"
+                    />
+                    <div>
+                      <p class="font-medium">
+                        Skicka mig en fraktsedel (149 kr)
+                      </p>
+                      <p class="text-sm text-gray-500">
+                        Vi mailar en förbetald fraktsedel till dig. Om du väljer
+                        detta alternativ bekräftar du att batteriet: 1 Inte har
+                        brunnit. 2 Batteriet har inte svällt upp. 3 Batteriet
+                        har inte mindre än 20% av orginalkapacitet kvar.
+                      </p>
+                    </div>
+                  </label>
                 </div>
                 <div class="flex gap-4 pt-8">
-                    <button type="button" onclick="goToStep(2)" class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
-                    <button type="submit" class="flex-[2] btn-primary py-5 rounded-2xl font-medium shadow-sm">Skicka in förfrågan</button>
+                  <button
+                    type="button"
+                    onclick="goToStep(2)"
+                    class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition"
+                  >
+                    Bakåt
+                  </button>
+                  <button
+                    type="submit"
+                    class="flex-[2] btn-primary py-5 rounded-2xl font-medium shadow-sm"
+                  >
+                    Skicka in förfrågan
+                  </button>
                 </div>
-            </div>
-              </form>
+              </div>
+            </form>
           </div>
-      </div>
-  </section>
+        </div>
+      </section>
 
-    
       <section id="om-oss" class="py-32 px-6 scroll-mt-24">
         <div
           class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center"
@@ -287,18 +486,19 @@
               få celler blivit trötta, renoverar vi dem till nyskick.
             </p>
             <p class="text-xl text-gray-500 leading-relaxed">
-              Vår vision är att förlänga livet på varje elcykel i Sverige, 
-              för att driva alla dina elcykeläventyr.
+              Vår vision är att förlänga livet på varje elcykel i Sverige, för
+              att driva alla dina elcykeläventyr.
             </p>
           </div>
-          <div class="md:w-1/2 w-full aspect-square bg-[#E8E6E1] rounded-[40px] overflow-hidden relative shadow-sm">
-            <img 
-              src="photos/cyklist.png" 
-              alt="Person som cyklar på elcykel" 
+          <div
+            class="md:w-1/2 w-full aspect-square bg-[#E8E6E1] rounded-[40px] overflow-hidden relative shadow-sm"
+          >
+            <img
+              src="photos/cyklist.png"
+              alt="Person som cyklar på elcykel"
               class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-            >
+            />
           </div>
-        
         </div>
       </section>
 
@@ -316,579 +516,136 @@
               </p>
             </div>
             <div class="border-b border-gray-100 pb-8">
+              <h3 class="text-xl font-medium mb-4">
+                Vad kostar det att laga sitt batteri?
+              </h3>
+              <p class="text-gray-500">
+                Vi har en prislista för de vanligaste elcykelbatterierna, som du
+                kommer till om du klickar
+                <a
+                  href="/hitta-din-modell.html"
+                  class="hover:text-black transition"
+                >
+                  här</a
+                >. För övriga batterireparationer varierar priset beroende på
+                storlek. Fyll i formuläret så återkommer vi till dig med
+                prisförslag.
+              </p>
+            </div>
+            <div class="border-b border-gray-100 pb-8">
+              <h3 class="text-xl font-medium mb-4">
+                Jag hittar inte mitt batteri i er lista
+              </h3>
+              <p class="text-gray-500">
+                Ingen panik om du inte kan hitta ditt batteri, så länge det inte
+                står i listan av de vi inte tar emot kan vi laga de flesta
+                batterier. Fyll i formuläret själv så kan vi efter felsökning ge
+                dig ett prisförslag för reparation.
+              </p>
+            </div>
+            <div class="border-b border-gray-100 pb-8">
               <h3 class="text-xl font-medium mb-4">Ger ni någon garanti?</h3>
               <p class="text-gray-500">
                 Ja, vi lämnar alltid 12 månaders garanti på alla våra
                 batterireparationer och utbytta celler.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <main id="view-frakt" class="page-view pt-40 pb-32 px-6">
-      <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
-          Frakt & Leverans
-        </h1>
-        <p class="text-xl">
-          Information om hur du säkert skickar ditt batteri till oss och hur vi
-          hanterar returen.
-        </p>
-        <h2>Att packa ett elcykelbatteri</h2>
-        <p>
-          Ett elcykelbatteri klassas som farligt gods (litiumjonbatteri). Det är
-          därför mycket viktigt att du packar det väl. Använd en stabil kartong
-          och rikligt med stötdämpande material (t.ex. bubbelplast eller
-          tidningspapper) så att batteriet inte kan röra sig i lådan.
-        </p>
-        <h2>Fraktsedel och Inlämning</h2>
-        <p>
-          Om du väljer att köpa en fraktsedel via oss mailar vi en QR-kod till
-          dig. Du behöver ingen skrivare, visa bara upp koden hos ditt närmaste
-          PostNord-ombud så skriver de ut etiketten åt dig.
-        </p>
-        <h2>Returfrakt</h2>
-        <p>
-          När batteriet är färdigreparerat skickar vi tillbaka det till samma
-          ombud. Du aviseras via SMS eller i PostNord-appen.
-        </p>
-      </div>
-    </main>
-
-    <main id="view-garanti" class="page-view pt-40 pb-32 px-6">
-      <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">Garanti</h1>
-        <p class="text-xl">
-          Vi är stolta över varje batteri som vi reparerar och renoverar. Därför erbjuder vi två års garanti på alla batterier vi renoverar.
-          <h2>Vi använder oss bara av kvalitetskomponenter och märkesceller som är designade att hålla.</h2>
-           <p>
-          Efter 500-1000 cykler (ca 8 år av daglig användning) förväntas våra standardbatterier ha 80% av orginalkapaciteten kvar, men självklart går 
-          det fortfarande bra att fortsätta använda batteriet i många 1000-tals cykler och upp till 12år! Vi kan även erbjuda renovering och batteribygge med celler för extra lång livslängd 1000-2000 cykler till 80%, hör av dig om det låter intressant.
-          Med kvalitetsceller och välutfört arbete kan vi stolt erbjuda två års garanti!
-        </p>
-        <h2>Villkor garanti</h2>
-<ul>
-    <li>Batteriet måste underhållas genom att laddas regelbundet. Olika ofta för olika batterier, men generellt en gång per kvartal. Läs mer under menyn "Vanliga frågor, underhållsladdning"!</li>
-    <li>Batteriet får inte förvaras längre än två månader kring 0-25%.</li>
-    <li>Batteriet får inte öppnas.</li>
-    <li>Ta hand om batteriet, tappa det inte i marken. Dra aldrig i kablar.</li>
-    <li>Batteriet skall endast användas till den cykel/apparat det är tillverkad för.</li>
-    <li>Batteriet får bara laddas med orginalladdare eller likvärdig via laddport (håll koll på Volt och Ampere, står alltid på baksidan av laddaren). Fråga gärna oss om du är osäker!</li>
-    <li>Förvaring av batteriet ska ske inomhus under tak, förvaring längre än 14 dagar ska ske vid 15-25°C. Tänk på att det kan bli 75°C i bilen en varm sommardag, ha inte batteriet där då!.</li>
-    <li>Batteriet får ej dränkas av väta. Vi gör vårat bästa för att täta batteriet, men fukt har en tendens att ta sig in i gamla batterier.</li>
-    <li>Garantin utgår vid vidareförsäljning om inte annat är överenskommet.</li>
-    <li>Vid garantiärenden står kunden för frakt till och från Batterilabbet.</li>
-    <li>Batteriet är farligt gods och måste packas i en stadig kartong med rikligt med stötdämpning.</li>
-</ul>
-        </p>
-      </div>
-    </main>
-
-    <main id="view-renovera" class="page-view pt-40 pb-32 px-6">
-      <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
-          Reparation
-        </h1>
-        <p class="text-xl">
-          Varför renovera elcykelbatterier och hur det går till
-        </p>
-        <h2>Varför renovera?</h2>
-<ul>
-    <li><strong>Billigare:</strong> Man kan spara många tusenlappar genom att reparera det gamla och inte köpa ett nytt.</li>
-    <li><strong>Prestanda:</strong> Med högre än orginalkapacitet får du längre körsträcka med ett renoverat batteri. Detta tack vare kvalitetsceller med mycket hög energidensitet. Uppskattat av många! Dessutom behöver du inte ladda lika ofta efter en renovering med högre kapacitet, vilket ger batteriet längre livslängd.</li>
-    <li><strong>Livslängd:</strong> Ditt batteri får längre livstid! Vi använder oss bara av de bästa cellerna. På så sätt kan våra batterier hålla i upp till 12 år. 
-      Många tillverkare snålar in på cellkvalitet och därför håller deras batterier inte många år efter att garantin gått ut, 2-5år.</li>
-      <li><strong>Trygghet:</strong> Vi ger 2 års garanti på totalrenoveringar. Längre garanti än du får på de flesta nya batterier. För att du ska kunna känna dig trygg med ditt "nya" batteri</li>
-      <li><strong>Hållbarhet:</strong> Spara på klimatet och jordens resurser genom att reparera det gamla istället för att köpa nytt! 
-        Nytillverkning av litiumbatterier innebär flera risker för både miljö, hälsa och mänskliga rättigheter. Genom att renovera det gamla batteriet bidrar du till en mer hållbar värld</li>
-    </ul>
-
-        </p>
-        
-      <section id="hur-gar-det-till" class="py-5 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center">
-          
-          <div class="md:w-1/2">
-            <h2 class="text-5xl font-medium tracking-tight mb-8">
-              Hur går en reparation till?
-            </h2>
-            <p>
-              Steg 1. Vi felsöker batteriet och identifierar om det går att renovera och hur det ska ske. 
-            </p>
-            <p>
-              Steg 2. Vi 3D-printar själva batteri- och cellhållare anpassade för batteriet.
-            </p>
-            <p>
-              Steg 3. Vi punktsvetsar och sätter ihop batteriet och BMS.
-            </p>
-            <p>
-              Steg 4. Vi applicerar krympplast och förseglar med vattentätsilikon.
-            </p>
-            <p>
-              Steg 5. Vi installerar batteriet i dess skal.
-            </p>
-            <p>
-              Steg 6. Vi genomför kvalitetskonroll av batterier för att 
-              säkerställa att det lever upp till vår standard.
-            </p>
-          </div>
-        
-          <div id="hur-gar-det-till-slider" class="relative w-full aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group">
-
-            <img src="photos/open-battery.png" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-100" alt="Bild 1">
-
-            <img src="photos/3d-print.png" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0" alt="Bild 2">
-            
-            <img src="photos/batterirep.webp" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0" alt="Bild 3">
-          
-            <img src="photos/completed-battery.png" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0" alt="Bild 4">
-
-            <button onclick="moveStandaloneSlide('hur-gar-det-till-slider', -1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100">
-              <i data-lucide="chevron-left" class="w-5 h-5"></i>
-            </button>
-            <button onclick="moveStandaloneSlide('hur-gar-det-till-slider', 1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100">
-              <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
-          
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full">
-              <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black cursor-pointer" onclick="goToStandaloneSlide('hur-gar-det-till-slider', 0)"></div>
-              <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer" onclick="goToStandaloneSlide('hur-gar-det-till-slider', 1)"></div>
-              <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer" onclick="goToStandaloneSlide('hur-gar-det-till-slider', 2)"></div>
-              <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer" onclick="goToStandaloneSlide('hur-gar-det-till-slider', 3)"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <main id="view-kontakt" class="page-view pt-40 pb-32 px-6">
-      <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
-          Kontakt
-        </h1>
-        <p class="text-xl">
-          Du når oss via mail eller formuläret. Vi råder dig som vill lämna in ett batteri att använda formuläret
-          i första hand. För att komma till formuläret klicka <button
-          onclick="switchPage('main','skicka-in')"
-          class="hover:opacity-60 transition"
-        >
-          här.
-        </button> 
-        </p>
-        <h2>Kontakta oss via mail</h2>
-        <p>
-          kontakt@batterilabbet.se
-          <p>
-            Vi försöker svara så snabbt som möjligt med målsättningen att du inte ska behöva vänta mer än 24h.
-        </p>
-        <button
-  onclick="switchPage('main', 'faq')"
-  class="w-fit bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:scale-90 transition"
->
-  FAQ
-</button>
-          <p> 
-        </p>
-      </div>
-    </main>
-
-    <main id="view-omoss" class="page-view pt-40 pb-32 px-6">
-      <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
-          Batterilabbet - Tekniken bakom framtidens körtid
-        </h1>
-        <p class="text-xl">
-          Kvalitet som märks vid varje gaspådrag.
-        </p>
-        <section id="vilka-ar-vi" class="py-5 px-6">
-          <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center">
-            
-            <div class="md:w-1/2 w-full aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden relative shadow-sm">
-              <img 
-                src="https://placehold.co/600x600/E8E6E1/A3A3A3?text=Bild 1" 
-                alt="Teamet på Batterilabbet, studenter vid Uppsala Universitet" 
-                class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-              >
-            </div>
-        
-            <div class="md:w-1/2">
-              <h2 class="text-5xl font-medium tracking-tight mb-8">
-                Vilka är vi?
-              </h2>
-              <p>
-                Vi på Batterilabbet är ett team av civilingenjörsstudenter vid Uppsala universitet som drivs av en gemensam passion: att tänja på gränserna för vad som är möjligt inom batteriteknik. 
-              </p>
-              <p>
-                Med en bakgrund i batteribranschen som sträcker sig tillbaka till 2020, har vi på nära håll följt den otroliga utvecklingen inom energilagring.
+            <div class="border-b border-gray-100 pb-8">
+              <h3 class="text-xl font-medium mb-4">
+                Varför ska jag renovera mitt batteri?
+              </h3>
+              <p class="text-gray-500">
+                Det finns många anledningar till att renovera sitt gamla
+                batteri, de viktigaste är: pris, kapacitet, livslängd och
+                hållbarhet. Läs mer om varför du ska renovera ditt batteri
+                <a href="/reparation.html" class="hover:text-black transition">
+                  här</a
+                >.
               </p>
             </div>
-            
-          </div>
-        </section>
-  
-      <section id="varför-batterireparation" class="py-5 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center">
-      
-          <div class="md:w-1/2">
-            <h2 class="text-5xl font-medium tracking-tight mb-8">
-              Varför batterireparation?
-            </h2>
-            <p>Litiumjonbatterier har tagit världen med storm. Det är svårt att genomgå en dag i livet utan dem, bär vi tittar på mobilen, åker elscooter, elcykel eller elbil använder vi dem. Många av oss förlitar sig på sitt batteri för att ta sig till jobbet, 
-              därför är det viktigt att batteriet fungerar som det ska!</p>
-            <p>
-              Batterilabbet finns här för dig om batteriet slutar att fungera. Istället för att du måste köpa nytt så reparerar 
-              och renoverar vi batteriet genom att ersätta de gamla cellerna med nya kvalitets-celler, så att det blir som nytt igen (fast bättre). Billigare och bättre än original! 
-              Dessutom kommer ditt nya batteri hålla i upp till 12 år om du tar hand om det väl.
-            </p>
-          
-          </div>
-          <div class="md:w-1/2 w-full aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden relative shadow-sm">
-            <img 
-              src="photos/batterirep.webp" 
-              alt="batterireparation" 
-              class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-            >
           </div>
         </div>
       </section>
-    
-    <h2>Varför välja oss</h2>
-    <p>
-      Vi tror inte på massproduktion utan själ. Därför byggs alla våra batteripack för hand på plats i Uppsala. 
-      För oss är säkerhet och prestanda två sidor av samma mynt. Varje batteripack genomgår en strikt kvalitetskontroll där vi mäter:
-      <ul>
-          <li><strong>Inre resistans (Internal Resistance):</strong> För att säkerställa att varje cell levererar maximal ström utan onödig värmebildning.</li>
-          <li><strong>Urladdningskurvor:</strong> Vi matchar celler och testar packen ordentligt så att du kan lita på spänningen hela vägen ner till sista mAh.</li>
-      </ul>
-      <p>
-      När du väljer ett batteri från oss köper du inte bara komponenter; du köper ingenjörskonst optimerad för din nästa körupplevelse.
-    </p>
-  </p>
-      </div>
-    </main>
-
-    <main id="view-allmanna-villkor" class="page-view pt-40 pb-32 px-6">
-      <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
-          Allmänna Villkor
-        </h1>
-        <p class="text-xl">
-          Dessa allmänna villkor gäller för alla tjänster som beställs via
-          Batterilabbet.
-        </p>
-        <h2>1. Tjänstens omfattning</h2>
-        <p>
-          Vi utför felsökning och reparation av elcykelbatterier. Om vi under
-          felsökningen upptäcker att batteriet är oreparerbart kontaktar vi dig
-          innan några ytterligare kostnader debiteras. Reparation och batteribygge är en tjänst. Efter att ni gått med på offerten är det bindande avtal som ej går att avbryta efter påbörjat arbete.
-        </p>
-        <h2>2. Priser och Betalning</h2>
-        <p>
-          Efter inskickat formulär gör vi en uppskattning. En exakt prisuppgift
-          ges efter felsökning, priser under "Hitta din modell" är endast en uppskattning. Betalning sker normalt via faktura (10 dagars förfallodatum) eller Swish
-          när arbetet är slutfört.
-        </p>
-        <h2>3. Felsökning </h2>
-        <p>
-        Vi ger inte ett fast pris på reparation innan felsökning. Se prislistan för elcyklar en uppskattning. 
-        Felsökning kostar 500kr men är kostnadsfri för kund som väljer att reparera batteriet med oss. 
-        Alla batterier är inte konstruerade för att tas isär, exempelvis kan vattentätning kan gå sönder. 
-        Vi gör vårat bästa för att täta batteriet vid felsökning och reparation. Om ditt batteri inte går att reparera är kostnaden för felsökning gratist. 
-        Vi är inte skyldiga att ersätta dig med kostnaden för ett nytt batteri då.
-
-        </p>
-        <h2>4. Renovering</h2>  
-        <p>
-          Felsökning ingår gratis vid renovering, villkoren för felsökning gäller även vid renovering. Vissa batterier är omöjliga eller mycket svåra att renovera av olika skäl. Dessa batterier behöver ofta elektronik 
-          (som är omöjlig för oss som tredjepartsreparatör att få tag i) för att fungera ordentligt. 
-          Vi är erfarna och har bra koll på vad som är möjligt att renovera/reparera och vad som inte går, om du har ett batteri som vi inte tidigare jobbat med meddelar vi dig det.
-          Det gamla komponenterna i batteriet tillfaller oss efter att ditt batteri renoveras.
-        </p>
-        <h2>5. Garanti</h2>
-        <p>
-          Vi lämnar 12 månaders garanti på utbytta delar och celler. Garantin
-          täcker inte skador orsakade av onormalt slitage, fuktskador som
-          uppkommit efter reparationen, eller om batteriet har öppnats av tredje
-          part. Garantin omfatta av våra garantivillkor, du kan läsa mer om villkor för garanti <button
-          onclick="switchPage('garanti')"
-          class="hover:opacity-60 transition"
-        >
-          här.
-        </button>
-        </p>
-        <h2>6. Frakt</h2>
-        <p>
-          Frakt kostar 300kr tur-och-retur för elcykelbatterier (och de flesta andra i den storleken). När vi skickar dig en fraktsedel gör vi det utan kostnad för dig i stunden, 
-          men observera att du kan bli betalningsskyldig för denna om du väljer att inte reparera batteriet. Väljer du att reparera batteriet läggs kostnaden för frakt med på 
-          fakturan för batteriet. Väljer du att inte reparera batteriet och inte vill betala frakt och felsökning tillfaller batteriet det aktuella batteriet oss. 
-          Då blir du ej betalningsskyldig för frakt och eventuell felsökning.
-      </p>
-      <h2>7. Beställ batteri i lager</h2>
-        <p>
-          Vi har vissa batterier i lager, vilka kan beställas direkt vilket sker på samma sätt som övriga reparationsärenden.
-          Vid beställning av batterier i lager får du ditt nya batteri skickad från oss i en förpackning. Ditt gamla batteri skickar du 
-          tillbaka till oss i samma förpackning, så att vi kan återvinna batteriet på rätt sätt.
-      </p>
-      </div>
-    </main>
-
-    <main id="view-villkor" class="page-view pt-40 pb-32 px-6">
-      <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
-          Villkor & Integritet
-        </h1>
-        <p class="text-xl">
-          Hur vi hanterar dina personuppgifter (Integritetspolicy).
-        </p>
-        <h2>Behandling av personuppgifter</h2>
-        <p>
-          För att kunna hantera din reparation, skicka fraktsedlar och fakturera
-          dig behöver vi spara dina personuppgifter. Vi samlar in namn, adress,
-          e-post och telefonnummer. 
-        </p>
-        <h2>Hur länge sparas datan?</h2>
-        <p>
-          Vi sparar dina uppgifter så länge det krävs enligt bokföringslagen (7
-          år) och för att kunna hantera eventuella garantiärenden (12 månader).
-        </p>
-        <h2>Dina rättigheter</h2>
-        <p>
-          Enligt GDPR har du rätt till: 1 Du har rätt att när som helst begära ut ett registerutdrag över vilken
-          information vi har sparad om dig. 2 Du har rätt att begära ändring av felaktiga uppgifter
-          3 Du har rätt att begära att vi raderar dina uppgifter (såvida de inte krävs för bokföringslagen).
-        </p>
-        <h2>Kakor (Cookies)</h2>
-        <p>
-  För att ge dig den bästa och snabbaste upplevelsen har vi valt att bygga en hemsida helt fri från spårnings-kakor (cookies). Vi använder inga tredjepartstjänster för att spåra ditt beteende, vilket innebär att du slipper irriterande cookie-banners och kan surfa i lugn och ro. 
-  Den enda data vi sparar är den du aktivt väljer att skicka till oss via vårt bokningsformulär.
-    </p>
-    <p class="text-xl">
-      Om du önskar att utöva någon av dina rättigheter kan du kontakta oss. Du kan nå oss via e-post på kontakt@batterilabbet.se
-    </p>
-      </div>
-    </main>
-
-    <main id="view-certifiering" class="page-view pt-40 pb-32 px-6">
-      <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
-          Certifiering
-        </h1>
-        <p class="text-xl">
-          Våra batterier är certifierade med CE-märkning
-        </p>
-        <h2>CE-märkning</h2>
-        <p>
-          Vi genomför all vår produktion i enlighet med vår DoC:
-          <div class="mt-8">
-            <a href="assets/doc.pdf" download class="btn-download">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="Status: 4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Ladda ned säkerhetsföreskrifter (PDF)
-            </a>
-        </div>
-        </p>
-        </p>
-      </div>
-    </main>
-
-
-    <main id="view-reparation" class="page-view pt-40 pb-32 px-6">
-      <div class="max-w-5xl mx-auto">
-        <header class="mb-12">
-          <h1 class="text-5xl md:text-6xl font-medium tracking-tight mb-6">
-            Batterimodeller & Priser
-          </h1>
-          <p class="text-xl text-gray-500 max-w-2xl mb-3">
-            Här ser du prisexempel för de vanligaste modellerna. Vissa av modellerna finns i lager:
-            dessa kan du få utskickade direkt, du slipper alltså vänta på renoveringen. 
-          </p>
-          <p class="text-xl text-gray-500 max-w-2xl mb-10">Övriga batterier behöver vi ta emot ditt batteri 
-            först för att kunna genomföra en renovering </p>
-          <div class="relative max-w-md">
-            <i
-              data-lucide="search"
-              class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none"
-            ></i>
-
-            <input
-              type="text"
-              id="batterySearch"
-              onkeyup="filterBatteries()"
-              placeholder="Sök märke eller modell..."
-              class="w-full pr-4 py-4 rounded-2xl border border-black/5 shadow-sm transition-all"
-              style="
-                padding-left: 3rem !important;
-                background-color: white !important;
-              "
-            />
-          </div>
-        </header>
-
-        <div id="battery-container" class="grid grid-cols-1 gap-8"></div>
-
-        <div id="no-results" class="hidden py-20 text-center text-gray-400">
-          <p>Vi hittade tyvärr inga matchningar för din sökning.</p>
-        </div>
-
-        <div class="mt-20 text-center">
-          <button
-            onclick="switchPage('main', 'skicka-in')"
-            class="btn-primary px-12 py-6 rounded-full text-lg font-medium shadow-xl"
-          >
-            Inte hittat din modell? Skicka in själv här
-          </button>
-          </div>
-          <div class="bg-[#F3F2EE] p-8 md:p-10 rounded-[32px] mt-12">
-            <h3 class="text-2xl font-medium mb-8">Batterier vi inte tar emot</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-                
-              <div>
-                <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">De dyraste premiumsystem låser dig efter reparation, 
-                  därför tar vi inte emot ditt batteri om du har ett batteri (eller en motor) från:</h4>
-                <ul class="space-y-3 text-gray-600">
-                    <li class="flex items-start">
-                        <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                        <span>Shimano</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                        <span>Brose</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                        <span>Yamaha</span>
-                    </li>
-                </ul>
-            </div>
-                <div>
-                  <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Crescent batterier av följande modell:</h4>
-                  <ul class="space-y-3 text-gray-600">
-                      <li class="flex items-start">
-                          <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                          <span>Crescent SR20</span>
-                      </li>
-                      <li class="flex items-start">
-                          <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                          <span>Crescent SF03 (vi tar emot vissa batterier av denna sort om de inte har smart-BMS, vilket är uppmärkt med klistermärke på batteriet)</span>
-                      </li>
-                  </ul>
-              </div>
-                <div>
-                    <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Följande elscooterbatterier:</h4>
-                    <ul class="space-y-3 text-gray-600">
-                        <li class="flex items-start">
-                            <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                            <span>Samtliga batterier till Xiaomi-elscootrar</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                            <span>Samtliga batterier till Ninebot-elscooter</span>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                  <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Promovec (pakethållare)</h4>
-                  <ul class="space-y-3 text-gray-600">
-                      <li class="flex items-start">
-                          <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                          <span>Cykelns display eller kontrollpanel</span>
-                      </li>
-                      <li class="flex items-start">
-                          <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                          <span>Monteringsskenor eller pakethållare</span>
-                      </li>
-                      <li class="flex items-start">
-                          <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
-                          <span>Kopior på kvitton (det hanterar vi digitalt)</span>
-                      </li>
-                  </ul>
-              </div>
-            </div>
-        </div>
-        </div>
-      </div>
     </main>
 
     <footer class="py-20 px-6 border-t border-gray-100 bg-white">
-      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
-            
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12"
+      >
         <div class="flex flex-col">
-            <button onclick="switchPage('main')" class="text-2xl font-semibold mb-2 text-left hover:opacity-70 transition">
-                batterilabbet.
-            </button>
-            <p class="text-gray-400">Cirkulär teknik för en rörligare värld.</p>
+          <a
+            href="/index.html"
+            class="text-2xl font-semibold mb-2 text-left hover:opacity-70 transition"
+            >batterilabbet.</a
+          >
+          <p class="text-gray-400">Cirkulär teknik för en rörligare värld.</p>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
           <div class="space-y-4">
             <p class="font-medium">Tjänsten</p>
-            <button
-              onclick="switchPage('main')"
-              class="block text-gray-500 hover:text-black"
+            <a href="/index.html" class="block text-gray-500 hover:text-black"
+              >Hem</a
             >
-              Hem
-            </button>
-            <button
-              onclick="switchPage('reparation')"
+            <a
+              href="/reparation.html"
               class="block text-gray-500 hover:text-black"
+              >Om batterirenovering</a
             >
-              Hitta din modell
-            </button>
-            <button
-              onclick="switchPage('omoss')"
+            <a
+              href="/hitta-din-modell.html"
               class="block text-gray-500 hover:text-black"
+              >Hitta din modell</a
             >
-              Om oss
-            </button>
+            <a href="/om-oss.html" class="block text-gray-500 hover:text-black"
+              >Om oss</a
+            >
           </div>
           <div class="space-y-4">
             <p class="font-medium">Information</p>
-            <button
-              onclick="switchPage('frakt')"
+            <a
+              href="/allmanna-villkor.html"
               class="block text-gray-500 hover:text-black"
+              >Allmänna villkor</a
             >
-              Frakt
-            </button>
-              <button
-              onclick="switchPage('allmanna-villkor')"
+            <a
+              href="/integritetspolicy.html"
               class="block text-gray-500 hover:text-black"
+              >Integritetspolicy</a
             >
-              Allmänna villkor
-            </button>
-            <button
-              onclick="switchPage('villkor')"
-              class="block text-gray-500 hover:text-black"
+            <a href="/garanti.html" class="block text-gray-500 hover:text-black"
+              >Garanti</a
             >
-              Integritetspolicy
-              <button
-              onclick="switchPage('garanti')"
-              class="block text-gray-500 hover:text-black"
+            <a href="/frakt.html" class="block text-gray-500 hover:text-black"
+              >Frakt</a
             >
-              Garanti
-            </button>
           </div>
           <div class="space-y-4">
-            <p class="font-medium">Kontakt</p>
+            <a href="/kontakt.html" class="font-medium">Kontakt</a>
             <p class="text-gray-500">kontakt@batterilabbet.se</p>
           </div>
         </div>
       </div>
-      <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-50 text-sm text-gray-400 flex flex-col md:flex-row justify-between gap-4">
-            
+      <div
+        class="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-50 text-sm text-gray-400 flex flex-col md:flex-row justify-between gap-4"
+      >
         <div class="flex flex-col gap-1">
-            <p>© 2024 Batterilabbet AB</p>
-            <p>756 56 Uppsala</p>
-            <p>Org.nr: 556000-0000</p>
+          <p>© 2024 Batterilabbet AB</p>
+          <p>756 56 Uppsala</p>
+          <p>Org.nr: 556000-0000</p>
         </div>
 
         <div class="flex gap-6 items-start">
-            <button onclick="switchPage('villkor')" class="hover:text-black transition">Integritetspolicy</button>
-            <button onclick="switchPage('allmanna-villkor')" class="hover:text-black transition">Villkor</button>
+          <a href="/allmanna-villkor.html" class="hover:text-black transition"
+            >Allmänna villkor</a
+          >
+          <a href="/integritetspolicy.html" class="hover:text-black transition"
+            >Integritetspolicy</a
+          >
         </div>
-    </div>
+      </div>
     </footer>
+    <script>
+      lucide.createIcons();
+    </script>
   </body>
 </html>

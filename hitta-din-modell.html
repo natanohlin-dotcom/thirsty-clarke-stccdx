@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Hitta din modell av batteri | Batterilabbet</title>
+    <meta
+      name="description"
+      content="Vi tar hand om mängder av elcykelbatterier hos Batterilabbet. Leta bland våra vanligaste modeller"
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/android-chrome-512x512.png"
+    />
+    <link rel="manifest" href="assets/site.webmanifest" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <script defer src="script.js"></script>
+  </head>
+
+  <body>
+    <nav class="fixed w-full z-50 px-6 py-4">
+      <div
+        class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-8 py-4 border border-black/5 shadow-sm"
+      >
+        <a
+          href="/index.html"
+          class="text-xl font-semibold tracking-tighter hover:opacity-70 transition"
+          >batterilabbet.</a
+        >
+        <div class="hidden md:flex gap-8 text-sm font-medium">
+          <a
+            href="/index.html#hur-det-funkar"
+            class="hover:opacity-60 transition cursor-pointer"
+            >Hur fungerar det</a
+          >
+          <a href="/reparation.html" class="hover:opacity-60 transition"
+            >Om batterirenovering</a
+          >
+          <a href="/om-oss.html" class="hover:opacity-60 transition">Om oss</a>
+          <a href="/certifiering.html" class="hover:opacity-60 transition"
+            >Certifiering</a
+          >
+          <a href="/kontakt.html" class="hover:opacity-60 transition"
+            >Kontakt</a
+          >
+        </div>
+        <a
+          href="/hitta-din-modell.html"
+          class="bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:scale-105 transition"
+          >Hitta din modell</a
+        >
+      </div>
+    </nav>
+
+    <main class="pt-40 pb-32 px-6">
+      <div class="max-w-5xl mx-auto">
+        <header class="mb-12">
+          <h1 class="text-5xl md:text-6xl font-medium tracking-tight mb-6">
+            Batterimodeller & Priser
+          </h1>
+          <p class="text-xl text-gray-500 max-w-2xl mb-3">
+            Här ser du prisexempel för de vanligaste modellerna. Vissa av modellerna finns i lager:
+            dessa kan du få utskickade direkt, du slipper alltså vänta på renoveringen. 
+          </p>
+          <p class="text-xl text-gray-500 max-w-2xl mb-10">Övriga batterier behöver vi ta emot ditt batteri 
+            först för att kunna genomföra en renovering </p>
+          <div class="relative max-w-md">
+            <i
+              data-lucide="search"
+              class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none"
+            ></i>
+
+            <input
+              type="text"
+              id="batterySearch"
+              onkeyup="filterBatteries()"
+              placeholder="Sök märke eller modell..."
+              class="w-full pr-4 py-4 rounded-2xl border border-black/5 shadow-sm transition-all"
+              style="
+                padding-left: 3rem !important;
+                background-color: white !important;
+              "
+            />
+          </div>
+        </header>
+
+        <div id="battery-container" class="grid grid-cols-1 gap-8"></div>
+
+        <div id="no-results" class="hidden py-20 text-center text-gray-400">
+          <p>Vi hittade tyvärr inga matchningar för din sökning.</p>
+        </div>
+
+        <div class="mt-20 text-center">
+          
+          <a href="/index.html#skicka-in" class="btn-primary px-12 py-6 rounded-full text-lg font-medium shadow-xl"
+              >Inte hittat din modell? Skicka in själv här</a
+            >
+          </div>
+          <div class="bg-[#F3F2EE] p-8 md:p-10 rounded-[32px] mt-12">
+            <h3 class="text-2xl font-medium mb-8">Batterier vi inte tar emot</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+                
+              <div>
+                <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">De dyraste premiumsystem låser dig efter reparation, 
+                  därför tar vi inte emot ditt batteri om du har ett batteri (eller en motor) från:</h4>
+                <ul class="space-y-3 text-gray-600">
+                    <li class="flex items-start">
+                        <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
+                        <span>Shimano</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
+                        <span>Brose</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
+                        <span>Yamaha</span>
+                    </li>
+                </ul>
+            </div>
+                <div>
+                  <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Crescent batterier av följande modell:</h4>
+                  <ul class="space-y-3 text-gray-600">
+                      <li class="flex items-start">
+                          <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
+                          <span>Crescent SR20</span>
+                      </li>
+                      <li class="flex items-start">
+                          <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
+                          <span>Crescent SF03 (vi tar emot vissa batterier av denna sort om de inte har smart-BMS, vilket är uppmärkt med klistermärke på batteriet)</span>
+                      </li>
+                  </ul>
+              </div>
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Följande elscooterbatterier:</h4>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
+                            <span>Samtliga batterier till Xiaomi-elscootrar</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-3 mt-1.5 w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0"></span>
+                            <span>Samtliga batterier till Ninebot-elscooter</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-20 px-6 border-t border-gray-100 bg-white">
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12"
+      >
+        <div class="flex flex-col">
+          <a
+            href="/index.html"
+            class="text-2xl font-semibold mb-2 text-left hover:opacity-70 transition"
+            >batterilabbet.</a
+          >
+          <p class="text-gray-400">Cirkulär teknik för en rörligare värld.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
+          <div class="space-y-4">
+            <p class="font-medium">Tjänsten</p>
+            <a href="/index.html" class="block text-gray-500 hover:text-black"
+              >Hem</a
+            >
+            <a
+              href="/reparation.html"
+              class="block text-gray-500 hover:text-black"
+              >Om batterirenovering</a
+            >
+            <a
+              href="/hitta-din-modell.html"
+              class="block text-gray-500 hover:text-black"
+              >Hitta din modell</a
+            >
+            <a href="/om-oss.html" class="block text-gray-500 hover:text-black"
+              >Om oss</a
+            >
+          </div>
+          <div class="space-y-4">
+            <p class="font-medium">Information</p>
+            <a
+              href="/allmanna-villkor.html"
+              class="block text-gray-500 hover:text-black"
+              >Allmänna villkor</a
+            >
+            <a
+              href="/integritetspolicy.html"
+              class="block text-gray-500 hover:text-black"
+              >Integritetspolicy</a
+            >
+            <a href="/garanti.html" class="block text-gray-500 hover:text-black"
+              >Garanti</a
+            >
+            <a href="/frakt.html" class="block text-gray-500 hover:text-black"
+              >Frakt</a
+            >
+          </div>
+          <div class="space-y-4">
+            <a href="/kontakt.html" class="font-medium">Kontakt</a>
+            <p class="text-gray-500">kontakt@batterilabbet.se</p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-50 text-sm text-gray-400 flex flex-col md:flex-row justify-between gap-4"
+      >
+        <div class="flex flex-col gap-1">
+          <p>© 2024 Batterilabbet AB</p>
+          <p>756 56 Uppsala</p>
+          <p>Org.nr: 556000-0000</p>
+        </div>
+
+        <div class="flex gap-6 items-start">
+          <a href="/allmanna-villkor.html" class="hover:text-black transition"
+            >Allmänna villkor</a
+          >
+          <a href="/integritetspolicy.html" class="hover:text-black transition"
+            >Integritetspolicy</a
+          >
+        </div>
+      </div>
+    </footer>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
