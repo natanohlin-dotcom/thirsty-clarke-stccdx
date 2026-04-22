@@ -93,11 +93,11 @@
             >Hur fungerar det</a
           >
           <a href="/reparation" class="hover:opacity-60 transition"
-            >Om batterirenovering</a
+            >Vår process</a
           >
           <a href="/om-oss" class="hover:opacity-60 transition">Om oss</a>
           <a href="/certifiering" class="hover:opacity-60 transition"
-            >Certifiering</a
+            >Säkerhet och kvalitet</a
           >
           <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
         </div>
@@ -129,7 +129,7 @@
             >Hur fungerar det</a
           >
           <a href="/reparation" class="mobile-link hover:opacity-60 transition"
-            >Om batterirenovering</a
+            >Vår process</a
           >
           <a href="/om-oss" class="mobile-link hover:opacity-60 transition"
             >Om oss</a
@@ -137,7 +137,7 @@
           <a
             href="/certifiering"
             class="mobile-link hover:opacity-60 transition"
-            >Certifiering</a
+            >Säkerhet och kvalitet</a
           >
           <a href="/kontakt" class="mobile-link hover:opacity-60 transition"
             >Kontakt</a
@@ -232,10 +232,23 @@
       <section id="skicka-in" class="py-24 px-6 bg-[#F3F2EE] scroll-mt-24">
         <div class="max-w-3xl mx-auto">
           <div class="text-center mb-16">
-            <h2 class="text-4xl font-medium mb-4">Skicka in ditt batteri</h2>
+            <h2 class="text-4xl font-medium mb-4">
+              Få hjälp med ditt batteri.
+            </h2>
             <p class="text-gray-500 text-lg">
-              Fyll i stegen nedan för att påbörja ditt ärende. Beskriv problemet
-              så detaljerat som möjligt – då kan vi hjälpa dig fortare!
+              Fyll i stegen nedan för att få hjälp med att reparera ditt
+              batteri.
+            </p>
+            <p class="text-gray-500 text-lg">
+              Är du osäker på vilket batteri du har kan du använda vårt verktyg
+              <a
+                href="/hitta-din-modell"
+                class="text-black hover:text-gray-700 transition"
+              >
+                Hitta din modell</a
+              >
+              där du kan söka bland vanliga modeller och så fyller formuläret i
+              sig självt!
             </p>
           </div>
 
@@ -273,7 +286,7 @@
                     <input
                       type="text"
                       id="form-brand"
-                      placeholder="t.ex. Bosch, Shimano"
+                      placeholder="t.ex. Bosch, Crescent, Biltema"
                       class="w-full"
                       required
                     />
@@ -281,12 +294,12 @@
                   <div class="space-y-2">
                     <label
                       class="text-xs font-bold uppercase tracking-widest text-gray-400"
-                      >Modell</label
+                      >Batterityp</label
                     >
                     <input
                       type="text"
                       id="form-model"
-                      placeholder="t.ex. PowerPack 500"
+                      placeholder="t.ex. PowerPack 500 eller pakethållarbatteri"
                       class="w-full"
                       required
                     />
@@ -338,18 +351,6 @@
                     <input
                       type="radio"
                       name="error_type"
-                      value="Laddar inte"
-                      class="w-4 h-4 mr-4"
-                      checked
-                    />
-                    <span class="font-medium">Det laddar inte</span>
-                  </label>
-                  <label
-                    class="flex items-center p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
-                  >
-                    <input
-                      type="radio"
-                      name="error_type"
                       value="Laddar ur snabbt / Dålig räckvidd"
                       class="w-4 h-4 mr-4"
                     />
@@ -363,11 +364,25 @@
                     <input
                       type="radio"
                       name="error_type"
-                      value="Helt dött / Cykeln startar inte"
+                      value="Batteriet slutade plötsligt att fungera"
+                      class="w-4 h-4 mr-4"
+                      checked
+                    />
+                    <span class="font-medium"
+                      >Batteriet slutade plötsligt att fungera</span
+                    >
+                  </label>
+                  <label
+                    class="flex items-center p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+                  >
+                    <input
+                      type="radio"
+                      name="error_type"
+                      value="Batteriet har legat länge, fungerar inte nu"
                       class="w-4 h-4 mr-4"
                     />
                     <span class="font-medium"
-                      >Helt dött / Cykeln startar inte</span
+                      >Batteriet har legat länge, fungerar inte nu</span
                     >
                   </label>
                   <label
@@ -445,7 +460,7 @@
                 <div class="space-y-2">
                   <label
                     class="text-xs font-bold uppercase tracking-widest text-gray-400"
-                    >Fullständigt namn (Kontaktperson)</label
+                    >Fullständigt namn</label
                   >
                   <input
                     type="text"
@@ -568,7 +583,6 @@
                     />
                   </div>
                 </div>
-
                 <div class="flex gap-4 pt-8">
                   <button
                     type="button"
@@ -588,7 +602,9 @@
               </div>
 
               <div id="step4" class="form-step hidden-step space-y-6">
-                <h3 class="text-2xl font-medium mb-8">Fraktval</h3>
+                <h3 class="text-2xl font-medium mb-8">
+                  Fraktval & Godkännande
+                </h3>
                 <div class="space-y-4">
                   <label
                     class="flex items-center p-6 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
@@ -621,13 +637,60 @@
                     <div>
                       <p class="font-medium">Skicka in ditt batteri till oss</p>
                       <p class="text-sm text-gray-500">
-                        Om du väljer ansvarar du själv för frakten och du följer
-                        fraktbolagets villkor. Du godkänner även våra
-                        fraktvillkor, de hittar du längst ned på denna sida.
+                        Du står för frakten hit, vi bjuder på frakten tillbaka.
+                        Vi skickar vidare instruktioner via mail.
                       </p>
                     </div>
                   </label>
                 </div>
+
+                <div class="space-y-4 pt-6 border-t border-gray-100">
+                  <label class="flex items-start cursor-pointer group">
+                    <div class="flex items-center h-5">
+                      <input
+                        type="checkbox"
+                        id="form-terms"
+                        class="w-4 h-4 border-gray-300 rounded text-black focus:ring-black"
+                        required
+                      />
+                    </div>
+                    <div class="ml-3 text-sm">
+                      <span class="text-gray-700">Jag godkänner </span>
+                      <a
+                        href="/allmanna-villkor.html"
+                        target="_blank"
+                        class="text-black underline hover:text-gray-600"
+                        >allmänna villkor & fraktvillkor</a
+                      >
+                      <span class="text-red-500">*</span>
+                    </div>
+                  </label>
+
+                  <label class="flex items-start cursor-pointer group">
+                    <div class="flex items-center h-5">
+                      <input
+                        type="checkbox"
+                        id="form-privacy"
+                        class="w-4 h-4 border-gray-300 rounded text-black focus:ring-black"
+                        required
+                      />
+                    </div>
+                    <div class="ml-3 text-sm">
+                      <span class="text-gray-700"
+                        >Jag har tagit del av hur ni behandlar mina
+                        personuppgifter enligt er
+                      </span>
+                      <a
+                        href="/integritetspolicy"
+                        target="_blank"
+                        class="text-black underline hover:text-gray-600"
+                        >integritetspolicy</a
+                      >
+                      <span class="text-red-500">*</span>
+                    </div>
+                  </label>
+                </div>
+
                 <div class="flex gap-4 pt-8">
                   <button
                     type="button"
@@ -678,6 +741,55 @@
         </div>
       </section>
 
+      <section
+        id="säkerhet-kvalitet"
+        class="py-32 px-6 bg-[#F3F2EE] scroll-mt-24"
+      >
+        <div
+          class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center"
+        >
+          <div
+            class="md:w-1/2 w-full aspect-square bg-[#E8E6E1] rounded-[40px] overflow-hidden relative shadow-sm"
+          >
+            <img
+              src="photos/voltage_control.jpg"
+              alt="kontroll av kvalitetskompontenter"
+              class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+            />
+          </div>
+          <div class="md:w-1/2">
+            <h2 class="text-5xl font-medium tracking-tight mb-8">
+              Kvalitet på riktigt.
+            </h2>
+            <p class="text-xl text-gray-500 leading-relaxed mb-6">
+              Vi tar kvalitet på allvar – därför är vår reparationsprocess den
+              enda i Sverige som är CE-märkt.
+            </p>
+
+            <ul
+              class="list-disc pl-8 text-xl text-gray-500 leading-relaxed mb-6 space-y-2"
+            >
+              <li>Våra batterier har erkänt kvalitetsgaranti i EU.</li>
+              <li>Det finns inga gifter i våra batterier.</li>
+              <li>
+                Vår reparationsprocess har genomgått aggressiva tester på
+                laboratorium för att säkerställa kvalitet, säkerhet och
+                hållbarhet i tuffa miljöer.
+              </li>
+            </ul>
+
+            <p class="text-xl text-gray-500 leading-relaxed mb-6">
+              Läs mer om vårt kvalitetsarbete
+              <a
+                href="/certifiering.html"
+                class="text-black hover:text-gray-700 transition"
+                >här</a
+              >.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section id="faq" class="py-24 px-6 bg-white scroll-mt-24">
         <div class="max-w-3xl mx-auto">
           <h2 class="text-4xl font-medium mb-16 text-center">Vanliga frågor</h2>
@@ -700,7 +812,7 @@
                 kommer till om du klickar
                 <a
                   href="/hitta-din-modell"
-                  class="text-black hover:text-black transition"
+                  class="text-black hover:text-gray-700 transition"
                 >
                   här</a
                 >. För övriga batterireparationer varierar priset beroende på
@@ -726,7 +838,7 @@
                 batterireparationer och utbytta celler. Läs mer om vår garanti
                 <a
                   href="/garanti"
-                  class="text-black hover:text-black transition"
+                  class="text-black hover:text-gray-700 transition"
                 >
                   här</a
                 >.
@@ -742,7 +854,7 @@
                 hållbarhet. Läs mer om varför du ska renovera ditt batteri
                 <a
                   href="/reparation"
-                  class="text-black hover:text-black transition"
+                  class="text-black hover:text-gray-700 transition"
                 >
                   här</a
                 >.
@@ -772,7 +884,7 @@
               >Hem</a
             >
             <a href="/reparation" class="block text-gray-500 hover:text-black"
-              >Om batterirenovering</a
+              >Vår process</a
             >
             <a
               href="/hitta-din-modell"
