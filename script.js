@@ -64,18 +64,21 @@ function goToStep(step) {
   // Visa valt steg
   document.getElementById("step" + step).classList.remove("hidden-step");
 
-  // Uppdatera progress bar
-  for (let i = 1; i <= 3; i++) {
+  // Uppdatera progress bar (Nu uppdaterad till 4 steg)
+  for (let i = 1; i <= 4; i++) {
     const p = document.getElementById("p-" + i);
-    if (i <= step) {
-      p.classList.remove("bg-gray-200");
-      p.classList.add("bg-black");
-    } else {
-      p.classList.remove("bg-black");
-      p.classList.add("bg-gray-200");
+    if (p) {
+      // Säkerhetskoll i fall du inte lagt till p-4 i din HTML-header ännu
+      if (i <= step) {
+        p.classList.remove("bg-gray-200");
+        p.classList.add("bg-black");
+      } else {
+        p.classList.remove("bg-black");
+        p.classList.add("bg-gray-200");
+      }
     }
   }
-  // Scrolla till toppen av formuläret så användaren ser nästa fråga
+  // Scrolla till toppen av formuläret
   document
     .getElementById("skicka-in")
     .scrollIntoView({ behavior: "smooth", block: "start" });
@@ -83,28 +86,26 @@ function goToStep(step) {
 
 // Hantera formulärets inskick
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzkMVMoEkDyO4YiJn1h-nk8CvCMXcksuCXw6KRWdQbnlT23QE4oqGXDyhzv28YtnpNEaw/exec";
+  "https://script.google.com/macros/s/AKfycbzwTo-wxxs_L9tScydbeLMlZw0Rpa9NiHn7LmC4bg5Xau9LxmNSZTUfxs0cufezqQFsZA/exec";
 
 document.addEventListener("DOMContentLoaded", function () {
   const repairForm = document.getElementById("repairForm");
 
-  // Dörrvakten: Kör bara detta om vi är på sidan där formuläret faktiskt finns
   if (repairForm) {
     repairForm.addEventListener("submit", function (e) {
-      e.preventDefault(); // Stoppar sidan från att laddas om.
+      e.preventDefault();
 
       // --- HONUNGS CHECK ---
       const botCheck = document.getElementById("form-botcheck").value;
       if (botCheck !== "") {
         console.log("Bot detected! Silently ignoring.");
-        // bot upptäckt, vi skickar inget.
         alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
         document.getElementById("repairForm").reset();
         goToStep(1);
-        return; // Avbryter hela funktionen här!
+        return;
       }
-      // Hitta knappen och ändra texten så användaren ser att något händer
-      const submitBtn = document.querySelector('#step3 button[type="submit"]');
+
+      const submitBtn = document.querySelector('#step4 button[type="submit"]');
       const originalText = submitBtn.innerHTML;
       submitBtn.innerHTML = "Skickar in förfrågan...";
       submitBtn.disabled = true;
@@ -115,6 +116,15 @@ document.addEventListener("DOMContentLoaded", function () {
         ? document.getElementById("ship-self").value
         : document.getElementById("ship-label").value;
 
+      // HÄMTA DET NYA VÄRDET FÖR FELTYP
+      let selectedError = "";
+      const errorRadio = document.querySelector(
+        'input[name="error_type"]:checked'
+      );
+      if (errorRadio) {
+        selectedError = errorRadio.value;
+      }
+
       // Samla all data med FormData
       const formData = new FormData();
       formData.append("brand", document.getElementById("form-brand").value);
@@ -124,7 +134,10 @@ document.addEventListener("DOMContentLoaded", function () {
         "capacity",
         document.getElementById("form-capacity").value
       );
-      formData.append("problem", document.getElementById("form-problem").value);
+
+      formData.append("errorType", selectedError); // <-- NY DATAPUNKT TILL GOOGLE SHEETS
+      formData.append("problem", document.getElementById("form-problem").value); // Fritexten
+
       formData.append("name", document.getElementById("form-name").value);
       formData.append("email", document.getElementById("form-email").value);
       formData.append("phone", document.getElementById("form-phone").value);
@@ -134,6 +147,20 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("form-postcode").value
       );
       formData.append("city", document.getElementById("form-city").value);
+
+      formData.append(
+        "customerType",
+        document.getElementById("form-customer-type").value
+      );
+      formData.append(
+        "companyName",
+        document.getElementById("form-company-name").value
+      );
+      formData.append("orgNr", document.getElementById("form-org-nr").value);
+      formData.append(
+        "reference",
+        document.getElementById("form-reference").value
+      );
       formData.append("shipping", shippingChoice);
 
       // Skicka datan till Google Sheets
@@ -142,22 +169,17 @@ document.addEventListener("DOMContentLoaded", function () {
         body: formData,
       })
         .then((response) => {
-          // Lyckat!
           alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
-
-          // Återställ formuläret
           document.getElementById("repairForm").reset();
           goToStep(1);
         })
         .catch((error) => {
-          // Något gick fel
           console.error("Error!", error.message);
           alert(
             "Något gick fel. Vänligen försök igen eller kontakta oss via e-post."
           );
         })
         .finally(() => {
-          // Återställ knappen oavsett om det gick bra eller dåligt
           submitBtn.innerHTML = originalText;
           submitBtn.disabled = false;
           submitBtn.classList.remove("opacity-50");
@@ -165,145 +187,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+function setCustomerType(type) {
+  const companyInfo = document.getElementById("company-info");
+  const btnPrivate = document.getElementById("btn-private");
+  const btnBusiness = document.getElementById("btn-business");
+  const typeInput = document.getElementById("form-customer-type");
 
-//BATTERI-DATABAS (Fyll på med nya modeller enligt samma format)
-const batteryData = [
-  {
-    brand: "Biltema pakethållare",
-    model: "Förekommer på många cyklar, inte bara från biltema.",
-    voltage: "36V eller 24V",
-    original_cap: "Varierande",
-    isMulti: true,
-    images: ["photos/biltema-pakethall.png"],
-    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vis laddning och på cykelns display under cykling. OBS! Strömbrytaren kommer inte att fungera efter reparation. Se till att du har en strömbrytare på din cykel-display (se bild ovan), annars hör av dig för att få en ny strömbrytare monterad!",
-    groups: [
-      {
-        name: "Om ditt batteri är 36V",
-        voltage: "36V",
-        original_cap: "10Ah",
-        prices: [
-          {
-            cap: "10Ah",
-            desc: "Originalkapacitet",
-            price: "3 500 kr",
-            badge: true,
-          },
-          {
-            cap: "14Ah",
-            desc: "40% extra räckvidd",
-            price: "4 250 kr",
-            badge: true,
-          },
-        ],
-      },
-      {
-        name: "Om ditt batteri är 24V",
-        voltage: "24V",
-        original_cap: "10Ah",
-        prices: [
-          {
-            cap: "10Ah",
-            desc: "Originalkapacitet",
-            price: "2 750 kr",
-            badge: true,
-          },
-          {
-            cap: "15Ah",
-            desc: "50% extra räckvidd",
-            price: "3 500 kr",
-            badge: true,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    brand: "Biltema sadelstolpe",
-    model: "Förekommer på fler cyklar",
-    voltage: "24V",
-    original_cap: "10Ah",
-    images: ["photos/biltema-sadelstolp.png"],
-    prices: [
-      {
-        cap: "10Ah",
-        desc: "Originalkapacitet",
-        price: "2 750 kr",
-        badge: true,
-      },
-      {
-        cap: "15Ah",
-        desc: "50% extra räckvidd",
-        price: "3 500 kr",
-        badge: true,
-      },
-    ],
-    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vid laddning eller på cykelns display under cykling. Strömbrytaren på batteriet kommer inte att fungera efter reparation. Se till att du har en strömbrytare på din cykel-display (se bild ovan), annars hör av dig för att få en ny strömbrytare monterad!",
-  },
-  {
-    brand: "PROTANIUM",
-    model: "Förekommer bland annat på cyklar från Biltema och IKEA",
-    voltage: "36V",
-    images: ["photos/biltema-sadelstolp.png", "photos/biltema-pakethall.png"],
-    original_cap: "10Ah",
+  typeInput.value = type;
 
-    prices: [
-      {
-        cap: "10Ah",
-        desc: "Originalkapacitet",
-        price: "3 500 kr",
-        badge: true,
-      },
-      {
-        cap: "14Ah",
-        desc: "40% extra räckvidd",
-        price: "4 250 kr",
-        badge: true,
-      },
-    ],
-    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vid laddning eller på cykelns display under cykling.",
-  },
-  {
-    brand: "TranzX pakethållare",
-    model: "Förekommer bland annat på cyklar Crescent",
-    voltage: "24V",
-    original_cap: "10Ah",
-    prices: [
-      { cap: "10Ah", desc: "Original kapacitet", price: "2 750 kr" },
-      {
-        cap: "15Ah",
-        desc: "50% extra räckvidd",
-        price: "3 500 kr",
-      },
-      {
-        cap: "20Ah",
-        desc: "100% extra räckvidd",
-        price: "4 250 kr",
-      },
-    ],
-  },
-  {
-    brand: "Batavus äldre variant",
-    model: "Förekommer på äldre cyklar från Batavus",
-    voltage: "36V",
-    original_cap: "10Ah",
-    prices: [
-      {
-        cap: "10Ah",
-        desc: "Originalkapacitet",
-        price: "3 800 kr",
-        badge: true,
-      },
-      {
-        cap: "14Ah",
-        desc: "40% extra räckvidd",
-        price: "4 550 kr",
-        badge: true,
-      },
-    ],
-    note: "OBS! Originalladdaren kommer inte att fungera efter reparation. Ny laddare ingår i priset!",
-  },
-];
+  if (type === "business") {
+    companyInfo.classList.remove("hidden");
+    // Styling för knappar
+    btnBusiness.classList.add("bg-white", "shadow-sm", "text-black");
+    btnBusiness.classList.remove("text-gray-500");
+    btnPrivate.classList.remove("bg-white", "shadow-sm", "text-black");
+    btnPrivate.classList.add("text-gray-500");
 
+    // Gör företagsfält obligatoriska om företag är valt
+    document.getElementById("form-company-name").required = true;
+    document.getElementById("form-org-nr").required = true;
+  } else {
+    companyInfo.classList.add("hidden");
+    // Styling för knappar
+    btnPrivate.classList.add("bg-white", "shadow-sm", "text-black");
+    btnPrivate.classList.remove("text-gray-500");
+    btnBusiness.classList.remove("bg-white", "shadow-sm", "text-black");
+    btnBusiness.classList.add("text-gray-500");
+
+    // Ta bort krav på obligatoriska fält
+    document.getElementById("form-company-name").required = false;
+    document.getElementById("form-org-nr").required = false;
+  }
+}
+// LOGIK FÖR ATT VÄLJA MODELL PÅ ANDRA SIDAN
 window.selectBatteryOption = function (
   brand,
   model,
@@ -311,13 +227,11 @@ window.selectBatteryOption = function (
   originalCap,
   voltage
 ) {
-  // 1. Förbered felbeskrivningen
   let problemText = "";
   if (selectedCap !== originalCap) {
     problemText = `Uppgradera kapaciteten till ${selectedCap}.`;
   }
 
-  // 2. Packa in all data i ett minnespaket
   const batteryData = {
     brand: brand,
     model: model,
@@ -326,27 +240,21 @@ window.selectBatteryOption = function (
     problem: problemText,
   };
 
-  // Spara paketet i webbläsarens minne
   sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
-
   console.log("Sparar ner batteridata i minnet:", batteryData);
-
-  // 3. Byt sida till index.html och hoppa ner till formuläret
   window.location.href = "/index.html#skicka-in";
 };
 
+// LOGIK FÖR AUTOFILL NÄR MAN LANDAR PÅ FORMULÄRET
 document.addEventListener("DOMContentLoaded", function () {
   const repairForm = document.getElementById("repairForm");
 
   if (repairForm) {
-    // Kolla om kunden kommer från batteri-sidan
     const savedData = sessionStorage.getItem("prefilledBattery");
 
     if (savedData) {
-      // Packa upp datan
       const battery = JSON.parse(savedData);
 
-      // Fyll i formuläret automatiskt
       if (document.getElementById("form-brand"))
         document.getElementById("form-brand").value = battery.brand || "";
       if (document.getElementById("form-model"))
@@ -355,16 +263,20 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("form-voltage").value = battery.voltage || "";
       if (document.getElementById("form-capacity"))
         document.getElementById("form-capacity").value = battery.capacity || "";
-      if (document.getElementById("form-problem"))
+
+      // Fyll i fritexten
+      if (document.getElementById("form-problem")) {
         document.getElementById("form-problem").value = battery.problem || "";
 
-      // Rensa minnet
+        // NYTT: Om texten innehåller ordet "Uppgradera", bocka i rätt radioknapp i det nya steget
+        if (battery.problem && battery.problem.includes("Uppgradera")) {
+          const upgradeRadio = document.getElementById("radio-upgrade");
+          if (upgradeRadio) upgradeRadio.checked = true;
+        }
+      }
+
       sessionStorage.removeItem("prefilledBattery");
     }
-
-    repairForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-    });
   }
 });
 
@@ -640,4 +552,145 @@ document.addEventListener("DOMContentLoaded", function () {
   // ----------------------------
 });
 // Kör rendering vid start
+
+// ------------------------------------------------------------------------------------
+//BATTERI-DATABAS (Fyll på med nya modeller enligt samma format)
+const batteryData = [
+  {
+    brand: "Biltema pakethållare",
+    model: "Förekommer på många cyklar, inte bara från biltema.",
+    voltage: "36V eller 24V",
+    original_cap: "Varierande",
+    isMulti: true,
+    images: ["photos/biltema-pakethall.png"],
+    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vis laddning och på cykelns display under cykling. OBS! Strömbrytaren kommer inte att fungera efter reparation. Se till att du har en strömbrytare på din cykel-display (se bild ovan), annars hör av dig för att få en ny strömbrytare monterad!",
+    groups: [
+      {
+        name: "Om ditt batteri är 36V",
+        voltage: "36V",
+        original_cap: "10Ah",
+        prices: [
+          {
+            cap: "10Ah",
+            desc: "Originalkapacitet",
+            price: "3 500 kr",
+            badge: true,
+          },
+          {
+            cap: "14Ah",
+            desc: "40% extra räckvidd",
+            price: "4 250 kr",
+            badge: true,
+          },
+        ],
+      },
+      {
+        name: "Om ditt batteri är 24V",
+        voltage: "24V",
+        original_cap: "10Ah",
+        prices: [
+          {
+            cap: "10Ah",
+            desc: "Originalkapacitet",
+            price: "2 750 kr",
+            badge: true,
+          },
+          {
+            cap: "15Ah",
+            desc: "50% extra räckvidd",
+            price: "3 500 kr",
+            badge: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    brand: "Biltema sadelstolpe",
+    model: "Förekommer på fler cyklar",
+    voltage: "24V",
+    original_cap: "10Ah",
+    images: ["photos/biltema-sadelstolp.png"],
+    prices: [
+      {
+        cap: "10Ah",
+        desc: "Originalkapacitet",
+        price: "2 750 kr",
+        badge: true,
+      },
+      {
+        cap: "15Ah",
+        desc: "50% extra räckvidd",
+        price: "3 500 kr",
+        badge: true,
+      },
+    ],
+    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vid laddning eller på cykelns display under cykling. Strömbrytaren på batteriet kommer inte att fungera efter reparation. Se till att du har en strömbrytare på din cykel-display (se bild ovan), annars hör av dig för att få en ny strömbrytare monterad!",
+  },
+  {
+    brand: "PROTANIUM",
+    model: "Förekommer bland annat på cyklar från Biltema och IKEA",
+    voltage: "36V",
+    images: ["photos/biltema-sadelstolp.png", "photos/biltema-pakethall.png"],
+    original_cap: "10Ah",
+
+    prices: [
+      {
+        cap: "10Ah",
+        desc: "Originalkapacitet",
+        price: "3 500 kr",
+        badge: true,
+      },
+      {
+        cap: "14Ah",
+        desc: "40% extra räckvidd",
+        price: "4 250 kr",
+        badge: true,
+      },
+    ],
+    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vid laddning eller på cykelns display under cykling.",
+  },
+  {
+    brand: "TranzX pakethållare",
+    model: "Förekommer bland annat på cyklar Crescent",
+    voltage: "24V",
+    original_cap: "10Ah",
+    prices: [
+      { cap: "10Ah", desc: "Original kapacitet", price: "2 750 kr" },
+      {
+        cap: "15Ah",
+        desc: "50% extra räckvidd",
+        price: "3 500 kr",
+      },
+      {
+        cap: "20Ah",
+        desc: "100% extra räckvidd",
+        price: "4 250 kr",
+      },
+    ],
+  },
+  {
+    brand: "Batavus äldre variant",
+    model: "Förekommer på äldre cyklar från Batavus",
+    voltage: "36V",
+    original_cap: "10Ah",
+    prices: [
+      {
+        cap: "10Ah",
+        desc: "Originalkapacitet",
+        price: "3 800 kr",
+        badge: true,
+      },
+      {
+        cap: "14Ah",
+        desc: "40% extra räckvidd",
+        price: "4 550 kr",
+        badge: true,
+      },
+    ],
+    note: "OBS! Originalladdaren kommer inte att fungera efter reparation. Ny laddare ingår i priset!",
+  },
+];
+//------------------------------------------------------------------------------------
+
 renderBatteries(batteryData);

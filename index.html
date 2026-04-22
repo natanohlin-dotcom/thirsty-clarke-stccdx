@@ -213,8 +213,7 @@
               <i data-lucide="zap" class="mb-6 w-8 h-8"></i>
               <h3 class="text-xl font-medium mb-4">4. Vi reparerar</h3>
               <p class="text-gray-500">
-                Vi byter celler och kretskortet med
-                kvalitetskompontenter.
+                Vi byter celler och kretskortet med kvalitetskompontenter.
               </p>
             </div>
 
@@ -252,6 +251,10 @@
               ></div>
               <div
                 id="p-3"
+                class="h-1 flex-1 bg-gray-200 rounded-full transition-all duration-500"
+              ></div>
+              <div
+                id="p-4"
                 class="h-1 flex-1 bg-gray-200 rounded-full transition-all duration-500"
               ></div>
             </div>
@@ -305,7 +308,7 @@
                   <div class="space-y-2">
                     <label
                       class="text-xs font-bold uppercase tracking-widest text-gray-400"
-                      >Kapacitet (Ah) (Nuvarande)</label
+                      >Kapacitet (Ah)</label
                     >
                     <input
                       type="text"
@@ -314,18 +317,6 @@
                       class="w-full"
                     />
                   </div>
-                </div>
-                <div class="space-y-2 pt-4">
-                  <label
-                    class="text-xs font-bold uppercase tracking-widest text-gray-400"
-                    >Felbeskrivning</label
-                  >
-                  <textarea
-                    id="form-problem"
-                    rows="4"
-                    placeholder="Beskriv problemet..."
-                    class="w-full"
-                  ></textarea>
                 </div>
                 <button
                   type="button"
@@ -337,11 +328,124 @@
               </div>
 
               <div id="step2" class="form-step hidden-step space-y-6">
+                <h3 class="text-2xl font-medium mb-8">
+                  Vad är fel på batteriet?
+                </h3>
+                <div class="space-y-4">
+                  <label
+                    class="flex items-center p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+                  >
+                    <input
+                      type="radio"
+                      name="error_type"
+                      value="Laddar inte"
+                      class="w-4 h-4 mr-4"
+                      checked
+                    />
+                    <span class="font-medium">Det laddar inte</span>
+                  </label>
+                  <label
+                    class="flex items-center p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+                  >
+                    <input
+                      type="radio"
+                      name="error_type"
+                      value="Laddar ur snabbt / Dålig räckvidd"
+                      class="w-4 h-4 mr-4"
+                    />
+                    <span class="font-medium"
+                      >Laddar ur snabbt / Dålig räckvidd</span
+                    >
+                  </label>
+                  <label
+                    class="flex items-center p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+                  >
+                    <input
+                      type="radio"
+                      name="error_type"
+                      value="Helt dött / Cykeln startar inte"
+                      class="w-4 h-4 mr-4"
+                    />
+                    <span class="font-medium"
+                      >Helt dött / Cykeln startar inte</span
+                    >
+                  </label>
+                  <label
+                    class="flex items-center p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+                  >
+                    <input
+                      type="radio"
+                      name="error_type"
+                      id="radio-upgrade"
+                      value="Uppgradering / Annat"
+                      class="w-4 h-4 mr-4"
+                    />
+                    <span class="font-medium">Annat</span>
+                  </label>
+                </div>
+
+                <div class="space-y-2 pt-4">
+                  <label
+                    class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                    >Tillägg / Fritext</label
+                  >
+                  <textarea
+                    id="form-problem"
+                    rows="4"
+                    placeholder="Beskriv problemet mer ingående eller om du har andra önskemål... (t.ex kapacitetsuppgradering)"
+                    class="w-full"
+                  ></textarea>
+                </div>
+
+                <div class="flex gap-4 pt-8">
+                  <button
+                    type="button"
+                    onclick="goToStep(1)"
+                    class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition"
+                  >
+                    Bakåt
+                  </button>
+                  <button
+                    type="button"
+                    onclick="goToStep(3)"
+                    class="flex-[2] btn-primary py-5 rounded-2xl font-medium shadow-sm"
+                  >
+                    Nästa steg
+                  </button>
+                </div>
+              </div>
+
+              <div id="step3" class="form-step hidden-step space-y-6">
                 <h3 class="text-2xl font-medium mb-8">Dina kontaktuppgifter</h3>
+
+                <div class="flex p-1 bg-gray-100 rounded-xl mb-8">
+                  <button
+                    type="button"
+                    id="btn-private"
+                    onclick="setCustomerType('private')"
+                    class="flex-1 py-2 text-sm font-medium rounded-lg transition bg-white shadow-sm text-black"
+                  >
+                    Privatperson
+                  </button>
+                  <button
+                    type="button"
+                    id="btn-business"
+                    onclick="setCustomerType('business')"
+                    class="flex-1 py-2 text-sm font-medium rounded-lg transition text-gray-500 hover:text-black"
+                  >
+                    Företagskund
+                  </button>
+                  <input
+                    type="hidden"
+                    id="form-customer-type"
+                    value="private"
+                  />
+                </div>
+
                 <div class="space-y-2">
                   <label
                     class="text-xs font-bold uppercase tracking-widest text-gray-400"
-                    >Fullständigt namn</label
+                    >Fullständigt namn (Kontaktperson)</label
                   >
                   <input
                     type="text"
@@ -351,19 +455,7 @@
                     required
                   />
                 </div>
-                <div
-                  class="absolute w-0 h-0 opacity-0 -z-10 overflow-hidden"
-                  aria-hidden="true"
-                >
-                  <label>Lämna detta fält tomt om du är människa</label>
-                  <input
-                    type="text"
-                    id="form-botcheck"
-                    name="botcheck"
-                    tabindex="-1"
-                    autocomplete="off"
-                  />
-                </div>
+
                 <div class="grid md:grid-cols-2 gap-4">
                   <div class="space-y-2">
                     <label
@@ -392,6 +484,52 @@
                     />
                   </div>
                 </div>
+
+                <div
+                  id="company-info"
+                  class="hidden space-y-4 pt-4 border-t border-gray-100"
+                >
+                  <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                      <label
+                        class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                        >Företagsnamn</label
+                      >
+                      <input
+                        type="text"
+                        id="form-company-name"
+                        placeholder="Företaget AB"
+                        class="w-full"
+                      />
+                    </div>
+                    <div class="space-y-2">
+                      <label
+                        class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                        >Org. nummer</label
+                      >
+                      <input
+                        type="text"
+                        id="form-org-nr"
+                        placeholder="556000-0000"
+                        class="w-full"
+                      />
+                    </div>
+                  </div>
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >Referens (om annan en beställare) / Märkning
+                      (Valfritt)</label
+                    >
+                    <input
+                      type="text"
+                      id="form-reference"
+                      placeholder="t.ex. Namn eller Projekt"
+                      class="w-full"
+                    />
+                  </div>
+                </div>
+
                 <div class="space-y-2">
                   <label
                     class="text-xs font-bold uppercase tracking-widest text-gray-400"
@@ -430,17 +568,18 @@
                     />
                   </div>
                 </div>
+
                 <div class="flex gap-4 pt-8">
                   <button
                     type="button"
-                    onclick="goToStep(1)"
+                    onclick="goToStep(2)"
                     class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition"
                   >
                     Bakåt
                   </button>
                   <button
                     type="button"
-                    onclick="goToStep(3)"
+                    onclick="goToStep(4)"
                     class="flex-[2] btn-primary py-5 rounded-2xl font-medium shadow-sm"
                   >
                     Sista steget
@@ -448,7 +587,7 @@
                 </div>
               </div>
 
-              <div id="step3" class="form-step hidden-step space-y-6">
+              <div id="step4" class="form-step hidden-step space-y-6">
                 <h3 class="text-2xl font-medium mb-8">Fraktval</h3>
                 <div class="space-y-4">
                   <label
@@ -492,7 +631,7 @@
                 <div class="flex gap-4 pt-8">
                   <button
                     type="button"
-                    onclick="goToStep(2)"
+                    onclick="goToStep(3)"
                     class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition"
                   >
                     Bakåt
