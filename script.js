@@ -95,9 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
     repairForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      // --- HONUNGS CHECK ---
-      const botCheck = document.getElementById("form-botcheck").value;
-      if (botCheck !== "") {
+      // --- HONUNGS CHECK (Nu krocksäker) ---
+      // Vi kollar först om elementet faktiskt existerar innan vi läser av .value
+      const botCheckEl = document.getElementById("form-botcheck");
+      if (botCheckEl && botCheckEl.value !== "") {
         console.log("Bot detected! Silently ignoring.");
         alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
         document.getElementById("repairForm").reset();
@@ -106,15 +107,23 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const submitBtn = document.querySelector('#step4 button[type="submit"]');
-      const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = "Skickar in förfrågan...";
-      submitBtn.disabled = true;
-      submitBtn.classList.add("opacity-50");
+      let originalText = "Skicka in förfrågan";
+      if (submitBtn) {
+        originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = "Skickar in förfrågan...";
+        submitBtn.disabled = true;
+        submitBtn.classList.add("opacity-50");
+      }
 
-      // Kolla vilket fraktalternativ som är valt
-      let shippingChoice = document.getElementById("ship-self").checked
-        ? document.getElementById("ship-self").value
-        : document.getElementById("ship-label").value;
+      // Kolla vilket fraktalternativ som är valt (Krocksäkert)
+      const shipSelf = document.getElementById("ship-self");
+      const shipLabel = document.getElementById("ship-label");
+      let shippingChoice =
+        shipSelf && shipSelf.checked
+          ? shipSelf.value
+          : shipLabel
+          ? shipLabel.value
+          : "Ej valt";
 
       // HÄMTA DET NYA VÄRDET FÖR FELTYP
       let selectedError = "";
@@ -125,42 +134,76 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedError = errorRadio.value;
       }
 
-      // Samla all data med FormData
+      // Samla all data med FormData - Nu med säkerhetskontroller (?.value || "")
+      // Detta förhindrar att scriptet kraschar om ett fält (t.ex. företagsnamn) är tomt eller saknas
       const formData = new FormData();
-      formData.append("brand", document.getElementById("form-brand").value);
-      formData.append("model", document.getElementById("form-model").value);
-      formData.append("voltage", document.getElementById("form-voltage").value);
+      formData.append(
+        "brand",
+        document.getElementById("form-brand")?.value || ""
+      );
+      formData.append(
+        "model",
+        document.getElementById("form-model")?.value || ""
+      );
+      formData.append(
+        "voltage",
+        document.getElementById("form-voltage")?.value || ""
+      );
       formData.append(
         "capacity",
-        document.getElementById("form-capacity").value
+        document.getElementById("form-capacity")?.value || ""
       );
 
-      formData.append("errorType", selectedError); // <-- NY DATAPUNKT TILL GOOGLE SHEETS
-      formData.append("problem", document.getElementById("form-problem").value); // Fritexten
+      formData.append("errorType", selectedError);
+      formData.append(
+        "problem",
+        document.getElementById("form-problem")?.value || ""
+      );
 
-      formData.append("name", document.getElementById("form-name").value);
-      formData.append("email", document.getElementById("form-email").value);
-      formData.append("phone", document.getElementById("form-phone").value);
-      formData.append("address", document.getElementById("form-address").value);
+      formData.append(
+        "name",
+        document.getElementById("form-name")?.value || ""
+      );
+      formData.append(
+        "email",
+        document.getElementById("form-email")?.value || ""
+      );
+      formData.append(
+        "phone",
+        document.getElementById("form-phone")?.value || ""
+      );
+
+      // Adressuppgifter
+      formData.append(
+        "address",
+        document.getElementById("form-address")?.value || ""
+      );
       formData.append(
         "postcode",
-        document.getElementById("form-postcode").value
+        document.getElementById("form-postcode")?.value || ""
       );
-      formData.append("city", document.getElementById("form-city").value);
-
+      formData.append(
+        "city",
+        document.getElementById("form-city")?.value || ""
+      );
+      // Företagsuppgifter
       formData.append(
         "customerType",
-        document.getElementById("form-customer-type").value
+        document.getElementById("form-customer-type")?.value || "private"
       );
       formData.append(
         "companyName",
-        document.getElementById("form-company-name").value
+        document.getElementById("form-company-name")?.value || ""
       );
-      formData.append("orgNr", document.getElementById("form-org-nr").value);
+      formData.append(
+        "orgNr",
+        document.getElementById("form-org-nr")?.value || ""
+      );
       formData.append(
         "reference",
-        document.getElementById("form-reference").value
+        document.getElementById("form-reference")?.value || ""
       );
+      // Fraktval
       formData.append("shipping", shippingChoice);
 
       // Skicka datan till Google Sheets
@@ -172,6 +215,10 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
           document.getElementById("repairForm").reset();
           goToStep(1);
+          // Återställ eventuell företagsvy till privatvy efter lyckat inskick
+          if (typeof setCustomerType === "function") {
+            setCustomerType("private");
+          }
         })
         .catch((error) => {
           console.error("Error!", error.message);
@@ -180,9 +227,11 @@ document.addEventListener("DOMContentLoaded", function () {
           );
         })
         .finally(() => {
-          submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
-          submitBtn.classList.remove("opacity-50");
+          if (submitBtn) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            submitBtn.classList.remove("opacity-50");
+          }
         });
     });
   }
