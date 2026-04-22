@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Samarbete | Batterilabbet</title>
+    <meta name="description" content="Företagssamarbete med Batterilabbet." />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/android-chrome-512x512.png"
+    />
+    <link rel="manifest" href="assets/site.webmanifest" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <script defer src="script.js"></script>
+  </head>
+
+  <body>
+    <nav class="fixed w-full z-50 px-6 py-4">
+      <div
+        class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative"
+      >
+        <a
+          href="/index"
+          class="text-xl font-semibold tracking-tighter hover:opacity-70 transition"
+        >
+          batterilabbet.
+        </a>
+
+        <div class="hidden md:flex gap-8 text-sm font-medium">
+          <a
+            href="/index#hur-det-funkar"
+            class="hover:opacity-60 transition cursor-pointer"
+            >Hur fungerar det</a
+          >
+          <a href="/reparation" class="hover:opacity-60 transition"
+            >Om batterirenovering</a
+          >
+          <a href="/om-oss" class="hover:opacity-60 transition">Om oss</a>
+          <a href="/certifiering" class="hover:opacity-60 transition"
+            >Certifiering</a
+          >
+          <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
+        </div>
+
+        <div class="flex items-center gap-2 md:gap-0">
+          <a
+            href="/hitta-din-modell"
+            class="bg-black text-white px-4 py-2 md:px-6 md:py-2 rounded-full text-sm font-medium hover:scale-105 transition"
+          >
+            Hitta ditt batteri
+          </a>
+
+          <button
+            id="mobile-menu-btn"
+            class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-1"
+          >
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-menu" class="hidden md:hidden max-w-7xl mx-auto mt-2">
+        <div
+          class="bg-white/95 backdrop-blur-md rounded-3xl border border-black/5 shadow-xl p-6 flex flex-col gap-6 text-center text-lg font-medium"
+        >
+          <a
+            href="/index#hur-det-funkar"
+            class="mobile-link hover:opacity-60 transition"
+            >Hur fungerar det</a
+          >
+          <a href="/reparation" class="mobile-link hover:opacity-60 transition"
+            >Om batterirenovering</a
+          >
+          <a href="/om-oss" class="mobile-link hover:opacity-60 transition"
+            >Om oss</a
+          >
+          <a
+            href="/certifiering"
+            class="mobile-link hover:opacity-60 transition"
+            >Certifiering</a
+          >
+          <a href="/kontakt" class="mobile-link hover:opacity-60 transition"
+            >Kontakt</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-40 pb-32 px-6">
+      <div class="max-w-3xl mx-auto prose">
+        <h1 class="text-5xl font-medium tracking-tight mb-8">
+          Samarbeta med Batterilabbet
+        </h1>
+        <p class="text-xl">
+          Erbjud era kunder de bästa batterierna till det bästa priserna – ett
+          mervärde för både er och era kunder.
+        </p>
+        <h2>Samarbetspartner med Batterilabbet</h2>
+        <p>
+          Som samarbetspartner tar vi hand om de batterier som ni själva inte
+          kan hantera. Genom detta får ni möjligheten till försäljning av nya
+          batterier, samt blir av med defekta batterier. Allt till ett mycket
+          förmånligt pris.
+        </p>
+        <h2>Fördelar som samarbetspartner</h2>
+        <ul>
+          <li>
+            Möjlighet till försäljning av nya batterier till marknadens bästa
+            pris
+          </li>
+          <li>Renovation av utgågna batterier</li>
+          <li>Fri frakt vid order om +3 batterier</li>
+          <li>Egen supportlinje Måndag - Fredag</li>
+          <li>Prioriterad tid för felsökning och snabb offert</li>
+          <li>
+            Upphämtning och omhändertagande av defekta batterier som ej kan
+            lagas
+          </li>
+        </ul>
+        <h2>Priser</h2>
+        <p>
+          Priser per batteri ex. 12% moms. Priserna nedan är uppskattade och
+          gäller för de flesta batterierna. Observera att vissa modeller är
+          dyrare samtidigt som många mindre reparationer är billigare.
+        </p>
+        <p><strong>Elcykelbatterier 36 V, 10 Ah:</strong></p>
+        <ul>
+          <li><strong>1-3st: </strong>Klass 1 - 2500 kr/st</li>
+          <li><strong>4-10st: </strong>Nya celler - 2000 kr/st</li>
+          <li><strong>+11st: </strong>Klass 1 - 1800 kr/st</li>
+        </ul>
+        <p><strong>Elcykelbatterier 24 V, 10 Ah:</strong></p>
+        <ul>
+          <li><strong>1-3st: </strong>Klass 1 - 2200 kr/st</li>
+          <li><strong>4-10st: </strong>Nya celler - 1700 kr/st</li>
+          <li><strong>+11st: </strong>Klass 1 - 1500 kr/st</li>
+        </ul>
+        <p>Vi kan även uppgradera kapaciteten i batterierna för 300kr/2Ah.</p>
+        <h2>Garanti och villkor för samarbetspartners</h2>
+        <p>
+          Som samarbetspartner gäller samma garanti (två år) och villkor som för
+          privatpersoner.
+        </p>
+        <h2>Bli samarbetspartner</h2>
+        <p>
+          Kontakta oss på admin@batterilabbet.com så kan vi tillsammans ta fram
+          ett samarbete som passar er verksamhet.
+        </p>
+      </div>
+    </main>
+
+    <footer class="py-20 px-6 border-t border-gray-100 bg-white">
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12"
+      >
+        <div class="flex flex-col">
+          <a
+            href="/index"
+            class="text-2xl font-semibold mb-2 text-left hover:opacity-70 transition"
+            >batterilabbet.</a
+          >
+          <p class="text-gray-400">Cirkulär teknik för en rörligare värld.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
+          <div class="space-y-4">
+            <p class="font-medium">Tjänsten</p>
+            <a href="/index" class="block text-gray-500 hover:text-black"
+              >Hem</a
+            >
+            <a href="/reparation" class="block text-gray-500 hover:text-black"
+              >Om batterirenovering</a
+            >
+            <a
+              href="/hitta-din-modell"
+              class="block text-gray-500 hover:text-black"
+              >Hitta ditt batteri</a
+            >
+            <a href="/om-oss" class="block text-gray-500 hover:text-black"
+              >Om oss</a
+            >
+          </div>
+          <div class="space-y-4">
+            <p class="font-medium">Information</p>
+            <a
+              href="/allmanna-villkor"
+              class="block text-gray-500 hover:text-black"
+              >Allmänna villkor</a
+            >
+            <a
+              href="/integritetspolicy"
+              class="block text-gray-500 hover:text-black"
+              >Integritetspolicy</a
+            >
+            <a href="/garanti" class="block text-gray-500 hover:text-black"
+              >Garanti</a
+            >
+            <a href="/frakt" class="block text-gray-500 hover:text-black"
+              >Frakt</a
+            >
+          </div>
+          <div class="space-y-4">
+            <a href="/kontakt" class="font-medium">Kontakt</a>
+            <p class="text-gray-500">kontakt@batterilabbet.se</p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-50 text-sm text-gray-400 flex flex-col md:flex-row justify-between gap-4"
+      >
+        <div class="flex flex-col gap-1">
+          <p>© 2026 Batterilabbet AB</p>
+          <p>756 56 Uppsala</p>
+          <p>Org.nr: 556000-0000</p>
+        </div>
+
+        <div class="flex gap-6 items-start">
+          <a href="/allmanna-villkor" class="hover:text-black transition"
+            >Allmänna villkor</a
+          >
+          <a href="/integritetspolicy" class="hover:text-black transition"
+            >Integritetspolicy</a
+          >
+        </div>
+      </div>
+    </footer>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
