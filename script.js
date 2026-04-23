@@ -212,6 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((response) => {
           alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
+          sessionStorage.removeItem("prefilledBattery");
           document.getElementById("repairForm").reset();
           goToStep(1);
           // Återställ eventuell företagsvy till privatvy efter lyckat inskick
@@ -290,7 +291,7 @@ window.selectBatteryOption = function (
 
   sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
   console.log("Sparar ner batteridata i minnet:", batteryData);
-  window.location.href = "/index.html#skicka-in";
+  window.location.href = "/index#skicka-in";
 };
 
 // LOGIK FÖR AUTOFILL NÄR MAN LANDAR PÅ FORMULÄRET
@@ -309,9 +310,17 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("form-model").value = battery.model || "";
       if (document.getElementById("form-voltage"))
         document.getElementById("form-voltage").value = battery.voltage || "";
-      if (document.getElementById("form-capacity"))
-        document.getElementById("form-capacity").value = battery.capacity || "";
-
+      // SMART LOGIK FÖR KAPACITET
+      if (document.getElementById("form-capacity")) {
+        // Om det är en order, fyll i den kapacitet de valt att köpa. Annars originalkapacitet.
+        if (battery.action === "order") {
+          document.getElementById("form-capacity").value =
+            battery.selectedCap || "";
+        } else {
+          document.getElementById("form-capacity").value =
+            battery.capacity || "";
+        }
+      }
       // Fyll i fritexten
       if (document.getElementById("form-problem")) {
         document.getElementById("form-problem").value = battery.problem || "";
@@ -322,12 +331,88 @@ document.addEventListener("DOMContentLoaded", function () {
           if (upgradeRadio) upgradeRadio.checked = true;
         }
       }
-
-      sessionStorage.removeItem("prefilledBattery");
     }
   }
 });
+// Variabel för att tillfälligt minnas vilket batteri kunden klickade på
+let currentSelectedBattery = null;
 
+// Öppnar modalen och sätter in datan
+window.openActionModal = function (
+  brand,
+  model,
+  selectedCap,
+  originalCap,
+  voltage
+) {
+  currentSelectedBattery = { brand, model, selectedCap, originalCap, voltage };
+
+  // Uppdatera texten i modalen så kunden ser vad de är på väg att välja
+  document.getElementById(
+    "modal-battery-info"
+  ).innerText = `${brand} ${model} (${selectedCap})`;
+
+  // Visa modalen med mjuk animation
+  const modal = document.getElementById("action-modal");
+  modal.classList.remove("hidden");
+
+  // En kort timeout behövs för att Tailwind ska hinna spela upp animationen
+  setTimeout(() => {
+    modal.classList.remove("opacity-0");
+    modal.firstElementChild.classList.remove("scale-95");
+    modal.firstElementChild.classList.add("scale-100");
+  }, 10);
+};
+
+// Stänger modalen
+window.closeActionModal = function () {
+  const modal = document.getElementById("action-modal");
+  modal.classList.add("opacity-0");
+  modal.firstElementChild.classList.remove("scale-100");
+  modal.firstElementChild.classList.add("scale-95");
+
+  setTimeout(() => {
+    modal.classList.add("hidden");
+  }, 300); // 300ms matchar Tailwinds duration-300 klass
+};
+
+// Hanterar knapptrycken inuti modalen
+window.handleModalChoice = function (choice) {
+  if (!currentSelectedBattery) return;
+
+  const { brand, model, selectedCap, originalCap, voltage } =
+    currentSelectedBattery;
+
+  // Förbered felbeskrivningen (används främst för renovering)
+  let problemText = "";
+  if (selectedCap !== originalCap && choice === "repair") {
+    problemText = `Uppgradera kapaciteten till ${selectedCap}.`;
+  }
+
+  // Packa in all data (Nu skickar vi även med 'action' så mottagarsidan vet vad som valts)
+  const batteryData = {
+    brand: brand,
+    model: model,
+    capacity: originalCap,
+    selectedCap: selectedCap,
+    voltage: voltage,
+    problem: problemText,
+    action: choice, // Säger 'repair' eller 'order'
+  };
+
+  // Spara i webbläsarens minne
+  sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
+
+  // Stäng modalen innan vi byter sida
+  closeActionModal();
+
+  // Omdirigera kunden baserat på vad de klickade på
+  if (choice === "repair") {
+    window.location.href = "/index#skicka-in"; // Som förut
+  } else if (choice === "order") {
+    window.location.href = "/checkout"; // Skicka till din nya checkout-sida
+  }
+};
 // Sökfunktion
 function filterBatteries() {
   const query = document.getElementById("batterySearch").value.toLowerCase();
@@ -347,12 +432,10 @@ function generatePriceRow(
   voltage,
   isSmall = false
 ) {
-  // 1. Skapa HTML för badge om den finns
   const badgeHtml = priceObj.badge
     ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full tracking-tighter whitespace-nowrap shadow-sm">I lager</span>`
     : ``;
 
-  // 2. Skapa HTML för beskrivningen
   const descHtml = priceObj.desc
     ? `<span class="text-gray-400 text-xs">${priceObj.desc}</span>`
     : ``;
@@ -361,7 +444,6 @@ function generatePriceRow(
       <div class="${
         isSmall ? "py-3" : "py-5"
       } flex justify-between items-center gap-4">
-          
           <div class="flex items-center flex-wrap gap-3">
               <span class="${isSmall ? "text-base" : "text-lg"} font-medium">
                   ${priceObj.cap}
@@ -369,12 +451,11 @@ function generatePriceRow(
               ${badgeHtml}
               ${descHtml}
           </div>
-          
           <div class="flex items-center gap-4">
               <span class="${
                 isSmall ? "text-base" : "text-xl"
               } font-medium whitespace-nowrap">${priceObj.price}</span>
-              <button onclick="selectBatteryOption('${brand}', '${model}', '${
+              <button onclick="openActionModal('${brand}', '${model}', '${
     priceObj.cap
   }', '${originalCap}', '${voltage}')" 
                       class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-70 transition shadow-sm">

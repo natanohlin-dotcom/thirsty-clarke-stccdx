@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Kontakt | Batterilabbet</title>
+    <meta
+      name="description"
+      content="Ta kontakt med oss på Batterilabbet och kom igång med att laga ditt elcykelbatteri."
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/android-chrome-512x512.png"
+    />
+    <link rel="manifest" href="assets/site.webmanifest" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <script defer src="script.js"></script>
+  </head>
+
+  <nav class="fixed w-full z-50 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative">
+      <a href="/index.html" class="text-xl font-semibold tracking-tighter hover:opacity-70 transition">
+        batterilabbet.
+      </a>
+      <div class="flex items-center text-sm text-gray-500 font-medium gap-2">
+        
+        <span class="hidden md:inline">Checkout</span>
+      </div>
+    </div>
+  </nav>
+  
+  <section class="pt-32 pb-16 px-6 bg-[#F3F2EE] min-h-screen">
+    <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-[40px] shadow-sm border border-black/5">
+      
+      <div class="flex gap-2 mb-12">
+        <div id="p-1" class="h-1.5 flex-1 bg-black rounded-full transition-colors"></div>
+        <div id="p-2" class="h-1.5 flex-1 bg-gray-200 rounded-full transition-colors"></div>
+        <div id="p-3" class="h-1.5 flex-1 bg-gray-200 rounded-full transition-colors"></div>
+        <div id="p-4" class="h-1.5 flex-1 bg-gray-200 rounded-full transition-colors"></div>
+      </div>
+  
+      <form id="repairForm">
+        
+        <div id="step1" class="form-step space-y-6">
+          <h3 class="text-2xl font-medium mb-8">Din valda produkt</h3>
+          
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Märke</label>
+              <input type="text" id="form-brand" class="w-full bg-gray-50 text-gray-500 border-none cursor-not-allowed" readonly />
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Modell</label>
+              <input type="text" id="form-model" class="w-full bg-gray-50 text-gray-500 border-none cursor-not-allowed" readonly />
+            </div>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Spänning (V)</label>
+              <input type="text" id="form-voltage" class="w-full bg-gray-50 text-gray-500 border-none cursor-not-allowed" readonly />
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Vald Kapacitet</label>
+              <input type="text" id="form-capacity" class="w-full bg-[#E8E6E1] font-bold text-black border-none cursor-not-allowed" readonly />
+            </div>
+          </div>
+          <button type="button" onclick="goToStep(2)" class="w-full btn-primary py-5 rounded-2xl font-medium mt-8">
+            Nästa steg
+          </button>
+        </div>
+  
+        <div id="step2" class="form-step hidden-step space-y-6">
+          <h3 class="text-2xl font-medium mb-8">Tillval & Önskemål</h3>
+          
+          <input type="radio" name="error_type" value="Nybeställning" checked class="hidden" />
+  
+          <div class="p-6 bg-amber-50 border border-amber-100 rounded-2xl mb-6">
+            <h4 class="font-medium text-amber-800 mb-2">Behöver du en ny laddare?</h4>
+            <p class="text-sm text-amber-700 mb-4">Skriv det i rutan nedan så återkommer vi med ett paketpris.</p>
+          </div>
+  
+          <div class="space-y-2">
+            <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Övriga önskemål (Valfritt)</label>
+            <textarea id="form-problem" rows="4" placeholder="T.ex. Jag vill köpa till en laddare, eller har en fråga om ordern..." class="w-full"></textarea>
+          </div>
+          
+          <div class="flex gap-4 pt-8">
+            <button type="button" onclick="goToStep(1)" class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
+            <button type="button" onclick="goToStep(3)" class="flex-[2] btn-primary py-5 rounded-2xl font-medium shadow-sm">Nästa steg</button>
+          </div>
+        </div>
+  
+        <div id="step3" class="form-step hidden-step space-y-6">
+          <h3 class="text-2xl font-medium mb-8">Dina kontaktuppgifter</h3>
+          
+          <div class="flex p-1 bg-gray-100 rounded-xl mb-8">
+            <button type="button" id="btn-private" onclick="setCustomerType('private')" class="flex-1 py-2 text-sm font-medium rounded-lg transition bg-white shadow-sm text-black">Privatperson</button>
+            <button type="button" id="btn-business" onclick="setCustomerType('business')" class="flex-1 py-2 text-sm font-medium rounded-lg transition text-gray-500 hover:text-black">Företagskund</button>
+            <input type="hidden" id="form-customer-type" value="private">
+          </div>
+  
+          <div class="space-y-2">
+            <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Fullständigt namn</label>
+            <input type="text" id="form-name" placeholder="Förnamn Efternamn" class="w-full" required />
+          </div>
+          
+          <div class="absolute w-0 h-0 opacity-0 -z-10 overflow-hidden" aria-hidden="true">
+            <input type="text" id="form-botcheck" name="botcheck" tabindex="-1" autocomplete="off" />
+          </div>
+  
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">E-post</label>
+              <input type="email" id="form-email" placeholder="namn@epost.se" class="w-full" required />
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Telefon</label>
+              <input type="tel" id="form-phone" placeholder="070-000 00 00" class="w-full" required />
+            </div>
+          </div>
+  
+          <div id="company-info" class="hidden space-y-4 pt-4 border-t border-gray-100">
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Företagsnamn</label>
+                <input type="text" id="form-company-name" placeholder="Företaget AB" class="w-full" />
+              </div>
+              <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Org. nummer</label>
+                <input type="text" id="form-org-nr" placeholder="556677-8899" class="w-full" />
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Referens (om annan en beställare) / Märkning
+                (Valfritt)</label>
+              <input type="text" id="form-reference" placeholder="t.ex. Namn eller Projekt" class="w-full" />
+            </div>
+          </div>
+  
+          <div class="space-y-2">
+            <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Leveransadress</label>
+            <input type="text" id="form-address" placeholder="Gatuadress" class="w-full" required />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Postnummer</label>
+              <input type="text" id="form-postcode" placeholder="Postnummer" class="w-full" required />
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Ort</label>
+              <input type="text" id="form-city" placeholder="Ort" class="w-full" required />
+            </div>
+          </div>
+  
+          <div class="flex gap-4 pt-8">
+            <button type="button" onclick="goToStep(2)" class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
+            <button type="button" onclick="goToStep(4)" class="flex-[2] btn-primary py-5 rounded-2xl font-medium shadow-sm">Nästa steg</button>
+          </div>
+        </div>
+  
+        <div id="step4" class="form-step hidden-step space-y-6">
+          <h3 class="text-2xl font-medium mb-8">Leverans & Godkännande</h3>
+          
+          <div class="space-y-4">
+            <label class="flex items-center p-6 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
+              <input type="radio" name="shipping" id="ship-self" value="Hämtas i Uppsala (Köpt produkt)" class="w-4 h-4 mr-4" checked />
+              <div>
+                <p class="font-medium">Jag hämtar min order hos er i Uppsala</p>
+                <p class="text-sm text-gray-500">Gratis. Vi mailar när ordern är redo.</p>
+              </div>
+            </label>
+            <label class="flex items-center p-6 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
+              <input type="radio" name="shipping" id="ship-label" value="Skickas med ombud (Köpt produkt)" class="w-4 h-4 mr-4" />
+              <div>
+                <p class="font-medium">Skicka till närmaste ombud (149kr)</p>
+                <p class="text-sm text-gray-500">Spårbar frakt inom Sverige.</p>
+              </div>
+            </label>
+          </div>
+  
+          
+          <div class="space-y-4 pt-6 border-t border-gray-100">
+            <label class="flex items-start cursor-pointer group">
+              <div class="flex items-center h-5">
+                <input
+                  type="checkbox"
+                  id="form-terms"
+                  class="w-4 h-4 border-gray-300 rounded text-black focus:ring-black"
+                  required
+                />
+              </div>
+              <div class="ml-3 text-sm">
+                <span class="text-gray-700">Jag godkänner </span>
+                <a
+                  href="/allmanna-villkor.html"
+                  target="_blank"
+                  class="text-black underline hover:text-gray-600"
+                  >allmänna villkor & fraktvillkor</a
+                >
+                <span class="text-red-500">*</span>
+              </div>
+            </label>
+
+            <label class="flex items-start cursor-pointer group">
+              <div class="flex items-center h-5">
+                <input
+                  type="checkbox"
+                  id="form-privacy"
+                  class="w-4 h-4 border-gray-300 rounded text-black focus:ring-black"
+                  required
+                />
+              </div>
+              <div class="ml-3 text-sm">
+                <span class="text-gray-700"
+                  >Jag har tagit del av hur ni behandlar mina
+                  personuppgifter enligt er
+                </span>
+                <a
+                  href="/integritetspolicy"
+                  target="_blank"
+                  class="text-black underline hover:text-gray-600"
+                  >integritetspolicy</a
+                >
+                <span class="text-red-500">*</span>
+              </div>
+            </label>
+          </div>
+  
+          <div class="flex gap-4 pt-8">
+            <button type="button" onclick="goToStep(3)" class="flex-1 bg-gray-100 py-5 rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
+            <button type="submit" class="flex-[2] btn-primary py-5 rounded-2xl font-medium shadow-sm">Bekräfta beställning</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+    <footer class="py-20 px-6 border-t border-gray-100 bg-white">
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12"
+      >
+        <div class="flex flex-col">
+          <a
+            href="/index"
+            class="text-2xl font-semibold mb-2 text-left hover:opacity-70 transition"
+            >batterilabbet.</a
+          >
+          <p class="text-gray-400">Cirkulär teknik för en rörligare värld.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
+          <div class="space-y-4">
+            <p class="font-medium">Tjänsten</p>
+            <a href="/index" class="block text-gray-500 hover:text-black"
+              >Hem</a
+            >
+            <a href="/reparation" class="block text-gray-500 hover:text-black"
+              >Vår process</a
+            >
+            <a
+              href="/hitta-din-modell"
+              class="block text-gray-500 hover:text-black"
+              >Hitta ditt batteri</a
+            >
+            <a href="/om-oss" class="block text-gray-500 hover:text-black"
+              >Om oss</a
+            >
+          </div>
+          <div class="space-y-4">
+            <p class="font-medium">Information</p>
+            <a
+              href="/allmanna-villkor"
+              class="block text-gray-500 hover:text-black"
+              >Allmänna villkor</a
+            >
+            <a
+              href="/integritetspolicy"
+              class="block text-gray-500 hover:text-black"
+              >Integritetspolicy</a
+            >
+            <a href="/garanti" class="block text-gray-500 hover:text-black"
+              >Garanti</a
+            >
+            <a href="/frakt" class="block text-gray-500 hover:text-black"
+              >Frakt</a
+            >
+          </div>
+          <div class="space-y-4">
+            <a href="/kontakt" class="font-medium">Kontakt</a>
+            <p class="text-gray-500">kontakt@batterilabbet.se</p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-50 text-sm text-gray-400 flex flex-col md:flex-row justify-between gap-4"
+      >
+        <div class="flex flex-col gap-1">
+          <p>© 2026 Batterilabbet AB</p>
+          <p>756 56 Uppsala</p>
+          <p>Org.nr: 556000-0000</p>
+        </div>
+
+        <div class="flex gap-6 items-start">
+          <a href="/allmanna-villkor" class="hover:text-black transition"
+            >Allmänna villkor</a
+          >
+          <a href="/integritetspolicy" class="hover:text-black transition"
+            >Integritetspolicy</a
+          >
+        </div>
+      </div>
+    </footer>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
