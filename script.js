@@ -343,20 +343,36 @@ window.openActionModal = function (
   model,
   selectedCap,
   originalCap,
-  voltage
+  voltage,
+  hasBadge
 ) {
   currentSelectedBattery = { brand, model, selectedCap, originalCap, voltage };
 
-  // Uppdatera texten i modalen så kunden ser vad de är på väg att välja
+  // Uppdatera texten i modalen
   document.getElementById(
     "modal-battery-info"
   ).innerText = `${brand} ${model} (${selectedCap})`;
+
+  // Logik för att visa/dölja knappen för Direktköp
+  const orderBtn = document.getElementById("modal-order-btn");
+  const outOfStockMsg = document.getElementById("modal-out-of-stock-msg");
+
+  if (hasBadge) {
+    // Om den FINNS i lager: Visa köpknappen, dölj varningen
+    orderBtn.classList.remove("hidden");
+    orderBtn.classList.add("flex"); // Tailwinds flexbox-klass behövs för layouten
+    outOfStockMsg.classList.add("hidden");
+  } else {
+    // Om den INTE finns i lager: Dölj köpknappen, visa varningen
+    orderBtn.classList.remove("flex");
+    orderBtn.classList.add("hidden");
+    outOfStockMsg.classList.remove("hidden");
+  }
 
   // Visa modalen med mjuk animation
   const modal = document.getElementById("action-modal");
   modal.classList.remove("hidden");
 
-  // En kort timeout behövs för att Tailwind ska hinna spela upp animationen
   setTimeout(() => {
     modal.classList.remove("opacity-0");
     modal.firstElementChild.classList.remove("scale-95");
@@ -440,6 +456,9 @@ function generatePriceRow(
     ? `<span class="text-gray-400 text-xs">${priceObj.desc}</span>`
     : ``;
 
+  // NYTT: Kollar om badge existerar
+  const hasBadge = priceObj.badge ? true : false;
+
   return `
       <div class="${
         isSmall ? "py-3" : "py-5"
@@ -457,7 +476,7 @@ function generatePriceRow(
               } font-medium whitespace-nowrap">${priceObj.price}</span>
               <button onclick="openActionModal('${brand}', '${model}', '${
     priceObj.cap
-  }', '${originalCap}', '${voltage}')" 
+  }', '${originalCap}', '${voltage}', ${hasBadge})" 
                       class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-70 transition shadow-sm">
                   Välj
               </button>
@@ -687,7 +706,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const batteryData = [
   {
     brand: "Biltema pakethållare",
-    model: "Förekommer på många cyklar, inte bara från biltema.",
+    model: "Universell passform (Passar fler cykelmärken)",
     voltage: "36V eller 24V",
     original_cap: "Varierande",
     isMulti: true,
@@ -736,7 +755,7 @@ const batteryData = [
   },
   {
     brand: "Biltema sadelstolpe",
-    model: "Förekommer på fler cyklar",
+    model: "Universell passform (Sadelstolpsmodell)",
     voltage: "24V",
     original_cap: "10Ah",
     images: ["photos/biltema-sadelstolp.png"],
@@ -758,7 +777,7 @@ const batteryData = [
   },
   {
     brand: "PROTANIUM",
-    model: "Förekommer bland annat på cyklar från Biltema och IKEA",
+    model: "Passar bl.a. Yosemite (Biltema) & IKEA",
     voltage: "36V",
     images: ["photos/biltema-sadelstolp.png", "photos/biltema-pakethall.png"],
     original_cap: "10Ah",
@@ -781,7 +800,7 @@ const batteryData = [
   },
   {
     brand: "TranzX pakethållare",
-    model: "Förekommer bland annat på cyklar Crescent",
+    model: "Passar bl.a. Crescent m.fl.",
     voltage: "24V",
     original_cap: "10Ah",
     prices: [
@@ -800,7 +819,7 @@ const batteryData = [
   },
   {
     brand: "Batavus äldre variant",
-    model: "Förekommer på äldre cyklar från Batavus",
+    model: "Passar äldre Batavus-modeller",
     voltage: "36V",
     original_cap: "10Ah",
     prices: [
