@@ -68,7 +68,6 @@ function goToStep(step) {
   for (let i = 1; i <= 4; i++) {
     const p = document.getElementById("p-" + i);
     if (p) {
-      // Säkerhetskoll i fall du inte lagt till p-4 i din HTML-header ännu
       if (i <= step) {
         p.classList.remove("bg-gray-200");
         p.classList.add("bg-black");
@@ -79,9 +78,9 @@ function goToStep(step) {
     }
   }
   // Scrolla till toppen av formuläret
-  document
-    .getElementById("skicka-in")
-    .scrollIntoView({ behavior: "smooth", block: "start" });
+  //document
+  //.getElementById("skicka-in")
+  //.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 // Hantera formulärets inskick
