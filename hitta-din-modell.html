@@ -185,7 +185,7 @@
               type="text"
               id="batterySearch"
               onkeyup="filterBatteries()"
-              placeholder="Sök märke eller modell..."
+              placeholder="Sök efter cykelmärke eller batterimodell..."
               class="w-full pr-4 py-4 rounded-2xl border border-black/5 shadow-sm transition-all"
               style="
                 padding-left: 3rem !important;
@@ -201,35 +201,82 @@
           <p>Vi hittade tyvärr inga matchningar för din sökning.</p>
         </div>
 
-        <div id="action-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-          <div class="bg-white p-8 md:p-12 rounded-[24px] shadow-xl max-w-md w-full mx-4 transform scale-95 transition-transform duration-300">
-            <h3 class="text-2xl font-medium mb-2 text-center">Hur vill du gå vidare?</h3>
-            <p id="modal-battery-info" class="text-gray-400 text-sm text-center mb-8 font-mono uppercase tracking-widest"></p>
-        
+        <div
+          id="action-modal"
+          class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 opacity-0"
+        >
+          <div
+            class="bg-white p-8 md:p-12 rounded-[24px] shadow-xl max-w-md w-full mx-4 transform scale-95 transition-transform duration-300"
+          >
+            <h3 class="text-2xl font-medium mb-2 text-center">
+              Hur vill du gå vidare?
+            </h3>
+            <p
+              id="modal-battery-info"
+              class="text-gray-400 text-sm text-center mb-8 font-mono uppercase tracking-widest"
+            ></p>
+
             <div class="space-y-4">
-              <button onclick="handleModalChoice('repair')" class="w-full flex items-center justify-between p-5 bg-[#F3F2EE] hover:bg-[#E8E6E1] rounded-2xl transition group text-left">
+              <button
+                onclick="handleModalChoice('repair')"
+                class="w-full flex items-center justify-between p-5 bg-[#F3F2EE] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
+              >
                 <div>
-                  <p class="font-medium text-lg text-black group-hover:translate-x-1 transition-transform">Lämna in batteriet</p>
-                  <p class="text-sm text-gray-500 mt-1">Jag vill skicka/lämna in mitt batteri för renovering.</p>
+                  <p
+                    class="font-medium text-lg text-black group-hover:translate-x-1 transition-transform"
+                  >
+                    Lämna in batteriet
+                  </p>
+                  <p class="text-sm text-gray-500 mt-1">
+                    Jag vill skicka/lämna in mitt batteri för renovering.
+                  </p>
                 </div>
-                <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"></i>
+                <i
+                  data-lucide="arrow-right"
+                  class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"
+                ></i>
               </button>
-        
-              <button id="modal-order-btn" onclick="handleModalChoice('order')" class="w-full flex items-center justify-between p-5 bg-[#F3F2EE] hover:bg-[#E8E6E1] rounded-2xl transition group text-left">
+
+              <button
+                id="modal-order-btn"
+                onclick="handleModalChoice('order')"
+                class="w-full flex items-center justify-between p-5 bg-[#F3F2EE] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
+              >
                 <div>
-                  <p class="font-medium text-lg text-black group-hover:translate-x-1 transition-transform">Beställ batteriet</p>
-                  <p class="text-sm text-gray-500 mt-1">Jag vill köpa detta batteri (utan att lämna in ett gammalt).</p>
+                  <p
+                    class="font-medium text-lg text-black group-hover:translate-x-1 transition-transform"
+                  >
+                    Beställ batteriet
+                  </p>
+                  <p class="text-sm text-gray-500 mt-1">
+                    Jag vill köpa detta batteri (utan att lämna in ett gammalt).
+                  </p>
                 </div>
-                <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"></i>
+                <i
+                  data-lucide="arrow-right"
+                  class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"
+                ></i>
               </button>
-        
-              <div id="modal-out-of-stock-msg" class="hidden p-5 bg-gray-50 border border-gray-100 rounded-2xl text-left">
-                <p class="font-medium text-gray-800 text-sm mb-1">Ej i lager för direktköp</p>
-                <p class="text-xs text-gray-500 leading-relaxed">Vi har tyvärr inte detta batteri färdigbyggt på hyllan just nu. Välj "Lämna in batteriet" ovan så bygger vi nya celler i ditt nuvarande skal.</p>
+
+              <div
+                id="modal-out-of-stock-msg"
+                class="hidden p-5 bg-gray-50 border border-gray-100 rounded-2xl text-left"
+              >
+                <p class="font-medium text-gray-800 text-sm mb-1">
+                  Ej i lager för direktköp
+                </p>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                  Vi har tyvärr inte detta batteri färdigbyggt på hyllan just
+                  nu. Välj "Lämna in batteriet" ovan så bygger vi nya celler i
+                  ditt nuvarande skal.
+                </p>
               </div>
             </div>
-        
-            <button onclick="closeActionModal()" class="w-full mt-6 py-3 text-sm font-medium text-gray-400 hover:text-black transition">
+
+            <button
+              onclick="closeActionModal()"
+              class="w-full mt-6 py-3 text-sm font-medium text-gray-400 hover:text-black transition"
+            >
               Avbryt
             </button>
           </div>
@@ -329,7 +376,7 @@
         >
           OBS! Priserna du ser är uppskattade baserat på tidigare batterier vi
           fått in. Priset kan komma att avvika från de priser du hittar på denna
-          sida, dock gäller priset du hittar här i majoriteten av gångerna. OBS!
+          sida, dock gäller priset du hittar här i majoriteten av fallen. OBS!
           Vissa batterier kan förekomma med flera olika kapaciteter som
           original. Jämförd kapacitet (ex: 20% extra kapacitet) är jämfört med
           den vanligaste kapaciteten på den batterimodellen. Kontrollräkna själv

@@ -429,16 +429,6 @@ window.handleModalChoice = function (choice) {
     window.location.href = "/checkout"; // Skicka till din nya checkout-sida
   }
 };
-// Sökfunktion
-function filterBatteries() {
-  const query = document.getElementById("batterySearch").value.toLowerCase();
-  const filtered = batteryData.filter(
-    (b) =>
-      b.brand.toLowerCase().includes(query) ||
-      b.model.toLowerCase().includes(query)
-  );
-  renderBatteries(filtered);
-}
 // Hjälpfunktion för att skapa en prisrad med knapp
 function generatePriceRow(
   brand,
@@ -699,146 +689,105 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   // ----------------------------
 });
-// Kör rendering vid start
+// -----------------------BATTERI-DATABAS (Fyll på med nya modeller enligt samma format)------------------------------
+// 1. Skapa en global variabel som hela scriptet kan läsa
+let globalBatteryData = [];
 
-// ------------------------------------------------------------------------------------
-//BATTERI-DATABAS (Fyll på med nya modeller enligt samma format)
-const batteryData = [
-  {
-    brand: "Biltema pakethållare",
-    model: "Universell passform (Passar fler cykelmärken)",
-    voltage: "36V eller 24V",
-    original_cap: "Varierande",
-    isMulti: true,
-    images: ["photos/biltema-pakethall.png"],
-    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vis laddning och på cykelns display under cykling. OBS! Strömbrytaren kommer inte att fungera efter reparation. Se till att du har en strömbrytare på din cykel-display (se bild ovan), annars hör av dig för att få en ny strömbrytare monterad!",
-    groups: [
-      {
-        name: "Om ditt batteri är 36V",
-        voltage: "36V",
-        original_cap: "10Ah",
-        prices: [
-          {
-            cap: "10Ah",
-            desc: "Originalkapacitet",
-            price: "3 500 kr",
-            badge: true,
-          },
-          {
-            cap: "14Ah",
-            desc: "40% extra räckvidd",
-            price: "4 250 kr",
-            badge: true,
-          },
-        ],
-      },
-      {
-        name: "Om ditt batteri är 24V",
-        voltage: "24V",
-        original_cap: "10Ah",
-        prices: [
-          {
-            cap: "10Ah",
-            desc: "Originalkapacitet",
-            price: "2 750 kr",
-            badge: true,
-          },
-          {
-            cap: "15Ah",
-            desc: "50% extra räckvidd",
-            price: "3 500 kr",
-            badge: true,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    brand: "Biltema sadelstolpe",
-    model: "Universell passform (Sadelstolpsmodell)",
-    voltage: "24V",
-    original_cap: "10Ah",
-    images: ["photos/biltema-sadelstolp.png"],
-    prices: [
-      {
-        cap: "10Ah",
-        desc: "Originalkapacitet",
-        price: "2 750 kr",
-        badge: true,
-      },
-      {
-        cap: "15Ah",
-        desc: "50% extra räckvidd",
-        price: "3 500 kr",
-        badge: true,
-      },
-    ],
-    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vid laddning eller på cykelns display under cykling. Strömbrytaren på batteriet kommer inte att fungera efter reparation. Se till att du har en strömbrytare på din cykel-display (se bild ovan), annars hör av dig för att få en ny strömbrytare monterad!",
-  },
-  {
-    brand: "PROTANIUM",
-    model: "Passar bl.a. Yosemite (Biltema) & IKEA",
-    voltage: "36V",
-    images: ["photos/biltema-sadelstolp.png", "photos/biltema-pakethall.png"],
-    original_cap: "10Ah",
+// Byt ut denna länk mot din publicerade CSV-länk från Google Sheets!
+const GOOGLE_SHEET_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc3RNEr_mmiiT26h0YVYCkoJ97HzyHWmpbD1uVm8DFuSVc8t84iSxOMnJ0mBvfwIsG-5w_3Y_k3t-a/pub?gid=0&single=true&output=csv";
 
-    prices: [
-      {
-        cap: "10Ah",
-        desc: "Originalkapacitet",
-        price: "3 500 kr",
-        badge: true,
-      },
-      {
-        cap: "14Ah",
-        desc: "40% extra räckvidd",
-        price: "4 250 kr",
-        badge: true,
-      },
-    ],
-    note: "OBS! LED-indikatorn kommer inte att fungera efter reparation. Istället kan du se batteristatus på laddarens LED vid laddning eller på cykelns display under cykling.",
-  },
-  {
-    brand: "TranzX pakethållare",
-    model: "Passar bl.a. Crescent m.fl.",
-    voltage: "24V",
-    original_cap: "10Ah",
-    prices: [
-      { cap: "10Ah", desc: "Original kapacitet", price: "2 750 kr" },
-      {
-        cap: "15Ah",
-        desc: "50% extra räckvidd",
-        price: "3 500 kr",
-      },
-      {
-        cap: "20Ah",
-        desc: "100% extra räckvidd",
-        price: "4 250 kr",
-      },
-    ],
-  },
-  {
-    brand: "Batavus äldre variant",
-    model: "Passar äldre Batavus-modeller",
-    voltage: "36V",
-    original_cap: "10Ah",
-    prices: [
-      {
-        cap: "10Ah",
-        desc: "Originalkapacitet",
-        price: "3 800 kr",
-        badge: true,
-      },
-      {
-        cap: "14Ah",
-        desc: "40% extra räckvidd",
-        price: "4 550 kr",
-        badge: true,
-      },
-    ],
-    note: "OBS! Originalladdaren kommer inte att fungera efter reparation. Ny laddare ingår i priset!",
-  },
-];
+function parseCSVRow(row) {
+  return row
+    .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+    .map((col) => col.replace(/^"|"$/g, "").trim());
+}
+
+async function fetchAndRenderBatteries() {
+  try {
+    const response = await fetch(GOOGLE_SHEET_CSV_URL);
+    const csvText = await response.text();
+
+    const rows = csvText.split("\n").slice(1);
+
+    // Töm den globala listan innan vi fyller på
+    globalBatteryData = [];
+
+    rows.forEach((rowString) => {
+      if (!rowString.trim()) return;
+      const cols = parseCSVRow(rowString);
+      if (!cols[0]) return;
+
+      const battery = {
+        brand: cols[0],
+        model: cols[1],
+        voltage: cols[2] || "36V",
+        original_cap: cols[3],
+        prices: [],
+        note: cols[16] || "",
+        images: cols[17] ? [cols[17]] : [],
+      };
+
+      if (cols[4])
+        battery.prices.push({
+          cap: cols[4],
+          desc: cols[5],
+          price: cols[6],
+          badge: cols[7] === "TRUE",
+        });
+      if (cols[8])
+        battery.prices.push({
+          cap: cols[8],
+          desc: cols[9],
+          price: cols[10],
+          badge: cols[11] === "TRUE",
+        });
+      if (cols[12])
+        battery.prices.push({
+          cap: cols[12],
+          desc: cols[13],
+          price: cols[14],
+          badge: cols[15] === "TRUE",
+        });
+
+      // Spara i den globala listan istället för en lokal
+      globalBatteryData.push(battery);
+    });
+
+    // Rendera alla batterier första gången sidan laddas
+    renderBatteries(globalBatteryData);
+  } catch (error) {
+    console.error("Kunde inte ladda batteridatan från Google Sheets:", error);
+  }
+}
+
+// 2. Din uppdaterade Sökfunktion som läser från den globala listan
+function filterBatteries() {
+  const query = document.getElementById("batterySearch").value.toLowerCase();
+
+  // Filtrera från den nyligen nedladdade datan
+  const filtered = globalBatteryData.filter(
+    (b) =>
+      b.brand.toLowerCase().includes(query) ||
+      b.model.toLowerCase().includes(query)
+  );
+
+  renderBatteries(filtered);
+}
+
+// Kör igång allt när sidan laddats
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.getElementById("battery-container");
+  const searchInput = document.getElementById("batterySearch");
+
+  if (container) {
+    // Hämta och visa datan
+    fetchAndRenderBatteries();
+
+    // Lägg till en event-lyssnare på sökfältet (om den inte redan ligger som onkeyup i HTML)
+    if (searchInput) {
+      searchInput.addEventListener("input", filterBatteries);
+    }
+  }
+});
 //------------------------------------------------------------------------------------
-
-renderBatteries(batteryData);
