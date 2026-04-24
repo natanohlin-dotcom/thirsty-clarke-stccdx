@@ -689,7 +689,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   // ----------------------------
 });
-// -----------------------BATTERI-DATABAS (Fyll på med nya modeller enligt samma format)------------------------------
+// -----------------------BATTERI-DATABAS------------------------------
 // 1. Skapa en global variabel som hela scriptet kan läsa
 let globalBatteryData = [];
 
