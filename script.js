@@ -31,6 +31,60 @@ function changeSlide(cardIndex, direction, totalSlides) {
   // Uppdatera minnet
   window.slideStates[cardIndex] = newIndex;
 }
+// Smart funktion för att upptäcka swipes på touch-skärmar
+function enableSwipe(element, onSwipeLeft, onSwipeRight) {
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  element.addEventListener(
+    "touchstart",
+    function (event) {
+      touchStartX = event.changedTouches[0].screenX;
+    },
+    { passive: true }
+  );
+
+  element.addEventListener(
+    "touchend",
+    function (event) {
+      touchEndX = event.changedTouches[0].screenX;
+      handleSwipe();
+    },
+    { passive: true }
+  );
+
+  function handleSwipe() {
+    const minSwipeDistance = 50; // Hur många pixlar fingret måste dras (förhindrar felklick)
+    const swipeDistance = touchEndX - touchStartX;
+
+    if (swipeDistance < -minSwipeDistance) {
+      // Fingret drogs åt VÄNSTER = Nästa bild
+      onSwipeLeft();
+    } else if (swipeDistance > minSwipeDistance) {
+      // Fingret drogs åt HÖGER = Föregående bild
+      onSwipeRight();
+    }
+  }
+}
+document.addEventListener("DOMContentLoaded", function () {
+  // Letar upp ALLA element på sidan som du har gett klassen "swipe-slider"
+  const allSliders = document.querySelectorAll(".swipe-slider");
+
+  // Loopa igenom dem en och en
+  allSliders.forEach((slider) => {
+    // Läs av vad just den här slidern heter (dess ID)
+    const sliderId = slider.id;
+
+    // Om slidern har ett ID, koppla på vår swipe-motor!
+    if (sliderId) {
+      enableSwipe(
+        slider,
+        () => moveStandaloneSlide(sliderId, 1), // Swipe vänster (Nästa)
+        () => moveStandaloneSlide(sliderId, -1) // Swipe höger (Föregående)
+      );
+    }
+  });
+});
 // Flik-motor (Single Page Navigation)
 function switchPage(pageId, scrollToSection = null) {
   // 1. Dölj alla vy-flikar
@@ -76,11 +130,11 @@ function goToStep(step) {
         p.classList.add("bg-gray-200");
       }
     }
+    // Scrolla till toppen av formuläret
+    //document
+    //.getElementById("skicka-in")
+    //.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-  // Scrolla till toppen av formuläret
-  //document
-  //.getElementById("skicka-in")
-  //.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 // Hantera formulärets inskick
