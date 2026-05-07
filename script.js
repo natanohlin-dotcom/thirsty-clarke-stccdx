@@ -666,29 +666,44 @@ function goToStandaloneSlide(sliderId, index) {
     }
   });
 }
-// Mobil drop-down meny
+
 document.addEventListener("DOMContentLoaded", function () {
   // --- KOD FÖR MOBILMENYN ---
   const mobileBtn = document.getElementById("mobile-menu-btn");
   const mobileMenu = document.getElementById("mobile-menu");
   const mobileLinks = document.querySelectorAll(".mobile-link");
 
-  // Körs bara om knapparna faktiskt finns på sidan
   if (mobileBtn && mobileMenu) {
-    // Öppna/stäng menyn när man klickar på hamburgaren
+    // 1. Öppna/stäng menyn när man klickar på hamburgaren
     mobileBtn.addEventListener("click", () => {
       mobileMenu.classList.toggle("hidden");
     });
 
-    // Stäng menyn automatiskt när kunden klickar på en specifik länk
+    // 2. Stäng menyn automatiskt när kunden klickar på en specifik länk i menyn
     mobileLinks.forEach((link) => {
       link.addEventListener("click", () => {
         mobileMenu.classList.add("hidden");
       });
     });
+
+    // 3. Stäng menyn om man klickar var som helst utanför den
+    document.addEventListener("click", (event) => {
+      // Kolla om menyn är öppen
+      const isMenuOpen = !mobileMenu.classList.contains("hidden");
+
+      // Kolla om klicket var UTANFÖR menyn och UTANFÖR knappen
+      const isClickOutsideMenu = !mobileMenu.contains(event.target);
+      const isClickOutsideBtn = !mobileBtn.contains(event.target);
+
+      // Om alla tre stämmer, göm menyn!
+      if (isMenuOpen && isClickOutsideMenu && isClickOutsideBtn) {
+        mobileMenu.classList.add("hidden");
+      }
+    });
   }
   // ----------------------------
 });
+
 // -----------------------BATTERI-DATABAS------------------------------
 // 1. Skapa en global variabel som hela scriptet kan läsa
 let globalBatteryData = [];

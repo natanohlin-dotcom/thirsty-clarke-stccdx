@@ -84,17 +84,17 @@
           <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
         </div>
 
-        <div class="flex items-center gap-2 md:gap-0">
+        <div class="flex items-center">
           <a
             href="/hitta-din-modell"
-            class="bg-black text-white px-4 py-2 md:px-6 md:py-2 rounded-full text-sm font-medium hover:scale-105 transition"
+            class="hidden md:block bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:scale-105 transition"
           >
             Hitta ditt batteri
           </a>
 
           <button
             id="mobile-menu-btn"
-            class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-1"
+            class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-2"
           >
             <i data-lucide="menu" class="w-6 h-6"></i>
           </button>
@@ -105,6 +105,15 @@
         <div
           class="bg-white/95 backdrop-blur-md rounded-3xl border border-black/5 shadow-xl p-6 flex flex-col gap-6 text-center text-lg font-medium"
         >
+          <a
+            href="/hitta-din-modell"
+            class="mobile-link bg-black text-white py-4 rounded-full shadow-md hover:scale-105 transition active:scale-95"
+          >
+            Hitta ditt batteri
+          </a>
+
+          <div class="h-px bg-gray-200 w-full rounded-full"></div>
+
           <a
             href="/index#hur-det-funkar"
             class="mobile-link hover:opacity-60 transition"
@@ -218,7 +227,7 @@
             <div class="space-y-4">
               <button
                 onclick="handleModalChoice('repair')"
-                class="w-full flex items-center justify-between p-5 bg-[#F3F2EE] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
+                class="w-full flex items-center justify-between p-5 bg-[#f8f5f1] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
               >
                 <div>
                   <p
@@ -239,7 +248,7 @@
               <button
                 id="modal-order-btn"
                 onclick="handleModalChoice('order')"
-                class="w-full flex items-center justify-between p-5 bg-[#F3F2EE] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
+                class="w-full flex items-center justify-between p-5 bg-[#f8f5f1] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
               >
                 <div>
                   <p
@@ -289,7 +298,7 @@
             Inte hittat din modell? Skicka in själv här
           </a>
         </div>
-        <div class="bg-[#F3F2EE] p-8 md:p-10 rounded-[32px] mt-12">
+        <div class="bg-[#f8f5f1] p-8 md:p-10 rounded-[32px] mt-12">
           <h3 class="text-2xl font-medium mb-8">Batterier vi inte tar emot</h3>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
