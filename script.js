@@ -478,7 +478,7 @@ window.handleModalChoice = function (choice) {
 
   // Omdirigera kunden baserat på vad de klickade på
   if (choice === "repair") {
-    window.location.href = "/index#skicka-in"; // Som förut
+    window.location.href = "/kontakt#skicka-in"; // Som förut
   } else if (choice === "order") {
     window.location.href = "/checkout"; // Skicka till din nya checkout-sida
   }
