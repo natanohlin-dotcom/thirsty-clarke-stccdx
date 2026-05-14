@@ -848,8 +848,30 @@ async function fetchAndRenderBatteries() {
 
     // Rendera alla batterier första gången sidan laddas
     renderBatteries(globalBatteryData);
+    // Dölj laddningsskärmen och visa batterierna
+    const loadingState = document.getElementById("loading-state");
+    const batteryContainer = document.getElementById("battery-container");
+
+    if (loadingState && batteryContainer) {
+      loadingState.classList.add("hidden");
+      batteryContainer.classList.remove("hidden");
+    }
   } catch (error) {
     console.error("Kunde inte ladda batteridatan från Google Sheets:", error);
+
+    // Hantera fel på skärmen
+    const loadingState = document.getElementById("loading-state");
+    if (loadingState) {
+      loadingState.innerHTML = `
+      <i data-lucide="alert-circle" class="w-10 h-10 text-red-500 mb-4 mx-auto"></i>
+      <p class="text-lg font-medium text-gray-900">Kunde inte ladda modellerna</p>
+      <p class="text-sm text-gray-500 mt-2">Vänligen ladda om sidan eller försök igen senare.</p>
+    `;
+      // Rita om Lucide-ikonen
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
+    }
   }
 }
 
