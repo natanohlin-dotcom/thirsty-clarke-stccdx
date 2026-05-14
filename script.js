@@ -130,16 +130,28 @@ function goToStep(step) {
         p.classList.add("bg-gray-200");
       }
     }
-    // Scrolla till toppen av formuläret
-    //document
-    //.getElementById("skicka-in")
-    //.scrollIntoView({ behavior: "smooth", block: "start" });
+    // NYTT: Scrolla upp till toppen av formuläret mjukt
+    const formSection = document.getElementById("skicka-in");
+    if (formSection) {
+      // block: 'start' innebär att den scrollar så att toppen av elementet hamnar högst upp på skärmen
+      formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 }
 
 // Hantera formulärets inskick
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbzwTo-wxxs_L9tScydbeLMlZw0Rpa9NiHn7LmC4bg5Xau9LxmNSZTUfxs0cufezqQFsZA/exec";
+
+// Hjälpfunktion för att generera ett slumpmässigt ordernummer
+function generateOrderNumber() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "BL-"; // Batterilabbet-prefix
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   const repairForm = document.getElementById("repairForm");
@@ -148,14 +160,11 @@ document.addEventListener("DOMContentLoaded", function () {
     repairForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      // --- HONUNGS CHECK (Nu krocksäker) ---
-      // Vi kollar först om elementet faktiskt existerar innan vi läser av .value
+      // --- HONUNGS CHECK ---
       const botCheckEl = document.getElementById("form-botcheck");
       if (botCheckEl && botCheckEl.value !== "") {
         console.log("Bot detected! Silently ignoring.");
-        alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
-        document.getElementById("repairForm").reset();
-        goToStep(1);
+        window.location.href = "/bekraftelse.html"; // Skicka botar till en fejk-framgång för att lura dem
         return;
       }
 
@@ -163,22 +172,25 @@ document.addEventListener("DOMContentLoaded", function () {
       let originalText = "Skicka in förfrågan";
       if (submitBtn) {
         originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = "Skickar in förfrågan...";
+        submitBtn.innerHTML = "Bearbetar...";
         submitBtn.disabled = true;
         submitBtn.classList.add("opacity-50");
       }
 
-      // Kolla vilket fraktalternativ som är valt (Krocksäkert)
+      // Generera ordernummer
+      const orderNumber = generateOrderNumber();
+
+      // Kolla vilket fraktalternativ som är valt
       const shipSelf = document.getElementById("ship-self");
       const shipLabel = document.getElementById("ship-label");
       let shippingChoice =
         shipSelf && shipSelf.checked
           ? shipSelf.value
-          : shipLabel
+          : shipLabel && shipLabel.checked
           ? shipLabel.value
           : "Ej valt";
 
-      // HÄMTA DET NYA VÄRDET FÖR FELTYP
+      // Hämta feltyp (för inskicks-formuläret, checkout har value="Nybeställning")
       let selectedError = "";
       const errorRadio = document.querySelector(
         'input[name="error_type"]:checked'
@@ -187,9 +199,12 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedError = errorRadio.value;
       }
 
-      // Samla all data med FormData - Nu med säkerhetskontroller (?.value || "")
-      // Detta förhindrar att scriptet kraschar om ett fält (t.ex. företagsnamn) är tomt eller saknas
+      // Samla all data
       const formData = new FormData();
+
+      // LÄGG TILL ORDERNUMMER HÄR FÖR ATT TA EMOT I GOOGLE SHEETS
+      formData.append("orderNumber", orderNumber);
+
       formData.append(
         "brand",
         document.getElementById("form-brand")?.value || ""
@@ -206,13 +221,11 @@ document.addEventListener("DOMContentLoaded", function () {
         "capacity",
         document.getElementById("form-capacity")?.value || ""
       );
-
       formData.append("errorType", selectedError);
       formData.append(
         "problem",
         document.getElementById("form-problem")?.value || ""
       );
-
       formData.append(
         "name",
         document.getElementById("form-name")?.value || ""
@@ -225,8 +238,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "phone",
         document.getElementById("form-phone")?.value || ""
       );
-
-      // Adressuppgifter
       formData.append(
         "address",
         document.getElementById("form-address")?.value || ""
@@ -239,7 +250,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "city",
         document.getElementById("form-city")?.value || ""
       );
-      // Företagsuppgifter
       formData.append(
         "customerType",
         document.getElementById("form-customer-type")?.value || "private"
@@ -256,7 +266,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "reference",
         document.getElementById("form-reference")?.value || ""
       );
-      // Fraktval
       formData.append("shipping", shippingChoice);
 
       // Skicka datan till Google Sheets
@@ -265,22 +274,29 @@ document.addEventListener("DOMContentLoaded", function () {
         body: formData,
       })
         .then((response) => {
-          alert("Tack för din förfrågan! Vi har mottagit ditt ärende.");
           sessionStorage.removeItem("prefilledBattery");
-          document.getElementById("repairForm").reset();
-          goToStep(1);
-          // Återställ eventuell företagsvy till privatvy efter lyckat inskick
-          if (typeof setCustomerType === "function") {
-            setCustomerType("private");
-          }
+
+          // Hämta värdena vi vill visa på nästa sida (vi använder formdata-objektet vi redan byggt)
+          const brandVal = formData.get("brand");
+          const modelVal = formData.get("model");
+          const capacityVal = formData.get("capacity");
+
+          // Bygg URL:en snyggt och säkert med URLSearchParams
+          const params = new URLSearchParams({
+            order: orderNumber,
+            brand: brandVal ? brandVal : "Ej angivet",
+            model: modelVal ? modelVal : "Ej angivet",
+            capacity: capacityVal ? capacityVal : "",
+          });
+
+          // Omdirigera till bekräftelsesidan med datan inbakad i länken
+          window.location.href = `/confirmation.html?${params.toString()}`;
         })
         .catch((error) => {
           console.error("Error!", error.message);
           alert(
             "Något gick fel. Vänligen försök igen eller kontakta oss via e-post."
           );
-        })
-        .finally(() => {
           if (submitBtn) {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
@@ -478,7 +494,7 @@ window.handleModalChoice = function (choice) {
 
   // Omdirigera kunden baserat på vad de klickade på
   if (choice === "repair") {
-    window.location.href = "/kontakt#skicka-in"; // Som förut
+    window.location.href = "/skicka-in"; // Som förut
   } else if (choice === "order") {
     window.location.href = "/checkout"; // Skicka till din nya checkout-sida
   }

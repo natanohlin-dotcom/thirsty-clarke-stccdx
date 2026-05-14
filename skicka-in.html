@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Checkout | Batterilabbet</title>
+    <title>Skicka in | Batterilabbet</title>
     <meta
       name="description"
-      content="Beställ ett nytt batteri från Batterilabbet."
+      content="Skicka in ditt batteri och kom igång med att laga ditt elcykelbatteri."
     />
 
     <link
@@ -63,7 +63,7 @@
       </a>
       <div class="flex items-center text-sm text-gray-500 font-medium gap-2">
         
-        <span class="hidden md:inline">Checkout</span>
+        <span class="hidden md:inline">Skicka in</span>
       </div>
     </div>
   </nav>
@@ -112,26 +112,95 @@
   
         <!-- STEG 2 -->
         <div id="step2" class="form-step hidden-step space-y-6">
-          <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Tillval & Önskemål</h3>
-          
-          <input type="radio" name="error_type" value="Nybeställning" checked class="hidden" />
+            <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">
+              Vad är fel på batteriet?
+            </h3>
+            <div class="space-y-3 md:space-y-4">
+              <label
+                class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+              >
+                <input
+                  type="radio"
+                  name="error_type"
+                  value="Laddar ur snabbt / Dålig räckvidd"
+                  class="w-4 h-4 mr-3 md:mr-4 shrink-0"
+                />
+                <span class="font-medium text-sm md:text-base"
+                  >Laddar ur snabbt / Dålig räckvidd</span
+                >
+              </label>
+              <label
+                class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+              >
+                <input
+                  type="radio"
+                  name="error_type"
+                  value="Batteriet slutade plötsligt att fungera"
+                  class="w-4 h-4 mr-3 md:mr-4 shrink-0"
+                  checked
+                />
+                <span class="font-medium text-sm md:text-base"
+                  >Batteriet slutade plötsligt att fungera</span
+                >
+              </label>
+              <label
+                class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+              >
+                <input
+                  type="radio"
+                  name="error_type"
+                  value="Batteriet har legat länge, fungerar inte nu"
+                  class="w-4 h-4 mr-3 md:mr-4 shrink-0"
+                />
+                <span class="font-medium text-sm md:text-base"
+                  >Batteriet har legat länge, fungerar inte nu</span
+                >
+              </label>
+              <label
+                class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
+              >
+                <input
+                  type="radio"
+                  name="error_type"
+                  id="radio-upgrade"
+                  value="Uppgradering / Annat"
+                  class="w-4 h-4 mr-3 md:mr-4 shrink-0"
+                />
+                <span class="font-medium text-sm md:text-base">Annat</span>
+              </label>
+            </div>
   
-          <div class="p-5 md:p-6 bg-amber-50 border border-amber-100 rounded-2xl mb-6">
-            <h4 class="font-medium text-amber-800 mb-2">Behöver du en ny laddare?</h4>
-            <p class="text-sm text-amber-700 mb-2 md:mb-4">Skriv det i rutan nedan så återkommer vi med ett paketpris.</p>
-          </div>
+            <div class="space-y-2 pt-2 md:pt-4">
+              <label
+                class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                >Tillägg / Fritext</label
+              >
+              <textarea
+                id="form-problem"
+                rows="4"
+                placeholder="Beskriv problemet mer ingående..."
+                class="w-full rounded-xl"
+              ></textarea>
+            </div>
   
-          <div class="space-y-2">
-            <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Övriga önskemål (Valfritt)</label>
-            <textarea id="form-problem" rows="4" placeholder="T.ex. Jag vill köpa till en laddare, eller har en fråga om ordern..." class="w-full rounded-xl"></textarea>
+            <!-- Ändrad flex-direction för mobil -->
+            <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
+              <button
+                type="button"
+                onclick="goToStep(1)"
+                class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition"
+              >
+                Bakåt
+              </button>
+              <button
+                type="button"
+                onclick="goToStep(3)"
+                class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm"
+              >
+                Nästa steg
+              </button>
+            </div>
           </div>
-          
-          <!-- Ändrad flex-direction för mobil -->
-          <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
-            <button type="button" onclick="goToStep(1)" class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
-            <button type="button" onclick="goToStep(3)" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm">Nästa steg</button>
-          </div>
-        </div>
   
         <!-- STEG 3 -->
         <div id="step3" class="form-step hidden-step space-y-6">
@@ -217,8 +286,9 @@
             <label class="flex items-start p-4 md:p-6 bg-[#f8f5f1] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
               <input type="radio" name="shipping" id="ship-label" value="Skickas med ombud (Köpt produkt)" class="w-4 h-4 mr-3 md:mr-4 mt-1 shrink-0" />
               <div>
-                <p class="font-medium text-sm md:text-base">Hemleverans till faktureringsadressen.</p>
-                <p class="text-xs md:text-sm text-gray-500 mt-1">Spårbar frakt inom Sverige.</p>
+                <p class="font-medium text-sm md:text-base">Vi skickar vidare instruktioner via mail.</p>
+                <p class="text-xs md:text-sm text-gray-500 mt-1">Du står för frakten hit, vi bjuder på frakten tillbaka.
+                    Vi skickar vidare instruktioner via mail.</p>
               </div>
             </label>
           </div>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bekräftelse | Batterilabbet</title>
+    <meta name="robots" content="noindex, nofollow" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="bg-[#f8f5f1] min-h-screen flex flex-col">
+    <nav class="fixed w-full z-50 px-6 py-4">
+      <div
+        class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative"
+      >
+        <a
+          href="/index.html"
+          class="text-xl font-semibold tracking-tighter hover:opacity-70 transition"
+        >
+          batterilabbet.
+        </a>
+      </div>
+    </nav>
+
+    <main
+      class="flex-grow flex items-center justify-center pt-32 pb-16 px-4 md:px-6"
+    >
+      <div
+        class="max-w-xl w-full mx-auto bg-white p-6 sm:p-8 md:p-12 rounded-3xl md:rounded-[40px] shadow-sm border border-black/5 text-center"
+      >
+        <!-- Check-ikon -->
+        <div
+          class="w-16 h-16 md:w-20 md:h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8"
+        >
+          <i data-lucide="check" class="w-8 h-8 md:w-10 md:h-10"></i>
+        </div>
+
+        <h1 class="text-2xl md:text-4xl font-medium mb-4">
+          Tack för din förfrågan!
+        </h1>
+        <p class="text-gray-500 text-base md:text-lg mb-8">
+          Vi har mottagit dina uppgifter och en bekräftelse har skickats till
+          din e-post. Vi behandlar ditt ärende så snabbt vi kan.
+        </p>
+
+        <!-- Ordernummer -->
+        <div
+          class="bg-[#F3F2EE] rounded-2xl p-4 md:p-6 mb-6 inline-block w-full sm:w-auto"
+        >
+          <p
+            class="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-500 mb-1"
+          >
+            Ditt Ordernummer
+          </p>
+          <p
+            id="display-order-number"
+            class="text-xl md:text-2xl font-semibold tracking-wide"
+          >
+            Laddar...
+          </p>
+        </div>
+
+        <!-- NY SEKTION: Orderdetaljer (Kvittot) -->
+        <div
+          class="bg-gray-50 border border-gray-100 rounded-2xl p-5 md:p-6 mb-8 text-left w-full mx-auto sm:w-4/5 md:w-3/4"
+        >
+          <h3
+            class="font-medium text-gray-900 mb-3 pb-3 border-b border-gray-200"
+          >
+            Valt batteri
+          </h3>
+          <ul class="space-y-3 text-sm md:text-base text-gray-600">
+            <li class="flex justify-between items-center">
+              <span class="text-gray-500">Märke:</span>
+              <span
+                id="display-brand"
+                class="font-medium text-gray-900 text-right"
+                >-</span
+              >
+            </li>
+            <li class="flex justify-between items-center">
+              <span class="text-gray-500">Modell:</span>
+              <span
+                id="display-model"
+                class="font-medium text-gray-900 text-right"
+                >-</span
+              >
+            </li>
+            <li
+              id="capacity-container"
+              class="flex justify-between items-center"
+            >
+              <span class="text-gray-500">Kapacitet:</span>
+              <span
+                id="display-capacity"
+                class="font-medium text-gray-900 text-right"
+                >-</span
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <a
+            href="/index"
+            class="btn-primary inline-block py-4 px-8 rounded-2xl font-medium shadow-sm w-full sm:w-auto"
+          >
+            Tillbaka till startsidan
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      lucide.createIcons();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Hämta parametrarna från URL:en (t.ex. ?order=BL-123&brand=Bosch...)
+        const urlParams = new URLSearchParams(window.location.search);
+
+        const orderId = urlParams.get("order");
+        const brand = urlParams.get("brand");
+        const model = urlParams.get("model");
+        const capacity = urlParams.get("capacity");
+
+        // Fyll i datan på sidan
+        document.getElementById("display-order-number").textContent =
+          orderId || "Okänt";
+        document.getElementById("display-brand").textContent =
+          brand || "Ej angivet";
+        document.getElementById("display-model").textContent =
+          model || "Ej angivet";
+
+        // Om kapacitet inte är ifyllt döljer vi den raden i kvittot så det ser snyggt ut
+        if (capacity) {
+          document.getElementById("display-capacity").textContent = capacity;
+        } else {
+          document.getElementById("capacity-container").style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
