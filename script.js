@@ -145,12 +145,19 @@ const GOOGLE_SCRIPT_URL =
 
 // Hjälpfunktion för att generera ett slumpmässigt ordernummer
 function generateOrderNumber() {
+  // Hämtar exakt millisekund och konverterar till Base36 (bokstäver och siffror)
+  // Detta garanterar att två ordrar gjorda vid olika millisekunder ALDRIG får samma kod
+  const timePart = Date.now().toString(36).toUpperCase();
+
+  // Lägger till 3 slumpmässiga tecken ifall två personer trycker exakt samtidigt
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let result = "BL-"; // Batterilabbet-prefix
-  for (let i = 0; i < 6; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  let randomPart = "";
+  for (let i = 0; i < 3; i++) {
+    randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  return result;
+
+  // Resultatet blir t.ex: BL-LWG9X1A-K7F
+  return `BL-${timePart}-${randomPart}`;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -290,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
 
           // Omdirigera till bekräftelsesidan med datan inbakad i länken
-          window.location.href = `/confirmation.html?${params.toString()}`;
+          window.location.href = `/confirmation?${params.toString()}`;
         })
         .catch((error) => {
           console.error("Error!", error.message);
