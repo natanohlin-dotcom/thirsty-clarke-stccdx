@@ -170,9 +170,11 @@
               sig självt!
             </p>
           </div>
-      
+
           <!-- Justerad padding för mobil (p-5) och tablet/desktop (sm:p-8 md:p-12) -->
-          <div class="glass-card p-5 sm:p-8 md:p-12 shadow-xl bg-white rounded-2xl">
+          <div
+            class="glass-card p-5 sm:p-8 md:p-12 shadow-xl bg-white rounded-2xl"
+          >
             <div class="flex gap-2 mb-8 md:mb-12">
               <div
                 id="p-1"
@@ -191,7 +193,7 @@
                 class="h-1 flex-1 bg-gray-200 rounded-full transition-all duration-500"
               ></div>
             </div>
-      
+
             <form id="repairForm">
               <!-- STEG 1 -->
               <div id="step1" class="form-step space-y-6">
@@ -260,7 +262,7 @@
                   Nästa steg
                 </button>
               </div>
-      
+
               <!-- STEG 2 -->
               <div id="step2" class="form-step hidden-step space-y-6">
                 <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">
@@ -320,7 +322,7 @@
                     <span class="font-medium text-sm md:text-base">Annat</span>
                   </label>
                 </div>
-      
+
                 <div class="space-y-2 pt-2 md:pt-4">
                   <label
                     class="text-xs font-bold uppercase tracking-widest text-gray-400"
@@ -333,9 +335,11 @@
                     class="w-full rounded-xl"
                   ></textarea>
                 </div>
-      
+
                 <!-- Ändrad flex-direction för mobil -->
-                <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
+                <div
+                  class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8"
+                >
                   <button
                     type="button"
                     onclick="goToStep(1)"
@@ -352,11 +356,13 @@
                   </button>
                 </div>
               </div>
-      
+
               <!-- STEG 3 -->
               <div id="step3" class="form-step hidden-step space-y-6">
-                <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Dina kontaktuppgifter</h3>
-      
+                <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">
+                  Dina kontaktuppgifter
+                </h3>
+
                 <div class="flex p-1 bg-gray-100 rounded-xl mb-6 md:mb-8">
                   <button
                     type="button"
@@ -372,7 +378,7 @@
                     onclick="setCustomerType('business')"
                     class="flex-1 py-2 md:py-3 text-sm font-medium rounded-lg transition text-gray-500 hover:text-black"
                   >
-                    Företag
+                    Företagskund
                   </button>
                   <input
                     type="hidden"
@@ -380,7 +386,7 @@
                     value="private"
                   />
                 </div>
-      
+
                 <div class="space-y-2">
                   <label
                     class="text-xs font-bold uppercase tracking-widest text-gray-400"
@@ -394,7 +400,20 @@
                     required
                   />
                 </div>
-      
+
+                <div
+                  class="absolute w-0 h-0 opacity-0 -z-10 overflow-hidden"
+                  aria-hidden="true"
+                >
+                  <input
+                    type="text"
+                    id="form-botcheck"
+                    name="botcheck"
+                    tabindex="-1"
+                    autocomplete="off"
+                  />
+                </div>
+
                 <div class="grid md:grid-cols-2 gap-4">
                   <div class="space-y-2">
                     <label
@@ -423,14 +442,51 @@
                     />
                   </div>
                 </div>
-      
+
                 <div
                   id="company-info"
                   class="hidden space-y-4 pt-4 border-t border-gray-100"
                 >
-                  <!-- Samma fält som tidigare -->
+                  <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                      <label
+                        class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                        >Företagsnamn</label
+                      >
+                      <input
+                        type="text"
+                        id="form-company-name"
+                        placeholder="Företaget AB"
+                        class="w-full rounded-xl"
+                      />
+                    </div>
+                    <div class="space-y-2">
+                      <label
+                        class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                        >Org. nummer</label
+                      >
+                      <input
+                        type="text"
+                        id="form-org-nr"
+                        placeholder="556677-8899"
+                        class="w-full rounded-xl"
+                      />
+                    </div>
+                  </div>
+                  <div class="space-y-2">
+                    <label
+                      class="text-xs font-bold uppercase tracking-widest text-gray-400"
+                      >Referens / Märkning (Valfritt)</label
+                    >
+                    <input
+                      type="text"
+                      id="form-reference"
+                      placeholder="t.ex. Namn eller Projekt"
+                      class="w-full rounded-xl"
+                    />
+                  </div>
                 </div>
-      
+
                 <div class="space-y-2">
                   <label
                     class="text-xs font-bold uppercase tracking-widest text-gray-400"
@@ -441,6 +497,7 @@
                     id="form-address"
                     placeholder="Gatuadress"
                     class="w-full rounded-xl"
+                    required
                   />
                 </div>
                 <div class="grid grid-cols-2 gap-4">
@@ -454,6 +511,7 @@
                       id="form-postcode"
                       placeholder="Postnummer"
                       class="w-full rounded-xl"
+                      required
                     />
                   </div>
                   <div class="space-y-2">
@@ -466,12 +524,15 @@
                       id="form-city"
                       placeholder="Ort"
                       class="w-full rounded-xl"
+                      required
                     />
                   </div>
                 </div>
-      
+
                 <!-- Ändrad flex-direction för mobil -->
-                <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
+                <div
+                  class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8"
+                >
                   <button
                     type="button"
                     onclick="goToStep(2)"
@@ -484,11 +545,11 @@
                     onclick="goToStep(4)"
                     class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm"
                   >
-                    Sista steget
+                    Nästa steg
                   </button>
                 </div>
               </div>
-      
+
               <!-- STEG 4 -->
               <div id="step4" class="form-step hidden-step space-y-6">
                 <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">
@@ -507,7 +568,9 @@
                       checked
                     />
                     <div>
-                      <p class="font-medium text-sm md:text-base">Jag lämnar in hos er i Uppsala</p>
+                      <p class="font-medium text-sm md:text-base">
+                        Jag lämnar in hos er i Uppsala
+                      </p>
                       <p class="text-xs md:text-sm text-gray-500 mt-1">
                         Vi skickar vidare instruktioner via mail.
                       </p>
@@ -524,7 +587,9 @@
                       class="w-4 h-4 mr-4 mt-1 shrink-0"
                     />
                     <div>
-                      <p class="font-medium text-sm md:text-base">Skicka in ditt batteri till oss</p>
+                      <p class="font-medium text-sm md:text-base">
+                        Skicka in ditt batteri till oss
+                      </p>
                       <p class="text-xs md:text-sm text-gray-500 mt-1">
                         Du står för frakten hit, vi bjuder på frakten tillbaka.
                         Vi skickar vidare instruktioner via mail.
@@ -532,7 +597,7 @@
                     </div>
                   </label>
                 </div>
-      
+
                 <div class="space-y-4 pt-6 border-t border-gray-100">
                   <!-- Godkännande-checkboxar är desamma, men shrink-0 rekommenderas på inputs för säkerhets skull -->
                   <label class="flex items-start cursor-pointer group">
@@ -555,7 +620,7 @@
                       <span class="text-red-500">*</span>
                     </div>
                   </label>
-      
+
                   <label class="flex items-start cursor-pointer group">
                     <div class="flex items-center h-5">
                       <input
@@ -580,9 +645,11 @@
                     </div>
                   </label>
                 </div>
-      
+
                 <!-- Ändrad flex-direction för mobil -->
-                <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
+                <div
+                  class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8"
+                >
                   <button
                     type="button"
                     onclick="goToStep(3)"
