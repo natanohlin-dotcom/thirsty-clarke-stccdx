@@ -141,7 +141,7 @@ function goToStep(step) {
 
 // Hantera formulärets inskick
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwjNIp68zdceLuD4Injf7rgkska2aZuGqDVo7XoY4Trdz2i2MtoadAuh7gRFgQyaqhkPQ/exec";
+  "https://script.google.com/macros/s/AKfycby7isjI1_maZZcYI0xKWsUQzx-37m8p-Zk5-ZbrCjentCfPbQ3bISgvWpjrq6dZ5JmpjA/exec";
 
 // Hjälpfunktion för att generera ett slumpmässigt ordernummer
 function generateOrderNumber() {
