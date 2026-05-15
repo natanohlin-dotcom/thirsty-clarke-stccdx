@@ -75,6 +75,7 @@
     <script defer src="script.js"></script>
   </head>
   <body>
+    
     <nav class="fixed w-full z-50 px-6 py-4">
       <div
         class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative"
@@ -85,7 +86,7 @@
         >
           batterilabbet.
         </a>
-
+    
         <div class="hidden md:flex gap-8 text-sm font-medium">
           <a href="/reparation" class="hover:opacity-60 transition"
             >Vår process</a
@@ -96,15 +97,16 @@
           >
           <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
         </div>
-
+    
         <div class="flex items-center">
           <a
             href="/hitta-din-modell"
-            class="hidden md:block bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:scale-105 transition"
+            class="hidden md:inline-flex items-center justify-center gap-1.5 bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:scale-105 transition"
           >
-            Reparera nu
+            <span>Sök batterimodell</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </a>
-
+    
           <button
             id="mobile-menu-btn"
             class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-2"
@@ -113,20 +115,21 @@
           </button>
         </div>
       </div>
-
+    
       <div id="mobile-menu" class="hidden md:hidden max-w-7xl mx-auto mt-2">
         <div
           class="bg-white/95 backdrop-blur-md rounded-3xl border border-black/5 shadow-xl p-6 flex flex-col gap-6 text-center text-lg font-medium"
         >
           <a
             href="/hitta-din-modell"
-            class="mobile-link bg-black text-white py-4 rounded-full shadow-md hover:scale-105 transition active:scale-95"
+            class="mobile-link flex items-center justify-center gap-2 bg-black text-white py-4 rounded-full shadow-md hover:scale-105 transition active:scale-95"
           >
-            Reparera nu
+            <span>Sök batterimodell</span>
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
           </a>
-
+    
           <div class="h-px bg-gray-200 w-full rounded-full"></div>
-
+    
           <a href="/reparation" class="mobile-link hover:opacity-60 transition"
             >Vår process</a
           >
@@ -156,17 +159,21 @@
           <div class="flex flex-col md:flex-row justify-center gap-4">
             <a
               href="/hitta-din-modell"
-              class="btn-primary px-10 py-5 rounded-full text-lg font-medium"
-              >Reparera nu</a
+              class="btn-primary px-10 py-5 rounded-full text-lg font-medium hover:-translate-y-1 hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center gap-2"
             >
+              Sök batterimodell
+              <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </a>
             <a
               href="/reparation"
-              class="bg-white border border-black/10 px-10 py-5 rounded-full text-lg font-medium hover:bg-gray-50 transition"
-              >Varför reparera?</a
+              class="bg-white border border-black/10 px-10 py-5 rounded-full text-lg font-medium hover:bg-gray-50 hover:-translate-y-1 hover:shadow-md transition-all duration-300 inline-flex items-center justify-center"
             >
+              Varför reparera?
+            </a>
           </div>
         </div>
       </section>
+    </main>
 
       <section id="hur-det-funkar" class="py-16 px-6 scroll-mt-20">
         <div class="max-w-7xl mx-auto">
@@ -248,25 +255,14 @@
         >
           <div class="md:w-1/2">
             <h2 class="text-5xl font-medium tracking-tight mb-8">
-              Kvalitet på riktigt.
+              Hållbarhet, säkerhet och kvalitet.
             </h2>
             <p class="text-xl text-gray-500 leading-relaxed mb-6">
-              Istället för att slänga ett dyrt elcykelbatteri bara för att några
-              få celler blivit trötta, renoverar vi det till nyskick med riktigt
-              kvalitetsstämpel: vår reparationsprocess är den enda i Sverige som
-              är CE-märkt.
+              Det är våra ledord. Vi tror på att istället för att slänga ett
+              dyrt elcykelbatteri bara för att några celler blivit trötta kan det
+              renoveras till nyskick av oss, med riktigt kvalitetsstämpel: vår
+              reparationsprocess är den enda i Sverige som är CE-märkt.
             </p>
-
-            <ul
-              class="list-disc pl-8 text-xl text-gray-500 leading-relaxed mb-6 space-y-2"
-            >
-              <li>Våra batterier har erkänt kvalitetsgaranti inom EU.</li>
-              <li>Det finns inga gifter i våra batterier.</li>
-              <li>
-                Under reparationsprocess genomförs grundliga tester för att
-                säkerställa kvalitet, säkerhet och hållbarhet i tuffa miljöer.
-              </li>
-            </ul>
 
             <p class="text-xl text-gray-500 leading-relaxed mb-6">
               Läs mer om vårt kvalitetsarbete
@@ -282,13 +278,13 @@
             class="swipe-slider relative md:w-1/2 w-full shrink-0 aspect-square bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group"
           >
             <img
-              src="photos/voltage_control.jpg"
+              src="photos/cyklist.png"
               class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-100"
               alt="Bild 1"
             />
 
             <img
-              src="photos/cyklist.png"
+              src="photos/voltage_control.jpg"
               class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0"
               alt="Bild 2"
             />
@@ -434,23 +430,13 @@
             <a
               href="/hitta-din-modell"
               class="block text-gray-500 hover:text-black"
-              >Reparera nu</a
-            >
-            <a href="/om-oss" class="block text-gray-500 hover:text-black"
-              >Om oss</a
+              >Sök batterimodell</a
             >
           </div>
           <div class="space-y-4">
             <p class="font-medium">Information</p>
-            <a
-              href="/allmanna-villkor"
-              class="block text-gray-500 hover:text-black"
-              >Allmänna villkor</a
-            >
-            <a
-              href="/integritetspolicy"
-              class="block text-gray-500 hover:text-black"
-              >Integritetspolicy</a
+            <a href="/om-oss" class="block text-gray-500 hover:text-black"
+              >Om oss</a
             >
             <a href="/garanti" class="block text-gray-500 hover:text-black"
               >Garanti</a
