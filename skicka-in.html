@@ -80,282 +80,241 @@
   <section id="skicka-in" class="pt-24 md:pt-32 pb-12 md:pb-16 px-4 md:px-6 bg-[#f8f5f1] min-h-screen scroll-mt-24">
     <div class="max-w-3xl mx-auto bg-white p-5 sm:p-8 md:p-12 rounded-3xl md:rounded-[40px] shadow-sm border border-black/5">
       
-      <!-- Progress Bar -->
       <div class="flex gap-2 mb-8 md:mb-12">
         <div id="p-1" class="h-1.5 flex-1 bg-black rounded-full transition-colors"></div>
         <div id="p-2" class="h-1.5 flex-1 bg-gray-200 rounded-full transition-colors"></div>
         <div id="p-3" class="h-1.5 flex-1 bg-gray-200 rounded-full transition-colors"></div>
         <div id="p-4" class="h-1.5 flex-1 bg-gray-200 rounded-full transition-colors"></div>
+        <div id="p-5" class="h-1.5 flex-1 bg-gray-200 rounded-full transition-colors"></div>
       </div>
   
       <form id="repairForm">
         
-        <!-- STEG 1 -->
         <div id="step1" class="form-step space-y-6">
-          <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Din valda produkt</h3>
+          <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Ditt batteri</h3>
           
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Märke</label>
-              <input type="text" id="form-brand" class="w-full bg-gray-50 text-gray-500 border-none cursor-not-allowed rounded-xl" readonly />
-            </div>
-            <div class="space-y-2">
-              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Modell</label>
-              <input type="text" id="form-model" class="w-full bg-gray-50 text-gray-500 border-none cursor-not-allowed rounded-xl" readonly />
-            </div>
-          </div>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Spänning (V)</label>
-              <input type="text" id="form-voltage" class="w-full bg-gray-50 text-gray-500 border-none cursor-not-allowed rounded-xl" readonly />
-            </div>
-            <div class="space-y-2">
-              <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Vald Kapacitet</label>
-              <input type="text" id="form-capacity" class="w-full bg-[#E8E6E1] font-bold text-black border-none cursor-not-allowed rounded-xl" readonly />
+          <input type="hidden" id="form-brand" name="brand" />
+          <input type="hidden" id="form-model" name="model" />
+          <input type="hidden" id="form-voltage" name="voltage" />
+          <input type="hidden" id="form-capacity" name="capacity" />
+  
+          <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 md:p-6 mb-6 md:mb-8">
+            <h4 class="text-base md:text-lg font-semibold mb-2">Reparation / Renovering</h4>
+            <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-4">
+              Du håller på att boka in ditt batteri för reparation eller uppgradering. Vi felsöker, byter ut defekta celler/BMS och ger ditt batteri nytt liv.
+            </p>
+            <div class="bg-white p-4 rounded-xl border border-gray-100 flex flex-col gap-1">
+               <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Nuvarande modell</span>
+               <span id="display-step1-model" class="font-medium text-base md:text-lg">Laddar batteri...</span>
             </div>
           </div>
-          <button type="button" onclick="goToStep(2)" class="w-full btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium mt-8">
+  
+          <button type="button" onclick="goToStep(2)" class="w-full btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium mt-6 md:mt-8 shadow-sm hover:-translate-y-1 transition-transform">
             Nästa steg
           </button>
         </div>
   
-        <!-- STEG 2 -->
         <div id="step2" class="form-step hidden-step space-y-6">
-            <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">
-              Vad är fel på batteriet?
-            </h3>
-            <div class="space-y-3 md:space-y-4">
-              <label
-                class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
-              >
-                <input
-                  type="radio"
-                  name="error_type"
-                  value="Laddar ur snabbt / Dålig räckvidd"
-                  class="w-4 h-4 mr-3 md:mr-4 shrink-0"
-                />
-                <span class="font-medium text-sm md:text-base"
-                  >Laddar ur snabbt / Dålig räckvidd</span
-                >
-              </label>
-              <label
-                class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
-              >
-                <input
-                  type="radio"
-                  name="error_type"
-                  value="Batteriet slutade plötsligt att fungera"
-                  class="w-4 h-4 mr-3 md:mr-4 shrink-0"
-                  checked
-                />
-                <span class="font-medium text-sm md:text-base"
-                  >Batteriet slutade plötsligt att fungera</span
-                >
-              </label>
-              <label
-                class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
-              >
-                <input
-                  type="radio"
-                  name="error_type"
-                  value="Batteriet har legat länge, fungerar inte nu"
-                  class="w-4 h-4 mr-3 md:mr-4 shrink-0"
-                />
-                <span class="font-medium text-sm md:text-base"
-                  >Batteriet har legat länge, fungerar inte nu</span
-                >
-              </label>
-              <label
-                class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
-              >
-                <input
-                  type="radio"
-                  name="error_type"
-                  id="radio-upgrade"
-                  value="Uppgradering / Annat"
-                  class="w-4 h-4 mr-3 md:mr-4 shrink-0"
-                />
-                <span class="font-medium text-sm md:text-base">Annat</span>
-              </label>
-            </div>
-  
-            <div class="space-y-2 pt-2 md:pt-4">
-              <label
-                class="text-xs font-bold uppercase tracking-widest text-gray-400"
-                >Tillägg / Fritext</label
-              >
-              <textarea
-                id="form-problem"
-                rows="4"
-                placeholder="Beskriv problemet mer ingående..."
-                class="w-full rounded-xl"
-              ></textarea>
-            </div>
-  
-            <!-- Ändrad flex-direction för mobil -->
-            <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
-              <button
-                type="button"
-                onclick="goToStep(1)"
-                class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition"
-              >
-                Bakåt
-              </button>
-              <button
-                type="button"
-                onclick="goToStep(3)"
-                class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm"
-              >
-                Nästa steg
-              </button>
-            </div>
+          <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Vad är fel på batteriet?</h3>
+          
+          <div class="space-y-3 md:space-y-4">
+            <label class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
+              <input type="radio" name="error_type" value="Laddar ur snabbt / Dålig räckvidd" class="w-4 h-4 md:w-5 md:h-5 mr-3 md:mr-4 shrink-0" />
+              <span class="font-medium text-sm md:text-base">Laddar ur snabbt / Dålig räckvidd</span>
+            </label>
+            <label class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
+              <input type="radio" name="error_type" value="Batteriet slutade plötsligt att fungera" class="w-4 h-4 md:w-5 md:h-5 mr-3 md:mr-4 shrink-0" checked />
+              <span class="font-medium text-sm md:text-base">Batteriet slutade plötsligt att fungera</span>
+            </label>
+            <label class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
+              <input type="radio" name="error_type" value="Batteriet har legat länge, fungerar inte nu" class="w-4 h-4 md:w-5 md:h-5 mr-3 md:mr-4 shrink-0" />
+              <span class="font-medium text-sm md:text-base">Batteriet har legat länge, fungerar inte nu</span>
+            </label>
+            <label class="flex items-center p-3 md:p-4 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
+              <input type="radio" name="error_type" id="radio-upgrade" value="Uppgradering / Annat" class="w-4 h-4 md:w-5 md:h-5 mr-3 md:mr-4 shrink-0" />
+              <span class="font-medium text-sm md:text-base">Uppgradering / Annat</span>
+            </label>
           </div>
   
-        <!-- STEG 3 -->
+          <div class="space-y-2 pt-2 md:pt-4">
+            <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Tillägg / Fritext</label>
+            <textarea id="form-problem" rows="4" placeholder="Beskriv problemet mer ingående..." class="w-full rounded-xl text-sm md:text-base p-3 md:p-4"></textarea>
+          </div>
+          
+          <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
+            <button type="button" onclick="goToStep(1)" class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
+            <button type="button" onclick="goToStep(3)" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm hover:-translate-y-1 transition-transform">Nästa steg</button>
+          </div>
+        </div>
+  
         <div id="step3" class="form-step hidden-step space-y-6">
           <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Dina kontaktuppgifter</h3>
           
           <div class="flex p-1 bg-gray-100 rounded-xl mb-6 md:mb-8">
-            <button type="button" id="btn-private" onclick="setCustomerType('private')" class="flex-1 py-2 md:py-3 text-sm font-medium rounded-lg transition bg-white shadow-sm text-black">Privatperson</button>
-            <button type="button" id="btn-business" onclick="setCustomerType('business')" class="flex-1 py-2 md:py-3 text-sm font-medium rounded-lg transition text-gray-500 hover:text-black">Företagskund</button>
+            <button type="button" id="btn-private" onclick="setCustomerType('private')" class="flex-1 py-2 md:py-3 text-sm md:text-base font-medium rounded-lg transition bg-white shadow-sm text-black">Privatperson</button>
+            <button type="button" id="btn-business" onclick="setCustomerType('business')" class="flex-1 py-2 md:py-3 text-sm md:text-base font-medium rounded-lg transition text-gray-500 hover:text-black">Företagskund</button>
             <input type="hidden" id="form-customer-type" value="private">
           </div>
   
           <div class="space-y-2">
             <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Fullständigt namn</label>
-            <input type="text" id="form-name" placeholder="Förnamn Efternamn" class="w-full rounded-xl" required />
+            <input type="text" id="form-name" name="name" autocomplete="name" placeholder="Förnamn Efternamn" class="w-full rounded-xl text-sm md:text-base p-3 md:p-4" required />
           </div>
           
           <div class="absolute w-0 h-0 opacity-0 -z-10 overflow-hidden" aria-hidden="true">
             <input type="text" id="form-botcheck" name="botcheck" tabindex="-1" autocomplete="off" />
           </div>
   
-          <div class="grid md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="space-y-2">
               <label class="text-xs font-bold uppercase tracking-widest text-gray-400">E-post</label>
-              <input type="email" id="form-email" placeholder="namn@epost.se" class="w-full rounded-xl" required />
+              <input type="email" id="form-email" name="email" autocomplete="email" placeholder="namn@epost.se" class="w-full rounded-xl text-sm md:text-base p-3 md:p-4" required />
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Telefon</label>
-              <input type="tel" id="form-phone" placeholder="070-000 00 00" class="w-full rounded-xl" required />
+              <input type="tel" id="form-phone" name="phone" autocomplete="tel" placeholder="070-000 00 00" class="w-full rounded-xl text-sm md:text-base p-3 md:p-4" required />
             </div>
           </div>
   
           <div id="company-info" class="hidden space-y-4 pt-4 border-t border-gray-100">
-            <div class="grid md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-2">
                 <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Företagsnamn</label>
-                <input type="text" id="form-company-name" placeholder="Företaget AB" class="w-full rounded-xl" />
+                <input type="text" id="form-company-name" name="organization" autocomplete="organization" placeholder="Företaget AB" class="w-full rounded-xl text-sm md:text-base p-3 md:p-4" />
               </div>
               <div class="space-y-2">
                 <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Org. nummer</label>
-                <input type="text" id="form-org-nr" placeholder="556677-8899" class="w-full rounded-xl" />
+                <input type="text" id="form-org-nr" placeholder="556677-8899" class="w-full rounded-xl text-sm md:text-base p-3 md:p-4" />
               </div>
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Referens / Märkning (Valfritt)</label>
-              <input type="text" id="form-reference" placeholder="t.ex. Namn eller Projekt" class="w-full rounded-xl" />
+              <input type="text" id="form-reference" placeholder="t.ex. Namn eller Projekt" class="w-full rounded-xl text-sm md:text-base p-3 md:p-4" />
             </div>
           </div>
   
           <div class="space-y-2">
             <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Adress</label>
-            <input type="text" id="form-address" placeholder="Gatuadress" class="w-full rounded-xl" required />
+            <input type="text" id="form-address" name="street-address" autocomplete="street-address" placeholder="Gatuadress" class="w-full rounded-xl text-sm md:text-base p-3 md:p-4" required />
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-2">
               <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Postnummer</label>
-              <input type="text" id="form-postcode" placeholder="Postnummer" class="w-full rounded-xl" required />
+              <input type="text" id="form-postcode" name="postal-code" autocomplete="postal-code" placeholder="Postnummer" class="w-full rounded-xl text-sm md:text-base p-3 md:p-4" required />
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold uppercase tracking-widest text-gray-400">Ort</label>
-              <input type="text" id="form-city" placeholder="Ort" class="w-full rounded-xl" required />
+              <input type="text" id="form-city" name="city" autocomplete="address-level2" placeholder="Ort" class="w-full rounded-xl text-sm md:text-base p-3 md:p-4" required />
             </div>
           </div>
   
-          <!-- Ändrad flex-direction för mobil -->
           <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
             <button type="button" onclick="goToStep(2)" class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
-            <button type="button" onclick="goToStep(4)" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm">Nästa steg</button>
+            <button type="button" onclick="goToStep(4)" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm hover:-translate-y-1 transition-transform">Nästa steg</button>
           </div>
         </div>
   
-        <!-- STEG 4 -->
         <div id="step4" class="form-step hidden-step space-y-6">
-          <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Leverans & Godkännande</h3>
+          <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Leverans</h3>
           
           <div class="space-y-3 md:space-y-4">
             <label class="flex items-start p-4 md:p-6 bg-[#f8f5f1] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
-              <input type="radio" name="shipping" id="ship-self" value="Hämtas i Uppsala (Köpt produkt)" class="w-4 h-4 mr-3 md:mr-4 mt-1 shrink-0" checked />
+              <input type="radio" name="shipping" id="ship-self" value="Lämnas i Uppsala (Reparation)" class="w-4 h-4 md:w-5 md:h-5 mr-3 md:mr-4 mt-0.5 md:mt-1 shrink-0" checked />
               <div>
-                <p class="font-medium text-sm md:text-base">Jag hämtar min order hos er i Uppsala</p>
-                <p class="text-xs md:text-sm text-gray-500 mt-1">Gratis. Vi mailar när ordern är redo.</p>
+                <p class="font-medium text-sm md:text-base">Jag lämnar in batteriet hos er i Uppsala</p>
+                <p class="text-xs md:text-sm text-gray-500 mt-1">Gratis. Vi mailar inlämningsinstruktioner.</p>
               </div>
             </label>
             <label class="flex items-start p-4 md:p-6 bg-[#f8f5f1] rounded-2xl cursor-pointer hover:ring-2 ring-black transition">
-              <input type="radio" name="shipping" id="ship-label" value="Skickas med ombud (Köpt produkt)" class="w-4 h-4 mr-3 md:mr-4 mt-1 shrink-0" />
+              <input type="radio" name="shipping" id="ship-label" value="Skickas in med frakt (Reparation)" class="w-4 h-4 md:w-5 md:h-5 mr-3 md:mr-4 mt-0.5 md:mt-1 shrink-0" />
               <div>
                 <p class="font-medium text-sm md:text-base">Vi skickar vidare instruktioner via mail.</p>
-                <p class="text-xs md:text-sm text-gray-500 mt-1">Du står för frakten hit, vi bjuder på frakten tillbaka.
-                    Vi skickar vidare instruktioner via mail.</p>
+                <p class="text-xs md:text-sm text-gray-500 mt-1">Du står för frakten hit, vi bjuder på frakten tillbaka när reparationen är klar.</p>
               </div>
             </label>
           </div>
   
-          
-          <div class="space-y-4 pt-6 border-t border-gray-100">
-            <label class="flex items-start cursor-pointer group">
-              <div class="flex items-center h-5">
-                <input
-                  type="checkbox"
-                  id="form-terms"
-                  class="w-4 h-4 border-gray-300 rounded text-black focus:ring-black shrink-0"
-                  required
-                />
-              </div>
-              <div class="ml-3 text-sm">
-                <span class="text-gray-700">Jag godkänner </span>
-                <a
-                  href="/allmanna-villkor.html"
-                  target="_blank"
-                  class="text-black underline hover:text-gray-600"
-                  >allmänna villkor & fraktvillkor</a
-                >
-                <span class="text-red-500">*</span>
-              </div>
-            </label>
-  
-            <label class="flex items-start cursor-pointer group">
-              <div class="flex items-center h-5">
-                <input
-                  type="checkbox"
-                  id="form-privacy"
-                  class="w-4 h-4 border-gray-300 rounded text-black focus:ring-black shrink-0"
-                  required
-                />
-              </div>
-              <div class="ml-3 text-sm">
-                <span class="text-gray-700"
-                  >Jag har tagit del av hur ni behandlar mina
-                  personuppgifter enligt er
-                </span>
-                <a
-                  href="/integritetspolicy"
-                  target="_blank"
-                  class="text-black underline hover:text-gray-600"
-                  >integritetspolicy</a
-                >
-                <span class="text-red-500">*</span>
-              </div>
-            </label>
-          </div>
-  
-          <!-- Ändrad flex-direction för mobil -->
-          <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
+          <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8 border-t border-gray-100">
             <button type="button" onclick="goToStep(3)" class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
-            <button type="submit" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm">Bekräfta beställning</button>
+            <button type="button" onclick="goToStep(5)" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm hover:-translate-y-1 transition-transform">Nästa steg</button>
           </div>
         </div>
+  
+        <div id="step5" class="form-step hidden-step space-y-6">
+          <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Översikt & Bekräftelse</h3>
+          
+          <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 md:p-6 mb-6">
+            <h4 class="font-semibold text-base md:text-lg border-b border-gray-200 pb-3 mb-4">Sammanfattning</h4>
+            <div class="space-y-3 text-sm md:text-base text-gray-700">
+               <div class="flex justify-between">
+                  <span class="text-gray-500">Produkt</span>
+                  <span id="summary-model" class="font-medium text-right">Laddar...</span>
+               </div>
+               <div class="flex justify-between">
+                  <span class="text-gray-500">Typ</span>
+                  <span class="font-medium">Reparation / Renovering</span>
+               </div>
+            </div>
+  
+            <div class="mt-6 bg-white p-4 md:p-5 rounded-xl border border-gray-100">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-sm md:text-base text-gray-500">Pris</span>
+                <span id="original-price" class="font-medium text-sm md:text-base">...</span>
+              </div>
+              
+              <div id="discount-row" class="flex justify-between items-center mb-2 text-green-600 hidden text-sm md:text-base">
+                <span>Rabatt (<span id="discount-percent-display">0</span>%)</span>
+                <span id="discount-amount">-0 kr</span>
+              </div>
+  
+              <div class="flex justify-between items-center pt-2 border-t border-gray-100 mt-2">
+                <span class="font-semibold text-base md:text-lg">Att betala</span>
+                <span id="final-price" class="font-bold text-lg md:text-xl">...</span>
+              </div>
+            </div>
+          </div>
+  
+          <div class="mb-6 md:mb-8">
+            <label class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-2">Har du en rabattkod?</label>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <input type="text" id="discount-input" placeholder="T.ex. RABATT20" class="w-full sm:flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 md:py-4 uppercase focus:ring-2 focus:ring-black outline-none transition text-sm md:text-base">
+              <button type="button" id="apply-discount-btn" onclick="checkDiscountCode()" class="w-full sm:w-auto shrink-0 bg-black text-white px-6 py-3 md:py-4 rounded-xl font-medium hover:scale-[1.02] transition text-sm md:text-base">
+                Använd
+              </button>
+            </div>
+            <p id="discount-message" class="text-sm mt-2 hidden"></p>
+          </div>
+  
+          <div class="space-y-4 pt-6 border-t border-gray-200">
+            <label class="flex items-start cursor-pointer group">
+              <div class="flex items-center h-5">
+                <input type="checkbox" id="form-terms" class="w-4 h-4 md:w-5 md:h-5 border-gray-300 rounded text-black focus:ring-black shrink-0" required />
+              </div>
+              <div class="ml-3 text-xs md:text-sm">
+                <span class="text-gray-700">Jag godkänner </span>
+                <a href="/allmanna-villkor.html" target="_blank" class="text-black underline hover:text-gray-600">allmänna villkor & fraktvillkor</a>
+                <span class="text-red-500">*</span>
+              </div>
+            </label>
+  
+            <label class="flex items-start cursor-pointer group">
+              <div class="flex items-center h-5">
+                <input type="checkbox" id="form-privacy" class="w-4 h-4 md:w-5 md:h-5 border-gray-300 rounded text-black focus:ring-black shrink-0" required />
+              </div>
+              <div class="ml-3 text-xs md:text-sm">
+                <span class="text-gray-700">Jag har tagit del av hur ni behandlar mina personuppgifter enligt er </span>
+                <a href="/integritetspolicy" target="_blank" class="text-black underline hover:text-gray-600">integritetspolicy</a>
+                <span class="text-red-500">*</span>
+              </div>
+            </label>
+          </div>
+  
+          <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
+            <button type="button" onclick="goToStep(4)" class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
+            <button type="submit" id="submit-btn" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm hover:-translate-y-1 transition-transform">Skicka in</button>
+          </div>
+        </div>
+  
       </form>
     </div>
   </section>

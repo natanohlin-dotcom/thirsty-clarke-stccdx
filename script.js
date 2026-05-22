@@ -109,20 +109,84 @@ function switchPage(pageId, scrollToSection = null) {
   }
 }
 
-// Formulärlogik (Hantera stegen i flerstegsformuläret)
-function goToStep(step) {
-  // Göm alla steg
-  document
-    .querySelectorAll(".form-step")
-    .forEach((el) => el.classList.add("hidden-step"));
-  // Visa valt steg
-  document.getElementById("step" + step).classList.remove("hidden-step");
+// Hjälpfunktion för att validera ett specifikt steg
+function validateStep(stepId) {
+  const stepEl = document.getElementById(stepId);
+  if (!stepEl) return true;
 
-  // Uppdatera progress bar (Nu uppdaterad till 4 steg)
-  for (let i = 1; i <= 4; i++) {
+  // Leta upp alla fält inuti detta steg som har 'required' i HTML-koden
+  const requiredFields = stepEl.querySelectorAll("[required]");
+  let isValid = true;
+
+  requiredFields.forEach((field) => {
+    // 1. Rensa eventuella gamla felmeddelanden först (så de inte staplas)
+    const oldError = field.nextElementSibling;
+    if (oldError && oldError.classList.contains("error-msg")) {
+      oldError.remove();
+    }
+    field.classList.remove("border-red-500", "ring-1", "ring-red-500");
+
+    // 2. Kolla om fältet är tomt (eller om en checkbox är urkryssad)
+    if (!field.value.trim() || (field.type === "checkbox" && !field.checked)) {
+      isValid = false;
+
+      // Lägg till röda varning-klasser på själva input-fältet
+      field.classList.add("border-red-500", "ring-1", "ring-red-500");
+
+      // Skapa en liten röd varningstext
+      const errorText = document.createElement("p");
+      errorText.className = "error-msg text-red-500 text-xs mt-1 font-medium";
+      errorText.innerText = "Detta fält måste fyllas i.";
+
+      // Lägg in texten precis under fältet
+      field.parentNode.insertBefore(errorText, field.nextSibling);
+
+      // SMART DETALJ: Lyssna på när kunden börjar skriva, och ta då bort det röda direkt!
+      field.addEventListener("input", function removeError() {
+        field.classList.remove("border-red-500", "ring-1", "ring-red-500");
+        if (errorText.parentNode) errorText.remove();
+        field.removeEventListener("input", removeError); // Städa upp lyssnaren
+      });
+    }
+  });
+
+  return isValid;
+}
+
+// Uppdaterad Formulärlogik
+function goToStep(targetStep) {
+  // Ta reda på vilket steg vi befinner oss på just nu
+  const currentStepEl = document.querySelector(".form-step:not(.hidden-step)");
+  let currentStep = 1;
+
+  if (currentStepEl) {
+    // Plockar ut siffran från ID:t, t.ex. "step3" -> 3
+    currentStep = parseInt(currentStepEl.id.replace("step", ""));
+  }
+
+  // SPÄRREN: Om vi försöker gå FRAMÅT, validera det nuvarande steget först!
+  if (targetStep > currentStep) {
+    const isStepValid = validateStep("step" + currentStep);
+
+    // Om något saknades, avbryt hela funktionen och stanna på sidan
+    if (!isStepValid) {
+      return;
+    }
+  }
+
+  // Om vi passerade spärren (eller går bakåt), kör vi koden som byter vy
+  document.querySelectorAll(".form-step").forEach((el) => {
+    el.classList.add("hidden-step");
+  });
+
+  // Visa valt steg
+  document.getElementById("step" + targetStep).classList.remove("hidden-step");
+
+  // Uppdatera progress bar (5 steg)
+  for (let i = 1; i <= 5; i++) {
     const p = document.getElementById("p-" + i);
     if (p) {
-      if (i <= step) {
+      if (i <= targetStep) {
         p.classList.remove("bg-gray-200");
         p.classList.add("bg-black");
       } else {
@@ -130,15 +194,116 @@ function goToStep(step) {
         p.classList.add("bg-gray-200");
       }
     }
-    // NYTT: Scrolla upp till toppen av formuläret mjukt
-    const formSection = document.getElementById("skicka-in");
-    if (formSection) {
-      // block: 'start' innebär att den scrollar så att toppen av elementet hamnar högst upp på skärmen
-      formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // Scrolla upp till toppen av formuläret mjukt (flyttade ut denna från loopen så den bara körs en gång)
+  const formSection = document.getElementById("skicka-in");
+  if (formSection) {
+    formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+// URL till ditt Google Apps Script (Web App)
+const GOOGLE_SCRIPT_URL_ =
+  "https://script.google.com/macros/s/AKfycbx-ZW7Z_ZZrCNWGj5Em09_Qvc_0HUC1Qp9rPo2txXVhTzLh1j-yk8RS_dAZSwAfuC-w/exec";
+let currentDiscountPercent = 0;
+
+// NYTT: Funktion som hämtar det aktuella priset dynamiskt från minnet
+function getDynamicBasePrice() {
+  const savedData = sessionStorage.getItem("prefilledBattery");
+  if (savedData) {
+    const battery = JSON.parse(savedData);
+    if (battery.price) {
+      // Rensar bort allt utom siffror (t.ex. "4 500 kr" blir 4500)
+      return parseInt(String(battery.price).replace(/\D/g, "")) || 0;
+    }
+  }
+  return 0; // Om inget pris finns
+}
+
+async function checkDiscountCode() {
+  const inputField = document.getElementById("discount-input");
+  const btn = document.getElementById("apply-discount-btn");
+  const code = inputField.value.trim().toUpperCase();
+
+  if (!code) {
+    showMessage("Vänligen ange en rabattkod.", "text-red-500");
+    return;
+  }
+
+  // Visuell feedback att vi laddar
+  btn.innerText = "Laddar...";
+  btn.disabled = true;
+
+  try {
+    const response = await fetch(`${GOOGLE_SCRIPT_URL}?code=${code}`);
+    const data = await response.json();
+
+    if (data.success) {
+      currentDiscountPercent = data.discount;
+      showMessage(
+        `Rabattkod aktiverad! ${data.discount}% dras av.`,
+        "text-green-600"
+      );
+
+      // Beräkna det dynamiska priset
+      updatePriceDisplay();
+
+      inputField.disabled = true;
+      btn.innerText = "Tillagd";
+    } else {
+      showMessage("Ogiltig eller utgången rabattkod.", "text-red-500");
+      currentDiscountPercent = 0;
+      updatePriceDisplay();
+
+      btn.innerText = "Använd";
+      btn.disabled = false;
+    }
+  } catch (error) {
+    showMessage(
+      "Något gick fel vid verifieringen. Försök igen.",
+      "text-red-500"
+    );
+    btn.innerText = "Använd";
+    btn.disabled = false;
+  }
+}
+
+function updatePriceDisplay() {
+  // Hämtar priset dynamiskt härifrån nu!
+  const basePrice = getDynamicBasePrice();
+
+  const discountRow = document.getElementById("discount-row");
+  const discountPercentDisplay = document.getElementById(
+    "discount-percent-display"
+  );
+  const discountAmountDisplay = document.getElementById("discount-amount");
+  const finalPriceDisplay = document.getElementById("final-price");
+
+  if (currentDiscountPercent > 0 && basePrice > 0) {
+    const discountAmount = basePrice * (currentDiscountPercent / 100);
+    const finalPrice = basePrice - discountAmount;
+
+    discountPercentDisplay.innerText = currentDiscountPercent;
+    discountAmountDisplay.innerText = `-${Math.round(discountAmount)} kr`;
+    finalPriceDisplay.innerText = `${Math.round(finalPrice)} kr`;
+
+    discountRow.classList.remove("hidden");
+  } else {
+    discountRow.classList.add("hidden");
+    if (finalPriceDisplay) {
+      finalPriceDisplay.innerText = `${
+        basePrice > 0 ? basePrice + " kr" : "0 kr"
+      }`;
     }
   }
 }
 
+function showMessage(text, colorClass) {
+  const messageEl = document.getElementById("discount-message");
+  messageEl.innerText = text;
+  messageEl.className = `text-sm mt-2 ${colorClass}`;
+  messageEl.classList.remove("hidden");
+}
 // Hantera formulärets inskick
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycby7isjI1_maZZcYI0xKWsUQzx-37m8p-Zk5-ZbrCjentCfPbQ3bISgvWpjrq6dZ5JmpjA/exec";
@@ -371,6 +536,14 @@ window.selectBatteryOption = function (
   window.location.href = "/index#skicka-in";
 };
 
+// Variabel för att tillfälligt minnas vilket batteri kunden klickade på
+let currentSelectedBattery = null;
+
+// Säkra att baspriset finns (ifall rabattkods-scriptet inte laddats än)
+if (typeof currentBasePrice === "undefined") {
+  window.currentBasePrice = 4500;
+}
+
 // LOGIK FÖR AUTOFILL NÄR MAN LANDAR PÅ FORMULÄRET
 document.addEventListener("DOMContentLoaded", function () {
   const repairForm = document.getElementById("repairForm");
@@ -378,41 +551,82 @@ document.addEventListener("DOMContentLoaded", function () {
   if (repairForm) {
     const savedData = sessionStorage.getItem("prefilledBattery");
 
+    // Hämta textfälten vi vill ändra
+    const step1Display = document.getElementById("display-step1-model");
+    const summaryModel = document.getElementById("summary-model");
+    const originalPriceEl = document.getElementById("original-price");
+    const finalPriceEl = document.getElementById("final-price");
+
     if (savedData) {
+      // 1. DATA FINNS! Kunden har kommit hit via en knapp.
       const battery = JSON.parse(savedData);
 
+      // Fyller de DOLDA input-fälten
       if (document.getElementById("form-brand"))
         document.getElementById("form-brand").value = battery.brand || "";
       if (document.getElementById("form-model"))
         document.getElementById("form-model").value = battery.model || "";
       if (document.getElementById("form-voltage"))
         document.getElementById("form-voltage").value = battery.voltage || "";
-      // SMART LOGIK FÖR KAPACITET
+
+      let finalCapacity = battery.capacity || "";
       if (document.getElementById("form-capacity")) {
-        // Om det är en order, fyll i den kapacitet de valt att köpa. Annars originalkapacitet.
         if (battery.action === "order") {
-          document.getElementById("form-capacity").value =
-            battery.selectedCap || "";
+          finalCapacity = battery.selectedCap || "";
+          document.getElementById("form-capacity").value = finalCapacity;
         } else {
-          document.getElementById("form-capacity").value =
-            battery.capacity || "";
+          document.getElementById("form-capacity").value = finalCapacity;
         }
       }
-      // Fyll i fritexten
+
+      // Bygg ihop en snygg sträng
+      const brand = battery.brand || "";
+      const model = battery.model || "Okänd modell";
+      const voltage = battery.voltage ? `${battery.voltage}V` : "";
+      const displayName =
+        `${brand} ${model}`.trim() +
+        (voltage || finalCapacity
+          ? ` - ${voltage}${
+              voltage && finalCapacity ? ", " : ""
+            }${finalCapacity}`
+          : "");
+
+      // Skriv ut namnet på skärmen
+      if (step1Display) step1Display.innerText = displayName;
+      if (summaryModel) summaryModel.innerText = displayName;
+
+      // Uppdatera priset om det skickades med
+      if (battery.price) {
+        const parsedPrice = parseInt(String(battery.price).replace(/\D/g, ""));
+        if (!isNaN(parsedPrice)) {
+          currentBasePrice = parsedPrice;
+        }
+      }
+
+      // Skriv ut startpriset
+      if (originalPriceEl) originalPriceEl.innerText = `${currentBasePrice} kr`;
+      if (finalPriceEl) finalPriceEl.innerText = `${currentBasePrice} kr`;
+
+      // Fyll i fritexten & radioknappar
       if (document.getElementById("form-problem")) {
         document.getElementById("form-problem").value = battery.problem || "";
-
-        // NYTT: Om texten innehåller ordet "Uppgradera", bocka i rätt radioknapp i det nya steget
         if (battery.problem && battery.problem.includes("Uppgradera")) {
           const upgradeRadio = document.getElementById("radio-upgrade");
           if (upgradeRadio) upgradeRadio.checked = true;
         }
       }
+    } else {
+      // 2. INGEN DATA FINNS (Sessionen är tom)
+      // Om kunden laddar om sidan direkt eller surfar hit via URL
+      if (step1Display)
+        step1Display.innerText =
+          "Inget batteri valt. Gå tillbaka och välj en modell.";
+      if (summaryModel) summaryModel.innerText = "Inget batteri valt.";
+      if (originalPriceEl) originalPriceEl.innerText = "0 kr";
+      if (finalPriceEl) finalPriceEl.innerText = "0 kr";
     }
   }
 });
-// Variabel för att tillfälligt minnas vilket batteri kunden klickade på
-let currentSelectedBattery = null;
 
 // Öppnar modalen och sätter in datan
 window.openActionModal = function (
@@ -704,11 +918,7 @@ function moveStandaloneSlide(sliderId, step) {
 
   let newIndex = standaloneSliders[sliderId] + step;
 
-  // Snurra runt om vi når slutet eller början
-  if (newIndex >= images.length) newIndex = 0;
-  if (newIndex < 0) newIndex = images.length - 1;
-
-  goToStandaloneSlide(sliderId, newIndex);
+  // Snurra runt om vi når sluteogoToStandaloneSlide(sliderId, newIndex);
 }
 
 function goToStandaloneSlide(sliderId, index) {
