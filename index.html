@@ -75,18 +75,23 @@
     <script defer src="script.js"></script>
   </head>
   <body>
-    
     <nav class="fixed w-full z-50 px-6 py-4">
       <div
         class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative"
       >
         <a
           href="/index"
-          class="text-xl font-semibold tracking-tighter hover:opacity-70 transition"
+          class="flex items-center gap-3 text-xl font-semibold tracking-tighter hover:opacity-70 transition"
         >
-          batterilabbet.
+          <img
+            src="assets/batterlabbet_potential_logo.png"
+            alt="Batterilabbet"
+            class="w-10 h-10 rounded-md object-cover"
+          />
+
+          <span>BATTERILABBET</span>
         </a>
-    
+
         <div class="hidden md:flex gap-8 text-sm font-medium">
           <a href="/reparation" class="hover:opacity-60 transition"
             >Vår process</a
@@ -97,7 +102,7 @@
           >
           <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
         </div>
-    
+
         <div class="flex items-center">
           <a
             href="/hitta-din-modell"
@@ -106,7 +111,7 @@
             <span>Sök batterimodell</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </a>
-    
+
           <button
             id="mobile-menu-btn"
             class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-2"
@@ -115,7 +120,7 @@
           </button>
         </div>
       </div>
-    
+
       <div id="mobile-menu" class="hidden md:hidden max-w-7xl mx-auto mt-2">
         <div
           class="bg-white/95 backdrop-blur-md rounded-3xl border border-black/5 shadow-xl p-6 flex flex-col gap-6 text-center text-lg font-medium"
@@ -127,9 +132,9 @@
             <span>Sök batterimodell</span>
             <i data-lucide="arrow-right" class="w-5 h-5"></i>
           </a>
-    
+
           <div class="h-px bg-gray-200 w-full rounded-full"></div>
-    
+
           <a href="/reparation" class="mobile-link hover:opacity-60 transition"
             >Vår process</a
           >
@@ -149,102 +154,105 @@
     </nav>
 
     <main id="view-main" class="page-view active">
-      <section class="pt-40 pb-5 px-6">
-        <div class="max-w-4xl mx-auto text-center">
-          <h1 class="text-6xl md:text-8xl font-medium tracking-tight mb-16">
-            Ge ditt batteri <br /><span class="italic text-gray-400"
-              >nytt liv.</span
-            >
-          </h1>
-          <div class="flex flex-col md:flex-row justify-center gap-4">
-            <a
-              href="/hitta-din-modell"
-              class="btn-primary px-10 py-5 rounded-full text-lg font-medium hover:-translate-y-1 hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center gap-2"
-            >
-              Sök batterimodell
-              <i data-lucide="arrow-right" class="w-5 h-5"></i>
-            </a>
-            <a
-              href="/reparation"
-              class="bg-white border border-black/10 px-10 py-5 rounded-full text-lg font-medium hover:bg-gray-50 hover:-translate-y-1 hover:shadow-md transition-all duration-300 inline-flex items-center justify-center"
-            >
-              Varför reparera?
-            </a>
+      <div class="relative bg-[#faf9f6] bg-cover bg-center bg-no-repeat">
+        <div class="absolute inset-0 backdrop-blur-[2px]"></div>
+        <!-- url('photos/downroad.png') bg-white /80 -->
+
+        <section class="relative pt-40 pb-5 px-6">
+          <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-6xl md:text-8xl font-medium tracking-tight mb-16">
+              Ge ditt batteri
+              </br>
+            
+              <span
+                class="italic bg-gradient-to-tr from-[#0b5394] to-[#25b3a3] text-transparent bg-clip-text pr-4"
+              >
+                nytt liv</span>
+            </h1>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+              <a
+                href="/hitta-din-modell"
+                class="btn-primary px-10 py-5 rounded-full text-lg font-medium hover:-translate-y-1 hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center gap-2"
+              >
+                Sök batterimodell
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+              </a>
+              <a
+                href="/reparation"
+                class="bg-white border border-black/10 px-10 py-5 rounded-full text-lg font-medium hover:bg-gray-50 hover:-translate-y-1 hover:shadow-md transition-all duration-300 inline-flex items-center justify-center"
+              >
+                Varför reparera?
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
 
-      <section id="hur-det-funkar" class="py-16 px-6 scroll-mt-20">
-        <div class="max-w-7xl mx-auto">
-          <div
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8"
-          >
-            <!-- Kort 1 (Ändrad till <a>) -->
-            <a
-              href="/hitta-din-modell"
-              class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+        <section id="hur-det-funkar" class="relative py-16 px-6 scroll-mt-20">
+          <div class="max-w-7xl mx-auto">
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8"
             >
-              <i data-lucide="edit-3" class="mb-6 w-8 h-8"></i>
-              <h3 class="text-xl font-medium mb-4">1. Boka online</h3>
-              <p class="text-gray-500">
-                Bläddra bland vanliga modeller eller fyll i din modell själv.
-              </p>
-            </a>
+              <a
+                href="/hitta-din-modell"
+                class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+              >
+                <i data-lucide="edit-3" class="mb-6 w-8 h-8"></i>
+                <h3 class="text-xl font-medium mb-4">1. Boka online</h3>
+                <p class="text-gray-500">
+                  Bläddra bland vanliga modeller eller fyll i din modell själv.
+                </p>
+              </a>
 
-            <!-- Kort 2 (Ändrad till <a>) -->
-            <a
-              href="/frakt"
-              class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-            >
-              <i data-lucide="package" class="mb-6 w-8 h-8"></i>
-              <h3 class="text-xl font-medium mb-4">2. Skicka in</h3>
-              <p class="text-gray-500">
-                Du får instruktioner om hur du packar och skickar batteriet till
-                oss.
-              </p>
-            </a>
+              <a
+                href="/frakt"
+                class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+              >
+                <i data-lucide="package" class="mb-6 w-8 h-8"></i>
+                <h3 class="text-xl font-medium mb-4">2. Skicka in</h3>
+                <p class="text-gray-500">
+                  Du får instruktioner om hur du packar och skickar batteriet
+                  till oss.
+                </p>
+              </a>
 
-            <!-- Kort 3 (Ändrad till <a>) -->
-            <a
-              href="/reparation"
-              class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-            >
-              <i data-lucide="search" class="mb-6 w-8 h-8 text-black"></i>
-              <h3 class="text-xl font-medium mb-4">3. Felsökning</h3>
-              <p class="text-gray-500">
-                Vi analyserar celler och BMS noggrant för att hitta den exakta
-                felkällan.
-              </p>
-            </a>
+              <a
+                href="/reparation"
+                class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+              >
+                <i data-lucide="search" class="mb-6 w-8 h-8 text-black"></i>
+                <h3 class="text-xl font-medium mb-4">3. Felsökning</h3>
+                <p class="text-gray-500">
+                  Vi analyserar celler och BMS noggrant för att hitta den exakta
+                  felkällan.
+                </p>
+              </a>
 
-            <!-- Kort 4 (Ändrad till <a>) -->
-            <a
-              href="/reparation"
-              class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-            >
-              <i data-lucide="zap" class="mb-6 w-8 h-8"></i>
-              <h3 class="text-xl font-medium mb-4">4. Vi reparerar</h3>
-              <p class="text-gray-500">
-                Vi byter celler och BMS med kvalitetskompontenter.
-              </p>
-            </a>
+              <a
+                href="/reparation"
+                class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+              >
+                <i data-lucide="zap" class="mb-6 w-8 h-8"></i>
+                <h3 class="text-xl font-medium mb-4">4. Vi reparerar</h3>
+                <p class="text-gray-500">
+                  Vi byter celler och BMS med kvalitetskompontenter.
+                </p>
+              </a>
 
-            <!-- Kort 5 (Ändrad till <a>) -->
-            <a
-              href="/frakt"
-              class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-            >
-              <i data-lucide="truck" class="mb-6 w-8 h-8"></i>
-              <h3 class="text-xl font-medium mb-4">5. Retur</h3>
-              <p class="text-gray-500">
-                Batteriet testas och skickas tillbaka till dig, redo för många
-                nya mil.
-              </p>
-            </a>
+              <a
+                href="/frakt"
+                class="glass-card p-8 lg:p-10 block cursor-pointer hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+              >
+                <i data-lucide="truck" class="mb-6 w-8 h-8"></i>
+                <h3 class="text-xl font-medium mb-4">5. Retur</h3>
+                <p class="text-gray-500">
+                  Batteriet testas och skickas tillbaka till dig, redo för många
+                  nya mil.
+                </p>
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <section
         id="säkerhet-kvalitet"
@@ -255,12 +263,12 @@
         >
           <div class="md:w-1/2">
             <h2 class="text-5xl font-medium tracking-tight mb-8">
-              Hållbarhet, säkerhet och kvalitet.
+              Hållbart, säkert och kvalitativt
             </h2>
             <p class="text-xl text-gray-500 leading-relaxed mb-6">
-              Det är våra ledord. Vi tror på att istället för att slänga ett
-              dyrt elcykelbatteri bara för att några celler blivit trötta kan det
-              renoveras till nyskick av oss, med riktigt kvalitetsstämpel: vår
+              Vi tror på att istället för att slänga ett dyrt elcykelbatteri
+              bara för att några celler blivit trötta kan det renoveras till
+              nyskick av oss, med riktigt kvalitetsstämpel: vår
               reparationsprocess är den enda i Sverige som är CE-märkt.
             </p>
 
@@ -321,7 +329,7 @@
       <section id="faq" class="py-24 px-6 bg-white scroll-mt-24">
         <div class="max-w-3xl mx-auto">
           <h2 class="text-4xl font-medium mb-16 text-center">
-            Vanliga frågor.
+            Vanliga frågor
           </h2>
           <div class="space-y-8">
             <div class="border-b border-gray-100 pb-8">
@@ -414,9 +422,15 @@
           <a
             href="/index"
             class="text-2xl font-semibold mb-2 text-left hover:opacity-70 transition"
-            >batterilabbet.</a
+            >BATTERILABBET</a
           >
           <p class="text-gray-400">Powered by science. Made in Uppsala.</p>
+          
+          <p><img
+            src="assets/batterlabbet_potential_logo.png"
+            alt="Batterilabbet"
+            class="w-20 h-20 rounded-md object-cover"
+          /></p>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
           <div class="space-y-4">
