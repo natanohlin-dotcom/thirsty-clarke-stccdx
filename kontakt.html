@@ -569,55 +569,19 @@
                   </button>
                 </div>
               </div>
-
               <!-- STEG 4 -->
               <div id="step4" class="form-step hidden-step space-y-6">
                 <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">
-                  Fraktval & Godkännande
+                  Skicka in förfrågan. Vi återkommer via mail.
                 </h3>
-                <div class="space-y-3 md:space-y-4">
-                  <label
-                    class="flex items-start p-4 md:p-6 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
-                  >
-                    <input
-                      type="radio"
-                      name="shipping"
-                      id="ship-self"
-                      value="Skickar in själv"
-                      class="w-4 h-4 mr-4 mt-1 shrink-0"
-                      checked
-                    />
-                    <div>
-                      <p class="font-medium text-sm md:text-base">
-                        Jag lämnar in hos er i Uppsala
-                      </p>
-                      <p class="text-xs md:text-sm text-gray-500 mt-1">
-                        Vi skickar vidare instruktioner via mail.
-                      </p>
-                    </div>
-                  </label>
-                  <label
-                    class="flex items-start p-4 md:p-6 bg-[#F3F2EE] rounded-2xl cursor-pointer hover:ring-2 ring-black transition"
-                  >
-                    <input
-                      type="radio"
-                      name="shipping"
-                      id="ship-label"
-                      value="Vill ha fraktsedel (149kr)"
-                      class="w-4 h-4 mr-4 mt-1 shrink-0"
-                    />
-                    <div>
-                      <p class="font-medium text-sm md:text-base">
-                        Skicka in ditt batteri till oss
-                      </p>
-                      <p class="text-xs md:text-sm text-gray-500 mt-1">
-                        Du står för frakten hit, vi bjuder på frakten tillbaka.
-                        Vi skickar vidare instruktioner via mail.
-                      </p>
-                    </div>
-                  </label>
-                </div>
-
+                <input
+                  type="radio"
+                  name="shipping"
+                  id="ship-self"
+                  value="Allmänt inskick"
+                  class="hidden"
+                  checked
+                />
                 <div class="space-y-4 pt-6 border-t border-gray-100">
                   <!-- Godkännande-checkboxar är desamma, men shrink-0 rekommenderas på inputs för säkerhets skull -->
                   <label class="flex items-start cursor-pointer group">
