@@ -918,7 +918,12 @@ function moveStandaloneSlide(sliderId, step) {
 
   let newIndex = standaloneSliders[sliderId] + step;
 
-  // Snurra runt om vi når sluteogoToStandaloneSlide(sliderId, newIndex);
+  // Snurra runt om vi når slutet eller början
+  if (newIndex >= images.length) newIndex = 0;
+  if (newIndex < 0) newIndex = images.length - 1;
+
+  // Denna rad hade råkat bli en kommentar! Nu byter den bild som den ska.
+  goToStandaloneSlide(sliderId, newIndex);
 }
 
 function goToStandaloneSlide(sliderId, index) {
