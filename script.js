@@ -1,26 +1,68 @@
-// Initiera ikoner från Lucide
+// ==========================================
+// 1. INITIERING & GRUNDFUNKTIONER
+// ==========================================
 lucide.createIcons();
-// Håller koll på vilken bild som visas i varje kort (CardIndex: ImageIndex)
-window.slideStates = {};
 
-// Funktion för att byta bild i slideshowen
+// Flik-motor (Single Page Navigation)
+function switchPage(pageId, scrollToSection = null) {
+  document.querySelectorAll(".page-view").forEach((el) => {
+    el.classList.remove("active");
+  });
+  document.getElementById("view-" + pageId).classList.add("active");
+
+  if (scrollToSection && pageId === "main") {
+    setTimeout(() => {
+      document
+        .getElementById(scrollToSection)
+        .scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  } else {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+// Mobilmeny
+document.addEventListener("DOMContentLoaded", function () {
+  const mobileBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const mobileLinks = document.querySelectorAll(".mobile-link");
+
+  if (mobileBtn && mobileMenu) {
+    mobileBtn.addEventListener("click", () =>
+      mobileMenu.classList.toggle("hidden")
+    );
+    mobileLinks.forEach((link) =>
+      link.addEventListener("click", () => mobileMenu.classList.add("hidden"))
+    );
+    document.addEventListener("click", (event) => {
+      const isMenuOpen = !mobileMenu.classList.contains("hidden");
+      const isClickOutsideMenu = !mobileMenu.contains(event.target);
+      const isClickOutsideBtn = !mobileBtn.contains(event.target);
+      if (isMenuOpen && isClickOutsideMenu && isClickOutsideBtn) {
+        mobileMenu.classList.add("hidden");
+      }
+    });
+  }
+});
+
+// ==========================================
+// 2. SLIDERS & SWIPE (Mobil)
+// ==========================================
+window.slideStates = {};
+const standaloneSliders = {};
+
 function changeSlide(cardIndex, direction, totalSlides) {
   let currentIndex = window.slideStates[cardIndex];
   let newIndex = currentIndex + direction;
-
-  // Snurra runt om vi når slutet/början
   if (newIndex >= totalSlides) newIndex = 0;
   if (newIndex < 0) newIndex = totalSlides - 1;
 
-  // Göm den gamla bilden och pricken
   document
     .getElementById(`slide-${cardIndex}-${currentIndex}`)
     .classList.replace("opacity-100", "opacity-0");
   document
     .getElementById(`dot-${cardIndex}-${currentIndex}`)
     .classList.replace("bg-black", "bg-black/20");
-
-  // Visa den nya bilden och pricken
   document
     .getElementById(`slide-${cardIndex}-${newIndex}`)
     .classList.replace("opacity-0", "opacity-100");
@@ -28,197 +70,757 @@ function changeSlide(cardIndex, direction, totalSlides) {
     .getElementById(`dot-${cardIndex}-${newIndex}`)
     .classList.replace("bg-black/20", "bg-black");
 
-  // Uppdatera minnet
   window.slideStates[cardIndex] = newIndex;
 }
-// Smart funktion för att upptäcka swipes på touch-skärmar
+
 function enableSwipe(element, onSwipeLeft, onSwipeRight) {
   let touchStartX = 0;
   let touchEndX = 0;
-
   element.addEventListener(
     "touchstart",
-    function (event) {
-      touchStartX = event.changedTouches[0].screenX;
-    },
+    (e) => (touchStartX = e.changedTouches[0].screenX),
     { passive: true }
   );
-
   element.addEventListener(
     "touchend",
-    function (event) {
-      touchEndX = event.changedTouches[0].screenX;
-      handleSwipe();
+    (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const minSwipeDistance = 50;
+      const swipeDistance = touchEndX - touchStartX;
+      if (swipeDistance < -minSwipeDistance) onSwipeLeft();
+      else if (swipeDistance > minSwipeDistance) onSwipeRight();
     },
     { passive: true }
   );
-
-  function handleSwipe() {
-    const minSwipeDistance = 50; // Hur många pixlar fingret måste dras (förhindrar felklick)
-    const swipeDistance = touchEndX - touchStartX;
-
-    if (swipeDistance < -minSwipeDistance) {
-      // Fingret drogs åt VÄNSTER = Nästa bild
-      onSwipeLeft();
-    } else if (swipeDistance > minSwipeDistance) {
-      // Fingret drogs åt HÖGER = Föregående bild
-      onSwipeRight();
-    }
-  }
 }
+
 document.addEventListener("DOMContentLoaded", function () {
-  // Letar upp ALLA element på sidan som du har gett klassen "swipe-slider"
-  const allSliders = document.querySelectorAll(".swipe-slider");
-
-  // Loopa igenom dem en och en
-  allSliders.forEach((slider) => {
-    // Läs av vad just den här slidern heter (dess ID)
-    const sliderId = slider.id;
-
-    // Om slidern har ett ID, koppla på vår swipe-motor!
-    if (sliderId) {
+  document.querySelectorAll(".swipe-slider").forEach((slider) => {
+    if (slider.id) {
       enableSwipe(
         slider,
-        () => moveStandaloneSlide(sliderId, 1), // Swipe vänster (Nästa)
-        () => moveStandaloneSlide(sliderId, -1) // Swipe höger (Föregående)
+        () => moveStandaloneSlide(slider.id, 1),
+        () => moveStandaloneSlide(slider.id, -1)
       );
     }
   });
 });
-// Flik-motor (Single Page Navigation)
-function switchPage(pageId, scrollToSection = null) {
-  // 1. Dölj alla vy-flikar
-  document.querySelectorAll(".page-view").forEach((el) => {
-    el.classList.remove("active");
+
+function moveStandaloneSlide(sliderId, step) {
+  const slider = document.getElementById(sliderId);
+  if (!slider) return;
+  const images = slider.querySelectorAll(".slider-img");
+  if (standaloneSliders[sliderId] === undefined)
+    standaloneSliders[sliderId] = 0;
+
+  let newIndex = standaloneSliders[sliderId] + step;
+  if (newIndex >= images.length) newIndex = 0;
+  if (newIndex < 0) newIndex = images.length - 1;
+
+  goToStandaloneSlide(sliderId, newIndex);
+}
+
+function goToStandaloneSlide(sliderId, index) {
+  const slider = document.getElementById(sliderId);
+  if (!slider) return;
+  standaloneSliders[sliderId] = index;
+
+  slider.querySelectorAll(".slider-img").forEach((img, i) => {
+    if (i === index) {
+      img.classList.remove("opacity-0");
+      img.classList.add("opacity-100");
+    } else {
+      img.classList.remove("opacity-100");
+      img.classList.add("opacity-0");
+    }
   });
+  slider.querySelectorAll(".slider-dot").forEach((dot, i) => {
+    if (i === index) {
+      dot.classList.remove("bg-black/20");
+      dot.classList.add("bg-black");
+    } else {
+      dot.classList.remove("bg-black");
+      dot.classList.add("bg-black/20");
+    }
+  });
+}
 
-  // 2. Visa den valda vy-fliken
-  document.getElementById("view-" + pageId).classList.add("active");
+// ==========================================
+// 3. DATABAS & BATTERIKORT (Startsida)
+// ==========================================
+let globalBatteryData = [];
+const GOOGLE_SHEET_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc3RNEr_mmiiT26h0YVYCkoJ97HzyHWmpbD1uVm8DFuSVc8t84iSxOMnJ0mBvfwIsG-5w_3Y_k3t-a/pub?gid=0&single=true&output=csv";
 
-  // 3. Hantera scroll
-  if (scrollToSection && pageId === "main") {
-    // Om vi ska till en specifik sektion på startsidan (t.ex. Om oss)
-    setTimeout(() => {
-      document
-        .getElementById(scrollToSection)
-        .scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 50);
-  } else {
-    // Om vi byter till en textsida, scrolla till toppen
-    window.scrollTo({ top: 0, behavior: "smooth" });
+function parseCSVRow(row) {
+  return row
+    .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+    .map((col) => col.replace(/^"|"$/g, "").trim());
+}
+
+async function fetchAndRenderBatteries() {
+  try {
+    const response = await fetch(GOOGLE_SHEET_CSV_URL);
+    const csvText = await response.text();
+    const rows = csvText.split("\n").slice(1);
+    globalBatteryData = [];
+
+    rows.forEach((rowString) => {
+      if (!rowString.trim()) return;
+      const cols = parseCSVRow(rowString);
+      if (!cols[0]) return;
+
+      const battery = {
+        brand: cols[0],
+        model: cols[1],
+        voltage: cols[2] || "36V",
+        original_cap: cols[3],
+        prices: [],
+        note: cols[16] || "",
+        images: cols[17] ? [cols[17]] : [],
+      };
+
+      if (cols[4])
+        battery.prices.push({
+          cap: cols[4],
+          desc: cols[5],
+          price: cols[6],
+          badge: cols[7] === "TRUE",
+        });
+      if (cols[8])
+        battery.prices.push({
+          cap: cols[8],
+          desc: cols[9],
+          price: cols[10],
+          badge: cols[11] === "TRUE",
+        });
+      if (cols[12])
+        battery.prices.push({
+          cap: cols[12],
+          desc: cols[13],
+          price: cols[14],
+          badge: cols[15] === "TRUE",
+        });
+
+      globalBatteryData.push(battery);
+    });
+
+    renderBatteries(globalBatteryData);
+
+    const loadingState = document.getElementById("loading-state");
+    const batteryContainer = document.getElementById("battery-container");
+    if (loadingState && batteryContainer) {
+      loadingState.classList.add("hidden");
+      batteryContainer.classList.remove("hidden");
+    }
+  } catch (error) {
+    console.error("Kunde inte ladda batteridatan från Google Sheets:", error);
+    const loadingState = document.getElementById("loading-state");
+    if (loadingState) {
+      loadingState.innerHTML = `
+        <i data-lucide="alert-circle" class="w-10 h-10 text-red-500 mb-4 mx-auto"></i>
+        <p class="text-lg font-medium text-gray-900">Kunde inte ladda modellerna</p>
+        <p class="text-sm text-gray-500 mt-2">Vänligen ladda om sidan eller försök igen senare.</p>
+      `;
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    }
   }
 }
 
-// Hjälpfunktion för att validera ett specifikt steg
+function filterBatteries() {
+  const query = document.getElementById("batterySearch").value.toLowerCase();
+  const filtered = globalBatteryData.filter(
+    (b) =>
+      b.brand.toLowerCase().includes(query) ||
+      b.model.toLowerCase().includes(query)
+  );
+  renderBatteries(filtered);
+}
+
+// NYTT: Nu tar generatePriceRow emot "noteEncoded" så vi kan skicka med varningen in i kassan
+function generatePriceRow(
+  brand,
+  model,
+  priceObj,
+  originalCap,
+  voltage,
+  allPricesJson = "%5B%5D",
+  noteEncoded = "",
+  isSmall = false
+) {
+  const badgeHtml = priceObj.badge
+    ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full tracking-tighter whitespace-nowrap shadow-sm">I lager</span>`
+    : ``;
+  const descHtml = priceObj.desc
+    ? `<span class="text-gray-400 text-xs">${priceObj.desc}</span>`
+    : ``;
+  const hasBadge = priceObj.badge ? true : false;
+
+  return `
+      <div class="${
+        isSmall ? "py-3" : "py-5"
+      } flex justify-between items-center gap-4">
+          <div class="flex items-center flex-wrap gap-3">
+              <span class="${isSmall ? "text-base" : "text-lg"} font-medium">${
+    priceObj.cap
+  }</span>
+              ${badgeHtml}
+              ${descHtml}
+          </div>
+          <div class="flex items-center gap-4">
+              <span class="${
+                isSmall ? "text-base" : "text-xl"
+              } font-medium whitespace-nowrap">${priceObj.price}</span>
+              <button onclick="openActionModal('${brand}', '${model}', '${
+    priceObj.cap
+  }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}')" 
+                      class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-70 transition shadow-sm">
+                  Välj
+              </button>
+          </div>
+      </div>
+  `;
+}
+
+function renderBatteries(data) {
+  const container = document.getElementById("battery-container");
+  if (!container) return;
+  const noResults = document.getElementById("no-results");
+  container.innerHTML = "";
+
+  if (data.length === 0) {
+    noResults.classList.remove("hidden");
+    return;
+  } else {
+    noResults.classList.add("hidden");
+  }
+
+  data.forEach((b, index) => {
+    let imageSection = "";
+    if (b.images && b.images.length > 0) {
+      window.slideStates[index] = 0;
+      let slidesHtml = b.images
+        .map(
+          (img, i) => `
+            <img id="slide-${index}-${i}" src="${img}" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+            i === 0 ? "opacity-100" : "opacity-0"
+          }" alt="${b.brand}">
+        `
+        )
+        .join("");
+
+      let controlsHtml = "";
+      if (b.images.length > 1) {
+        controlsHtml = `
+            <button onclick="changeSlide(${index}, -1, ${
+          b.images.length
+        })" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-10"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+            <button onclick="changeSlide(${index}, 1, ${
+          b.images.length
+        })" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-10"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full">
+                ${b.images
+                  .map(
+                    (_, i) =>
+                      `<div id="dot-${index}-${i}" class="w-2 h-2 rounded-full transition-colors ${
+                        i === 0 ? "bg-black" : "bg-black/20"
+                      }"></div>`
+                  )
+                  .join("")}
+            </div>
+        `;
+      }
+      imageSection = `<div class="w-full lg:w-2/5 shrink-0 relative min-h-[300px] lg:min-h-full bg-[#E8E6E1] rounded-[24px] overflow-hidden">${slidesHtml}${controlsHtml}</div>`;
+    }
+
+    let html = `
+        <div class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            ${imageSection} 
+            <div class="flex-1 w-full flex flex-col justify-center"> 
+                <div class="mb-8">
+                    <h2 class="text-3xl font-medium uppercase mb-1">${
+                      b.brand
+                    }</h2>
+                    <p class="text-gray-400 text-sm font-mono uppercase tracking-widest">${
+                      b.model
+                    }</p>
+                    ${
+                      b.seasonOnly
+                        ? `<span class="inline-block mt-3 bg-amber-50 text-amber-700 px-3 py-1 rounded-lg text-xs font-medium">${b.seasonOnly}</span>`
+                        : ""
+                    }
+                </div>
+                <div class="divide-y divide-gray-100">
+    `;
+
+    // Koda note och options
+    const noteEncoded = encodeURIComponent(b.note || "");
+    const allPricesEncoded = encodeURIComponent(JSON.stringify(b.prices || []));
+
+    // Visar BARA standardbatteriet i butiken, men vi skickar med allt till kassan
+    if (!b.isMulti && b.prices && b.prices.length > 0) {
+      const basePrice = b.prices[0];
+      html += generatePriceRow(
+        b.brand,
+        b.model,
+        basePrice,
+        b.original_cap,
+        b.voltage,
+        allPricesEncoded,
+        noteEncoded
+      );
+    }
+
+    if (b.isMulti && b.groups) {
+      html += `<div class="grid md:grid-cols-2 gap-12 pt-4">`;
+      b.groups.forEach((g) => {
+        html += `<div class="space-y-2"><h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-6 pb-2 border-b border-gray-50">${g.name}</h4><div class="divide-y divide-gray-50">`;
+        g.prices.forEach((p) => {
+          html += generatePriceRow(
+            b.brand,
+            b.model,
+            p,
+            g.original_cap,
+            g.voltage,
+            "%5B%5D",
+            noteEncoded,
+            true
+          );
+        });
+        html += `</div></div>`;
+      });
+      html += `</div>`;
+    }
+
+    // OBS-texten ÄR BORTTAGEN härifrån och ligger nu endast i Steg 1 i kassan!
+
+    html += `</div></div></div>`;
+    container.innerHTML += html;
+  });
+
+  lucide.createIcons();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.getElementById("battery-container");
+  const searchInput = document.getElementById("batterySearch");
+  if (container) {
+    fetchAndRenderBatteries();
+    if (searchInput) searchInput.addEventListener("input", filterBatteries);
+  }
+});
+
+// ==========================================
+// 4. MODAL-FUNKTIONER
+// ==========================================
+let currentSelectedBattery = null;
+
+// FIXAT: Lade till allPricesEncoded och noteEncoded här
+window.openActionModal = function (
+  brand,
+  model,
+  selectedCap,
+  originalCap,
+  voltage,
+  hasBadge,
+  allPricesEncoded,
+  noteEncoded
+) {
+  const allPrices = JSON.parse(
+    decodeURIComponent(allPricesEncoded || "%5B%5D")
+  );
+  const note = decodeURIComponent(noteEncoded || "");
+
+  currentSelectedBattery = {
+    brand,
+    model,
+    selectedCap,
+    originalCap,
+    voltage,
+    allPrices,
+    note,
+  };
+
+  document.getElementById(
+    "modal-battery-info"
+  ).innerText = `${brand} ${model} (${selectedCap})`;
+
+  const orderBtn = document.getElementById("modal-order-btn");
+  const outOfStockMsg = document.getElementById("modal-out-of-stock-msg");
+  if (hasBadge) {
+    orderBtn.classList.remove("hidden");
+    orderBtn.classList.add("flex");
+    outOfStockMsg.classList.add("hidden");
+  } else {
+    orderBtn.classList.remove("flex");
+    orderBtn.classList.add("hidden");
+    outOfStockMsg.classList.remove("hidden");
+  }
+
+  const modal = document.getElementById("action-modal");
+  modal.classList.remove("hidden");
+  setTimeout(() => {
+    modal.classList.remove("opacity-0");
+    modal.firstElementChild.classList.remove("scale-95");
+    modal.firstElementChild.classList.add("scale-100");
+  }, 10);
+};
+
+window.closeActionModal = function () {
+  const modal = document.getElementById("action-modal");
+  modal.classList.add("opacity-0");
+  modal.firstElementChild.classList.remove("scale-100");
+  modal.firstElementChild.classList.add("scale-95");
+  setTimeout(() => {
+    modal.classList.add("hidden");
+  }, 300);
+};
+
+window.handleModalChoice = function (choice) {
+  if (!currentSelectedBattery) return;
+  const { brand, model, selectedCap, originalCap, voltage, allPrices, note } =
+    currentSelectedBattery;
+
+  const batteryData = {
+    brand: brand,
+    model: model,
+    capacity: originalCap,
+    selectedCap: selectedCap,
+    voltage: voltage,
+    action: choice,
+    options: allPrices,
+    note: note, // Skickas nu med in i formuläret
+  };
+
+  sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
+  closeActionModal();
+
+  if (choice === "repair") window.location.href = "/skicka-in";
+  else if (choice === "order") window.location.href = "/checkout";
+};
+
+// ==========================================
+// 5. FORMULÄR & AUTOFILL & STAPELDIAGRAM
+// ==========================================
+window.currentBatteryData = null;
+if (typeof currentBasePrice === "undefined") {
+  window.currentBasePrice = 4500;
+}
+
+function getDynamicBasePrice() {
+  return window.currentBasePrice || 0;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const repairForm = document.getElementById("repairForm");
+
+  if (repairForm) {
+    const savedData = sessionStorage.getItem("prefilledBattery");
+    const step1Display = document.getElementById("display-step1-model");
+    const summaryModel = document.getElementById("summary-model");
+    const originalPriceEl = document.getElementById("original-price");
+    const finalPriceEl = document.getElementById("final-price");
+
+    if (savedData) {
+      const battery = JSON.parse(savedData);
+      window.currentBatteryData = battery;
+
+      if (document.getElementById("form-brand"))
+        document.getElementById("form-brand").value = battery.brand || "";
+      if (document.getElementById("form-model"))
+        document.getElementById("form-model").value = battery.model || "";
+      if (document.getElementById("form-voltage"))
+        document.getElementById("form-voltage").value = battery.voltage || "";
+      if (document.getElementById("form-capacity"))
+        document.getElementById("form-capacity").value = battery.capacity || "";
+
+      // HÄR LÄGGER VI IN OBS-TEXTEN (Om den finns)
+      if (battery.note && battery.note.trim() !== "") {
+        // Förhindra att den läggs till två gånger om kunden går fram och tillbaka
+        if (!document.getElementById("step1-note-box")) {
+          // Leta upp den ljusgrå rutan inuti Steg 1 där vi vill placera varningen
+          const step1Card = document.querySelector("#step1 .bg-gray-50");
+          if (step1Card) {
+            const noteDiv = document.createElement("div");
+            noteDiv.id = "step1-note-box";
+            noteDiv.className =
+              "mt-4 p-4 md:p-5 bg-amber-50 border border-amber-100 rounded-xl text-sm leading-relaxed text-amber-800";
+            noteDiv.innerHTML = `<span class="font-bold">Information:</span> ${battery.note}`;
+            step1Card.appendChild(noteDiv);
+          }
+        }
+      }
+
+      if (document.getElementById("form-problem")) {
+        document.getElementById("form-problem").value = battery.problem || "";
+        if (battery.problem && battery.problem.includes("Uppgradera")) {
+          const upgradeRadio = document.getElementById("radio-upgrade");
+          if (upgradeRadio) upgradeRadio.checked = true;
+        }
+      }
+      // Läs ut grundpriset från originalbatteriet (index 0) för att kunna räkna ut mellanskillnaden
+      const baseOptPrice =
+        parseInt(String(battery.options[0].price).replace(/\D/g, "")) || 0;
+      // Generera Uppgraderingar
+      const upgradeContainer = document.getElementById("upgrade-options");
+      if (upgradeContainer && battery.options && battery.options.length > 0) {
+        upgradeContainer.innerHTML = "";
+        battery.options.forEach((opt, index) => {
+          const isBase = index === 0;
+          const labelText = isBase
+            ? "Behåll originalkapacitet"
+            : "Uppgradera räckvidden";
+          // NYTT: Räkna ut uppgraderingskostnaden!
+          const optPrice = parseInt(String(opt.price).replace(/\D/g, "")) || 0;
+          const diff = optPrice - baseOptPrice;
+          const priceDisplay = isBase ? "Ingår" : `+${diff} kr`;
+
+          upgradeContainer.innerHTML += `
+         <label class="flex justify-between items-center p-4 md:p-6 bg-white border border-gray-200 rounded-2xl cursor-pointer hover:border-black transition has-[:checked]:border-black has-[:checked]:ring-1 has-[:checked]:ring-black">
+             <div class="flex items-center">
+                 <input type="radio" name="upgrade_choice" value="${index}" class="w-4 h-4 mr-3 md:mr-4 shrink-0 text-black focus:ring-black" onchange="selectUpgrade(${index})">
+                 <div>
+                     <p class="font-medium text-sm md:text-base">${opt.cap}</p>
+                     <p class="text-xs md:text-sm text-gray-500 mt-1">${labelText}</p>
+                 </div>
+             </div>
+             <span class="font-medium ${
+               isBase ? "text-gray-500" : "text-black"
+             }">${priceDisplay}</span>
+         </label>
+         `;
+        });
+        selectUpgrade(0);
+        document.querySelector(
+          'input[name="upgrade_choice"][value="0"]'
+        ).checked = true;
+      } else if (upgradeContainer) {
+        upgradeContainer.innerHTML =
+          "<p class='text-gray-500 italic'>Inga uppgraderingar tillgängliga för denna modell.</p>";
+        if (battery.price) {
+          const parsedPrice = parseInt(
+            String(battery.price).replace(/\D/g, "")
+          );
+          if (!isNaN(parsedPrice)) window.currentBasePrice = parsedPrice;
+        }
+        if (originalPriceEl)
+          originalPriceEl.innerText = `${window.currentBasePrice} kr`;
+        if (finalPriceEl)
+          finalPriceEl.innerText = `${window.currentBasePrice} kr`;
+      }
+    } else {
+      if (step1Display)
+        step1Display.innerText =
+          "Inget batteri valt. Gå tillbaka och välj en modell.";
+      if (summaryModel) summaryModel.innerText = "Inget batteri valt.";
+      if (originalPriceEl) originalPriceEl.innerText = "0 kr";
+      if (finalPriceEl) finalPriceEl.innerText = "0 kr";
+    }
+  }
+});
+
+// Funktionen som triggas när kunden byter uppgraderings-val
+window.selectUpgrade = function (index) {
+  const battery = window.currentBatteryData;
+  if (!battery || !battery.options) return;
+
+  const selectedOpt = battery.options[index];
+  const baseOpt = battery.options[0]; // Originalet
+
+  // Konvertera priser till siffror
+  const priceNum = parseInt(String(selectedOpt.price).replace(/\D/g, "")) || 0;
+  const basePriceNum = parseInt(String(baseOpt.price).replace(/\D/g, "")) || 0;
+  const upgradeDiff = priceNum - basePriceNum; // Hur mycket extra kostar det?
+
+  // Uppdatera det totala priset i minnet (som rabatt-koden använder)
+  window.currentBasePrice = priceNum;
+
+  // Uppdatera dold kapacitet
+  const capField = document.getElementById("form-capacity");
+  if (capField) capField.value = selectedOpt.cap;
+
+  // Sätt namnet utan kapacitet (visas separat som tillval i kassan nu)
+  const brand = battery.brand || "";
+  const model = battery.model || "Okänd modell";
+  const displayName = `${brand} ${model}`;
+
+  const step1Display = document.getElementById("display-step1-model");
+  const summaryModel = document.getElementById("summary-model");
+  if (step1Display) step1Display.innerText = displayName;
+  if (summaryModel) summaryModel.innerText = displayName;
+
+  // Uppdatera kvitto-vyn i Steg 6
+  const basePriceDisplay = document.getElementById("base-price-display");
+  const upgradeRow = document.getElementById("upgrade-row");
+  const upgradeCapDisplay = document.getElementById("upgrade-cap-display");
+  const upgradePriceDisplay = document.getElementById("upgrade-price-display");
+
+  // Visa grundpriset
+  if (basePriceDisplay) basePriceDisplay.innerText = `${basePriceNum} kr`;
+
+  // Visa eller dölj "Tillval"-raden beroende på vad man valt
+  if (index > 0 && upgradeRow) {
+    upgradeRow.classList.remove("hidden");
+    if (upgradeCapDisplay) upgradeCapDisplay.innerText = selectedOpt.cap;
+    if (upgradePriceDisplay)
+      upgradePriceDisplay.innerText = `+${upgradeDiff} kr`;
+  } else if (upgradeRow) {
+    upgradeRow.classList.add("hidden");
+  }
+
+  // Kör resten (totalpris + diagram)
+  updatePriceDisplay();
+  renderChart(battery.options, index);
+};
+
+// Funktionen som bygger och animerar staplarna
+function renderChart(options, selectedIndex) {
+  const chartContainer = document.getElementById("upgrade-chart");
+  const chartBars = document.getElementById("chart-bars");
+
+  // Dölj diagrammet om det bara finns ETT (eller noll) val, eller om HTML saknas
+  if (!chartContainer || options.length < 2) return;
+
+  chartContainer.classList.remove("hidden");
+  chartBars.innerHTML = "";
+
+  // Leta upp den största kapaciteten för att räkna ut 100% bredd
+  const getCapNum = (str) => parseFloat(str.replace(/[^\d.]/g, "")) || 0;
+  const maxCap = Math.max(...options.map((o) => getCapNum(o.cap)));
+  const baseCap = getCapNum(options[0].cap);
+
+  options.forEach((opt, idx) => {
+    const capNum = getCapNum(opt.cap);
+    // Sätt en minsta bredd på 20% så små staplar ändå ser ut som en stapel
+    const widthPct = Math.max(20, (capNum / maxCap) * 100);
+    const isSelected = idx === selectedIndex;
+
+    // Färg logik
+    const barColor = isSelected ? "bg-black" : "bg-gray-300";
+    const textColor = isSelected ? "font-bold text-black" : "text-gray-500";
+
+    // Räkna ut procentuell ökning jämfört med originalet
+    let increaseBadge = "";
+    if (idx > 0 && baseCap > 0 && capNum > baseCap) {
+      const increase = Math.round(((capNum - baseCap) / baseCap) * 100);
+      increaseBadge = `<span class="text-[10px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full ml-2">+${increase}% räckvidd</span>`;
+    }
+
+    // Rita HTML för stapeln
+    chartBars.innerHTML += `
+         <div>
+            <div class="flex items-center text-sm mb-2 ${textColor}">
+               <span>${opt.cap}</span> ${increaseBadge}
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3 md:h-4 overflow-hidden relative">
+               <div class="${barColor} h-full rounded-full transition-all duration-1000 ease-out" 
+                    style="width: 0%;" 
+                    data-target-width="${widthPct}%"></div>
+            </div>
+         </div>
+      `;
+  });
+
+  // Animerar in staplarna mjukt
+  setTimeout(() => {
+    chartBars.querySelectorAll("[data-target-width]").forEach((bar) => {
+      bar.style.width = bar.getAttribute("data-target-width");
+    });
+  }, 50);
+}
+
 function validateStep(stepId) {
   const stepEl = document.getElementById(stepId);
   if (!stepEl) return true;
-
-  // Leta upp alla fält inuti detta steg som har 'required' i HTML-koden
   const requiredFields = stepEl.querySelectorAll("[required]");
   let isValid = true;
 
   requiredFields.forEach((field) => {
-    // 1. Rensa eventuella gamla felmeddelanden först (så de inte staplas)
     const oldError = field.nextElementSibling;
-    if (oldError && oldError.classList.contains("error-msg")) {
-      oldError.remove();
-    }
+    if (oldError && oldError.classList.contains("error-msg")) oldError.remove();
     field.classList.remove("border-red-500", "ring-1", "ring-red-500");
 
-    // 2. Kolla om fältet är tomt (eller om en checkbox är urkryssad)
     if (!field.value.trim() || (field.type === "checkbox" && !field.checked)) {
       isValid = false;
-
-      // Lägg till röda varning-klasser på själva input-fältet
       field.classList.add("border-red-500", "ring-1", "ring-red-500");
-
-      // Skapa en liten röd varningstext
       const errorText = document.createElement("p");
       errorText.className = "error-msg text-red-500 text-xs mt-1 font-medium";
       errorText.innerText = "Detta fält måste fyllas i.";
-
-      // Lägg in texten precis under fältet
       field.parentNode.insertBefore(errorText, field.nextSibling);
 
-      // SMART DETALJ: Lyssna på när kunden börjar skriva, och ta då bort det röda direkt!
       field.addEventListener("input", function removeError() {
         field.classList.remove("border-red-500", "ring-1", "ring-red-500");
         if (errorText.parentNode) errorText.remove();
-        field.removeEventListener("input", removeError); // Städa upp lyssnaren
+        field.removeEventListener("input", removeError);
       });
     }
   });
-
   return isValid;
 }
 
-// Uppdaterad Formulärlogik
 function goToStep(targetStep) {
-  // Ta reda på vilket steg vi befinner oss på just nu
   const currentStepEl = document.querySelector(".form-step:not(.hidden-step)");
   let currentStep = 1;
-
-  if (currentStepEl) {
-    // Plockar ut siffran från ID:t, t.ex. "step3" -> 3
+  if (currentStepEl)
     currentStep = parseInt(currentStepEl.id.replace("step", ""));
-  }
 
-  // SPÄRREN: Om vi försöker gå FRAMÅT, validera det nuvarande steget först!
   if (targetStep > currentStep) {
-    const isStepValid = validateStep("step" + currentStep);
-
-    // Om något saknades, avbryt hela funktionen och stanna på sidan
-    if (!isStepValid) {
-      return;
-    }
+    if (!validateStep("step" + currentStep)) return;
   }
 
-  // Om vi passerade spärren (eller går bakåt), kör vi koden som byter vy
-  document.querySelectorAll(".form-step").forEach((el) => {
-    el.classList.add("hidden-step");
-  });
-
-  // Visa valt steg
+  document
+    .querySelectorAll(".form-step")
+    .forEach((el) => el.classList.add("hidden-step"));
   document.getElementById("step" + targetStep).classList.remove("hidden-step");
 
-  // Uppdatera progress bar (5 steg)
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 6; i++) {
     const p = document.getElementById("p-" + i);
     if (p) {
       if (i <= targetStep) {
-        p.classList.remove("bg-gray-200");
-        p.classList.add("bg-black");
+        p.classList.replace("bg-gray-200", "bg-black");
       } else {
-        p.classList.remove("bg-black");
-        p.classList.add("bg-gray-200");
+        p.classList.replace("bg-black", "bg-gray-200");
       }
     }
   }
 
-  // Scrolla upp till toppen av formuläret mjukt (flyttade ut denna från loopen så den bara körs en gång)
   const formSection = document.getElementById("skicka-in");
-  if (formSection) {
+  if (formSection)
     formSection.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
 }
-// URL till ditt Google Apps Script (Web App)
-const GOOGLE_SCRIPT_URL_ =
-  "https://script.google.com/macros/s/AKfycbx-ZW7Z_ZZrCNWGj5Em09_Qvc_0HUC1Qp9rPo2txXVhTzLh1j-yk8RS_dAZSwAfuC-w/exec";
-let currentDiscountPercent = 0;
 
-// NYTT: Funktion som hämtar det aktuella priset dynamiskt från minnet
-function getDynamicBasePrice() {
-  const savedData = sessionStorage.getItem("prefilledBattery");
-  if (savedData) {
-    const battery = JSON.parse(savedData);
-    if (battery.price) {
-      // Rensar bort allt utom siffror (t.ex. "4 500 kr" blir 4500)
-      return parseInt(String(battery.price).replace(/\D/g, "")) || 0;
-    }
+function setCustomerType(type) {
+  const companyInfo = document.getElementById("company-info");
+  const btnPrivate = document.getElementById("btn-private");
+  const btnBusiness = document.getElementById("btn-business");
+  const typeInput = document.getElementById("form-customer-type");
+
+  typeInput.value = type;
+  if (type === "business") {
+    companyInfo.classList.remove("hidden");
+    btnBusiness.classList.add("bg-white", "shadow-sm", "text-black");
+    btnBusiness.classList.remove("text-gray-500");
+    btnPrivate.classList.remove("bg-white", "shadow-sm", "text-black");
+    btnPrivate.classList.add("text-gray-500");
+    document.getElementById("form-company-name").required = true;
+    document.getElementById("form-org-nr").required = true;
+  } else {
+    companyInfo.classList.add("hidden");
+    btnPrivate.classList.add("bg-white", "shadow-sm", "text-black");
+    btnPrivate.classList.remove("text-gray-500");
+    btnBusiness.classList.remove("bg-white", "shadow-sm", "text-black");
+    btnBusiness.classList.add("text-gray-500");
+    document.getElementById("form-company-name").required = false;
+    document.getElementById("form-org-nr").required = false;
   }
-  return 0; // Om inget pris finns
 }
+
+// ==========================================
+// 6. RABATTKODSMOTOR
+// ==========================================
+let currentDiscountPercent = 0;
+const GOOGLE_DISCOUNT_URL =
+  "https://script.google.com/macros/s/AKfycbx-ZW7Z_ZZrCNWGj5Em09_Qvc_0HUC1Qp9rPo2txXVhTzLh1j-yk8RS_dAZSwAfuC-w/exec"; // Ersätt vid behov
 
 async function checkDiscountCode() {
   const inputField = document.getElementById("discount-input");
@@ -230,12 +832,11 @@ async function checkDiscountCode() {
     return;
   }
 
-  // Visuell feedback att vi laddar
   btn.innerText = "Laddar...";
   btn.disabled = true;
 
   try {
-    const response = await fetch(`${GOOGLE_SCRIPT_URL}?code=${code}`);
+    const response = await fetch(`${GOOGLE_DISCOUNT_URL}?code=${code}`);
     const data = await response.json();
 
     if (data.success) {
@@ -244,34 +845,25 @@ async function checkDiscountCode() {
         `Rabattkod aktiverad! ${data.discount}% dras av.`,
         "text-green-600"
       );
-
-      // Beräkna det dynamiska priset
       updatePriceDisplay();
-
       inputField.disabled = true;
       btn.innerText = "Tillagd";
     } else {
       showMessage("Ogiltig eller utgången rabattkod.", "text-red-500");
       currentDiscountPercent = 0;
       updatePriceDisplay();
-
       btn.innerText = "Använd";
       btn.disabled = false;
     }
   } catch (error) {
-    showMessage(
-      "Något gick fel vid verifieringen. Försök igen.",
-      "text-red-500"
-    );
+    showMessage("Något gick fel vid verifieringen.", "text-red-500");
     btn.innerText = "Använd";
     btn.disabled = false;
   }
 }
 
 function updatePriceDisplay() {
-  // Hämtar priset dynamiskt härifrån nu!
   const basePrice = getDynamicBasePrice();
-
   const discountRow = document.getElementById("discount-row");
   const discountPercentDisplay = document.getElementById(
     "discount-percent-display"
@@ -286,7 +878,6 @@ function updatePriceDisplay() {
     discountPercentDisplay.innerText = currentDiscountPercent;
     discountAmountDisplay.innerText = `-${Math.round(discountAmount)} kr`;
     finalPriceDisplay.innerText = `${Math.round(finalPrice)} kr`;
-
     discountRow.classList.remove("hidden");
   } else {
     discountRow.classList.add("hidden");
@@ -304,24 +895,20 @@ function showMessage(text, colorClass) {
   messageEl.className = `text-sm mt-2 ${colorClass}`;
   messageEl.classList.remove("hidden");
 }
-// Hantera formulärets inskick
+
+// ==========================================
+// 7. GOOGLE SHEETS SUBMIT LOGIK
+// ==========================================
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycby7isjI1_maZZcYI0xKWsUQzx-37m8p-Zk5-ZbrCjentCfPbQ3bISgvWpjrq6dZ5JmpjA/exec";
 
-// Hjälpfunktion för att generera ett slumpmässigt ordernummer
 function generateOrderNumber() {
-  // Hämtar exakt millisekund och konverterar till Base36 (bokstäver och siffror)
-  // Detta garanterar att två ordrar gjorda vid olika millisekunder ALDRIG får samma kod
   const timePart = Date.now().toString(36).toUpperCase();
-
-  // Lägger till 3 slumpmässiga tecken ifall två personer trycker exakt samtidigt
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let randomPart = "";
   for (let i = 0; i < 3; i++) {
     randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-
-  // Resultatet blir t.ex: BL-LWG9X1A-K7F
   return `BL-${timePart}-${randomPart}`;
 }
 
@@ -332,16 +919,14 @@ document.addEventListener("DOMContentLoaded", function () {
     repairForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      // --- HONUNGS CHECK ---
       const botCheckEl = document.getElementById("form-botcheck");
       if (botCheckEl && botCheckEl.value !== "") {
-        console.log("Bot detected! Silently ignoring.");
-        window.location.href = "/bekraftelse.html"; // Skicka botar till en fejk-framgång för att lura dem
+        window.location.href = "/bekraftelse.html";
         return;
       }
 
-      const submitBtn = document.querySelector('#step4 button[type="submit"]');
-      let originalText = "Skicka in förfrågan";
+      const submitBtn = document.getElementById("submit-btn");
+      let originalText = "Skicka in";
       if (submitBtn) {
         originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = "Bearbetar...";
@@ -349,10 +934,7 @@ document.addEventListener("DOMContentLoaded", function () {
         submitBtn.classList.add("opacity-50");
       }
 
-      // Generera ordernummer
       const orderNumber = generateOrderNumber();
-
-      // Kolla vilket fraktalternativ som är valt
       const shipSelf = document.getElementById("ship-self");
       const shipLabel = document.getElementById("ship-label");
       let shippingChoice =
@@ -362,21 +944,14 @@ document.addEventListener("DOMContentLoaded", function () {
           ? shipLabel.value
           : "Ej valt";
 
-      // Hämta feltyp (för inskicks-formuläret, checkout har value="Nybeställning")
       let selectedError = "";
       const errorRadio = document.querySelector(
         'input[name="error_type"]:checked'
       );
-      if (errorRadio) {
-        selectedError = errorRadio.value;
-      }
+      if (errorRadio) selectedError = errorRadio.value;
 
-      // Samla all data
       const formData = new FormData();
-
-      // LÄGG TILL ORDERNUMMER HÄR FÖR ATT TA EMOT I GOOGLE SHEETS
       formData.append("orderNumber", orderNumber);
-
       formData.append(
         "brand",
         document.getElementById("form-brand")?.value || ""
@@ -440,35 +1015,26 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       formData.append("shipping", shippingChoice);
 
-      // Skicka datan till Google Sheets
       fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         body: formData,
       })
-        .then((response) => {
+        .then(() => {
           sessionStorage.removeItem("prefilledBattery");
-
-          // Hämta värdena vi vill visa på nästa sida (vi använder formdata-objektet vi redan byggt)
-          const brandVal = formData.get("brand");
-          const modelVal = formData.get("model");
-          const capacityVal = formData.get("capacity");
-
-          // Bygg URL:en snyggt och säkert med URLSearchParams
+          const brandVal = formData.get("brand") || "Ej angivet";
+          const modelVal = formData.get("model") || "Ej angivet";
+          const capacityVal = formData.get("capacity") || "";
           const params = new URLSearchParams({
             order: orderNumber,
-            brand: brandVal ? brandVal : "Ej angivet",
-            model: modelVal ? modelVal : "Ej angivet",
-            capacity: capacityVal ? capacityVal : "",
+            brand: brandVal,
+            model: modelVal,
+            capacity: capacityVal,
           });
-
-          // Omdirigera till bekräftelsesidan med datan inbakad i länken
           window.location.href = `/confirmation?${params.toString()}`;
         })
         .catch((error) => {
           console.error("Error!", error.message);
-          alert(
-            "Något gick fel. Vänligen försök igen eller kontakta oss via e-post."
-          );
+          alert("Något gick fel. Vänligen försök igen.");
           if (submitBtn) {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
@@ -478,645 +1044,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-function setCustomerType(type) {
-  const companyInfo = document.getElementById("company-info");
-  const btnPrivate = document.getElementById("btn-private");
-  const btnBusiness = document.getElementById("btn-business");
-  const typeInput = document.getElementById("form-customer-type");
-
-  typeInput.value = type;
-
-  if (type === "business") {
-    companyInfo.classList.remove("hidden");
-    // Styling för knappar
-    btnBusiness.classList.add("bg-white", "shadow-sm", "text-black");
-    btnBusiness.classList.remove("text-gray-500");
-    btnPrivate.classList.remove("bg-white", "shadow-sm", "text-black");
-    btnPrivate.classList.add("text-gray-500");
-
-    // Gör företagsfält obligatoriska om företag är valt
-    document.getElementById("form-company-name").required = true;
-    document.getElementById("form-org-nr").required = true;
-  } else {
-    companyInfo.classList.add("hidden");
-    // Styling för knappar
-    btnPrivate.classList.add("bg-white", "shadow-sm", "text-black");
-    btnPrivate.classList.remove("text-gray-500");
-    btnBusiness.classList.remove("bg-white", "shadow-sm", "text-black");
-    btnBusiness.classList.add("text-gray-500");
-
-    // Ta bort krav på obligatoriska fält
-    document.getElementById("form-company-name").required = false;
-    document.getElementById("form-org-nr").required = false;
-  }
-}
-// LOGIK FÖR ATT VÄLJA MODELL PÅ ANDRA SIDAN
-window.selectBatteryOption = function (
-  brand,
-  model,
-  selectedCap,
-  originalCap,
-  voltage
-) {
-  let problemText = "";
-  if (selectedCap !== originalCap) {
-    problemText = `Uppgradera kapaciteten till ${selectedCap}.`;
-  }
-
-  const batteryData = {
-    brand: brand,
-    model: model,
-    capacity: originalCap,
-    voltage: voltage,
-    problem: problemText,
-  };
-
-  sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
-  console.log("Sparar ner batteridata i minnet:", batteryData);
-  window.location.href = "/index#skicka-in";
-};
-
-// Variabel för att tillfälligt minnas vilket batteri kunden klickade på
-let currentSelectedBattery = null;
-
-// Säkra att baspriset finns (ifall rabattkods-scriptet inte laddats än)
-if (typeof currentBasePrice === "undefined") {
-  window.currentBasePrice = 4500;
-}
-
-// LOGIK FÖR AUTOFILL NÄR MAN LANDAR PÅ FORMULÄRET
-document.addEventListener("DOMContentLoaded", function () {
-  const repairForm = document.getElementById("repairForm");
-
-  if (repairForm) {
-    const savedData = sessionStorage.getItem("prefilledBattery");
-
-    // Hämta textfälten vi vill ändra
-    const step1Display = document.getElementById("display-step1-model");
-    const summaryModel = document.getElementById("summary-model");
-    const originalPriceEl = document.getElementById("original-price");
-    const finalPriceEl = document.getElementById("final-price");
-
-    if (savedData) {
-      // 1. DATA FINNS! Kunden har kommit hit via en knapp.
-      const battery = JSON.parse(savedData);
-
-      // Fyller de DOLDA input-fälten
-      if (document.getElementById("form-brand"))
-        document.getElementById("form-brand").value = battery.brand || "";
-      if (document.getElementById("form-model"))
-        document.getElementById("form-model").value = battery.model || "";
-      if (document.getElementById("form-voltage"))
-        document.getElementById("form-voltage").value = battery.voltage || "";
-
-      let finalCapacity = battery.capacity || "";
-      if (document.getElementById("form-capacity")) {
-        if (battery.action === "order") {
-          finalCapacity = battery.selectedCap || "";
-          document.getElementById("form-capacity").value = finalCapacity;
-        } else {
-          document.getElementById("form-capacity").value = finalCapacity;
-        }
-      }
-
-      // Bygg ihop en snygg sträng
-      const brand = battery.brand || "";
-      const model = battery.model || "Okänd modell";
-      const voltage = battery.voltage ? `${battery.voltage}V` : "";
-      const displayName =
-        `${brand} ${model}`.trim() +
-        (voltage || finalCapacity
-          ? ` - ${voltage}${
-              voltage && finalCapacity ? ", " : ""
-            }${finalCapacity}`
-          : "");
-
-      // Skriv ut namnet på skärmen
-      if (step1Display) step1Display.innerText = displayName;
-      if (summaryModel) summaryModel.innerText = displayName;
-
-      // Uppdatera priset om det skickades med
-      if (battery.price) {
-        const parsedPrice = parseInt(String(battery.price).replace(/\D/g, ""));
-        if (!isNaN(parsedPrice)) {
-          currentBasePrice = parsedPrice;
-        }
-      }
-
-      // Skriv ut startpriset
-      if (originalPriceEl) originalPriceEl.innerText = `${currentBasePrice} kr`;
-      if (finalPriceEl) finalPriceEl.innerText = `${currentBasePrice} kr`;
-
-      // Fyll i fritexten & radioknappar
-      if (document.getElementById("form-problem")) {
-        document.getElementById("form-problem").value = battery.problem || "";
-        if (battery.problem && battery.problem.includes("Uppgradera")) {
-          const upgradeRadio = document.getElementById("radio-upgrade");
-          if (upgradeRadio) upgradeRadio.checked = true;
-        }
-      }
-    } else {
-      // 2. INGEN DATA FINNS (Sessionen är tom)
-      // Om kunden laddar om sidan direkt eller surfar hit via URL
-      if (step1Display)
-        step1Display.innerText =
-          "Inget batteri valt. Gå tillbaka och välj en modell.";
-      if (summaryModel) summaryModel.innerText = "Inget batteri valt.";
-      if (originalPriceEl) originalPriceEl.innerText = "0 kr";
-      if (finalPriceEl) finalPriceEl.innerText = "0 kr";
-    }
-  }
-});
-
-// Öppnar modalen och sätter in datan
-window.openActionModal = function (
-  brand,
-  model,
-  selectedCap,
-  originalCap,
-  voltage,
-  hasBadge
-) {
-  currentSelectedBattery = { brand, model, selectedCap, originalCap, voltage };
-
-  // Uppdatera texten i modalen
-  document.getElementById(
-    "modal-battery-info"
-  ).innerText = `${brand} ${model} (${selectedCap})`;
-
-  // Logik för att visa/dölja knappen för Direktköp
-  const orderBtn = document.getElementById("modal-order-btn");
-  const outOfStockMsg = document.getElementById("modal-out-of-stock-msg");
-
-  if (hasBadge) {
-    // Om den FINNS i lager: Visa köpknappen, dölj varningen
-    orderBtn.classList.remove("hidden");
-    orderBtn.classList.add("flex"); // Tailwinds flexbox-klass behövs för layouten
-    outOfStockMsg.classList.add("hidden");
-  } else {
-    // Om den INTE finns i lager: Dölj köpknappen, visa varningen
-    orderBtn.classList.remove("flex");
-    orderBtn.classList.add("hidden");
-    outOfStockMsg.classList.remove("hidden");
-  }
-
-  // Visa modalen med mjuk animation
-  const modal = document.getElementById("action-modal");
-  modal.classList.remove("hidden");
-
-  setTimeout(() => {
-    modal.classList.remove("opacity-0");
-    modal.firstElementChild.classList.remove("scale-95");
-    modal.firstElementChild.classList.add("scale-100");
-  }, 10);
-};
-
-// Stänger modalen
-window.closeActionModal = function () {
-  const modal = document.getElementById("action-modal");
-  modal.classList.add("opacity-0");
-  modal.firstElementChild.classList.remove("scale-100");
-  modal.firstElementChild.classList.add("scale-95");
-
-  setTimeout(() => {
-    modal.classList.add("hidden");
-  }, 300); // 300ms matchar Tailwinds duration-300 klass
-};
-
-// Hanterar knapptrycken inuti modalen
-window.handleModalChoice = function (choice) {
-  if (!currentSelectedBattery) return;
-
-  const { brand, model, selectedCap, originalCap, voltage } =
-    currentSelectedBattery;
-
-  // Förbered felbeskrivningen (används främst för renovering)
-  let problemText = "";
-  if (selectedCap !== originalCap && choice === "repair") {
-    problemText = `Uppgradera kapaciteten till ${selectedCap}.`;
-  }
-
-  // Packa in all data (Nu skickar vi även med 'action' så mottagarsidan vet vad som valts)
-  const batteryData = {
-    brand: brand,
-    model: model,
-    capacity: originalCap,
-    selectedCap: selectedCap,
-    voltage: voltage,
-    problem: problemText,
-    action: choice, // Säger 'repair' eller 'order'
-  };
-
-  // Spara i webbläsarens minne
-  sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
-
-  // Stäng modalen innan vi byter sida
-  closeActionModal();
-
-  // Omdirigera kunden baserat på vad de klickade på
-  if (choice === "repair") {
-    window.location.href = "/skicka-in"; // Som förut
-  } else if (choice === "order") {
-    window.location.href = "/checkout"; // Skicka till din nya checkout-sida
-  }
-};
-// Hjälpfunktion för att skapa en prisrad med knapp
-function generatePriceRow(
-  brand,
-  model,
-  priceObj,
-  originalCap,
-  voltage,
-  isSmall = false
-) {
-  const badgeHtml = priceObj.badge
-    ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full tracking-tighter whitespace-nowrap shadow-sm">I lager</span>`
-    : ``;
-
-  const descHtml = priceObj.desc
-    ? `<span class="text-gray-400 text-xs">${priceObj.desc}</span>`
-    : ``;
-
-  // NYTT: Kollar om badge existerar
-  const hasBadge = priceObj.badge ? true : false;
-
-  return `
-      <div class="${
-        isSmall ? "py-3" : "py-5"
-      } flex justify-between items-center gap-4">
-          <div class="flex items-center flex-wrap gap-3">
-              <span class="${isSmall ? "text-base" : "text-lg"} font-medium">
-                  ${priceObj.cap}
-              </span>
-              ${badgeHtml}
-              ${descHtml}
-          </div>
-          <div class="flex items-center gap-4">
-              <span class="${
-                isSmall ? "text-base" : "text-xl"
-              } font-medium whitespace-nowrap">${priceObj.price}</span>
-              <button onclick="openActionModal('${brand}', '${model}', '${
-    priceObj.cap
-  }', '${originalCap}', '${voltage}', ${hasBadge})" 
-                      class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-70 transition shadow-sm">
-                  Välj
-              </button>
-          </div>
-      </div>
-  `;
-}
-
-function renderBatteries(data) {
-  const container = document.getElementById("battery-container");
-  // Avbryt funktionen direkt om vi inte är på startsidan där containern finns
-  if (!container) return;
-  const noResults = document.getElementById("no-results");
-  container.innerHTML = "";
-
-  if (data.length === 0) {
-    noResults.classList.remove("hidden");
-    return;
-  } else {
-    noResults.classList.add("hidden");
-  }
-
-  data.forEach((b, index) => {
-    // --- 1. BYGG SLIDESHOW-SEKTIONEN ---
-    let imageSection = "";
-    if (b.images && b.images.length > 0) {
-      window.slideStates[index] = 0; // Nollställ slidern för detta kort
-
-      // Generera alla bilder (läggs ovanpå varandra med absolut positionering)
-      let slidesHtml = b.images
-        .map(
-          (img, i) => `
-            <img id="slide-${index}-${i}" src="${img}" 
-                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
-                   i === 0 ? "opacity-100" : "opacity-0"
-                 }" 
-                 alt="${b.brand}">
-        `
-        )
-        .join("");
-
-      // Generera pilar och prickar BARA om det finns mer än 1 bild
-      let controlsHtml = "";
-      if (b.images.length > 1) {
-        controlsHtml = `
-                <button onclick="changeSlide(${index}, -1, ${
-          b.images.length
-        })" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-10">
-                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                </button>
-                <button onclick="changeSlide(${index}, 1, ${
-          b.images.length
-        })" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-10">
-                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                </button>
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full">
-                    ${b.images
-                      .map(
-                        (_, i) =>
-                          `<div id="dot-${index}-${i}" class="w-2 h-2 rounded-full transition-colors ${
-                            i === 0 ? "bg-black" : "bg-black/20"
-                          }"></div>`
-                      )
-                      .join("")}
-                </div>
-            `;
-      }
-
-      imageSection = `
-            <div class="w-full lg:w-2/5 shrink-0 relative min-h-[300px] lg:min-h-full bg-[#E8E6E1] rounded-[24px] overflow-hidden">
-                ${slidesHtml}
-                ${controlsHtml}
-            </div>
-        `;
-    }
-
-    // --- 2. BYGG KORTET MED DEN NYA LAYOUTEN ---
-    let html = `
-        <div class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            
-            ${imageSection} <div class="flex-1 w-full flex flex-col justify-center"> <div class="mb-8">
-                    <h2 class="text-3xl font-medium uppercase mb-1">${
-                      b.brand
-                    }</h2>
-                    <p class="text-gray-400 text-sm font-mono uppercase tracking-widest">${
-                      b.model
-                    }</p>
-                    ${
-                      b.seasonOnly
-                        ? `<span class="inline-block mt-3 bg-amber-50 text-amber-700 px-3 py-1 rounded-lg text-xs font-medium">${b.seasonOnly}</span>`
-                        : ""
-                    }
-                </div>
-                <div class="divide-y divide-gray-100">
-    `;
-
-    // ... (Här klistrar du in resten av din befintliga kod för b.prices och b.groups från förra steget) ...
-
-    // Hantera vanliga kort
-    if (!b.isMulti && b.prices) {
-      b.prices.forEach((p) => {
-        html += generatePriceRow(
-          b.brand,
-          b.model,
-          p,
-          b.original_cap,
-          b.voltage
-        );
-      });
-    }
-
-    // Hantera Multi-kort (Grupper)
-    if (b.isMulti && b.groups) {
-      html += `<div class="grid md:grid-cols-2 gap-12 pt-4">`;
-      b.groups.forEach((g) => {
-        html += `
-                  <div class="space-y-2">
-                      <h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-6 pb-2 border-b border-gray-50">${g.name}</h4>
-                      <div class="divide-y divide-gray-50">
-              `;
-        g.prices.forEach((p) => {
-          html += generatePriceRow(
-            b.brand,
-            b.model,
-            p,
-            g.original_cap,
-            g.voltage,
-            true
-          );
-        });
-        html += `</div></div>`;
-      });
-      html += `</div>`;
-    }
-
-    if (b.note) {
-      html += `<div class="mt-10 p-6 bg-[#FAF9F6] rounded-2xl text-xs leading-relaxed text-gray-500 border border-black/5 italic">${b.note}</div>`;
-    }
-
-    html += `</div></div>`;
-    container.innerHTML += html;
-  });
-
-  lucide.createIcons();
-}
-// Håller koll på vilken bild som visas i vilka sliders
-const standaloneSliders = {};
-
-function moveStandaloneSlide(sliderId, step) {
-  const slider = document.getElementById(sliderId);
-  if (!slider) return;
-
-  const images = slider.querySelectorAll(".slider-img");
-
-  if (standaloneSliders[sliderId] === undefined) {
-    standaloneSliders[sliderId] = 0;
-  }
-
-  let newIndex = standaloneSliders[sliderId] + step;
-
-  // Snurra runt om vi når slutet eller början
-  if (newIndex >= images.length) newIndex = 0;
-  if (newIndex < 0) newIndex = images.length - 1;
-
-  // Denna rad hade råkat bli en kommentar! Nu byter den bild som den ska.
-  goToStandaloneSlide(sliderId, newIndex);
-}
-
-function goToStandaloneSlide(sliderId, index) {
-  const slider = document.getElementById(sliderId);
-  if (!slider) return;
-
-  const images = slider.querySelectorAll(".slider-img");
-  const dots = slider.querySelectorAll(".slider-dot");
-
-  // Uppdatera minnet
-  standaloneSliders[sliderId] = index;
-
-  // Växla bilder
-  images.forEach((img, i) => {
-    if (i === index) {
-      img.classList.remove("opacity-0");
-      img.classList.add("opacity-100");
-    } else {
-      img.classList.remove("opacity-100");
-      img.classList.add("opacity-0");
-    }
-  });
-
-  // Växla färg på prickarna
-  dots.forEach((dot, i) => {
-    if (i === index) {
-      dot.classList.remove("bg-black/20");
-      dot.classList.add("bg-black");
-    } else {
-      dot.classList.remove("bg-black");
-      dot.classList.add("bg-black/20");
-    }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  // --- KOD FÖR MOBILMENYN ---
-  const mobileBtn = document.getElementById("mobile-menu-btn");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const mobileLinks = document.querySelectorAll(".mobile-link");
-
-  if (mobileBtn && mobileMenu) {
-    // 1. Öppna/stäng menyn när man klickar på hamburgaren
-    mobileBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
-    });
-
-    // 2. Stäng menyn automatiskt när kunden klickar på en specifik länk i menyn
-    mobileLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        mobileMenu.classList.add("hidden");
-      });
-    });
-
-    // 3. Stäng menyn om man klickar var som helst utanför den
-    document.addEventListener("click", (event) => {
-      // Kolla om menyn är öppen
-      const isMenuOpen = !mobileMenu.classList.contains("hidden");
-
-      // Kolla om klicket var UTANFÖR menyn och UTANFÖR knappen
-      const isClickOutsideMenu = !mobileMenu.contains(event.target);
-      const isClickOutsideBtn = !mobileBtn.contains(event.target);
-
-      // Om alla tre stämmer, göm menyn!
-      if (isMenuOpen && isClickOutsideMenu && isClickOutsideBtn) {
-        mobileMenu.classList.add("hidden");
-      }
-    });
-  }
-  // ----------------------------
-});
-
-// -----------------------BATTERI-DATABAS------------------------------
-// 1. Skapa en global variabel som hela scriptet kan läsa
-let globalBatteryData = [];
-
-// Byt ut denna länk mot din publicerade CSV-länk från Google Sheets!
-const GOOGLE_SHEET_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc3RNEr_mmiiT26h0YVYCkoJ97HzyHWmpbD1uVm8DFuSVc8t84iSxOMnJ0mBvfwIsG-5w_3Y_k3t-a/pub?gid=0&single=true&output=csv";
-
-function parseCSVRow(row) {
-  return row
-    .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-    .map((col) => col.replace(/^"|"$/g, "").trim());
-}
-
-async function fetchAndRenderBatteries() {
-  try {
-    const response = await fetch(GOOGLE_SHEET_CSV_URL);
-    const csvText = await response.text();
-
-    const rows = csvText.split("\n").slice(1);
-
-    // Töm den globala listan innan vi fyller på
-    globalBatteryData = [];
-
-    rows.forEach((rowString) => {
-      if (!rowString.trim()) return;
-      const cols = parseCSVRow(rowString);
-      if (!cols[0]) return;
-
-      const battery = {
-        brand: cols[0],
-        model: cols[1],
-        voltage: cols[2] || "36V",
-        original_cap: cols[3],
-        prices: [],
-        note: cols[16] || "",
-        images: cols[17] ? [cols[17]] : [],
-      };
-
-      if (cols[4])
-        battery.prices.push({
-          cap: cols[4],
-          desc: cols[5],
-          price: cols[6],
-          badge: cols[7] === "TRUE",
-        });
-      if (cols[8])
-        battery.prices.push({
-          cap: cols[8],
-          desc: cols[9],
-          price: cols[10],
-          badge: cols[11] === "TRUE",
-        });
-      if (cols[12])
-        battery.prices.push({
-          cap: cols[12],
-          desc: cols[13],
-          price: cols[14],
-          badge: cols[15] === "TRUE",
-        });
-
-      // Spara i den globala listan istället för en lokal
-      globalBatteryData.push(battery);
-    });
-
-    // Rendera alla batterier första gången sidan laddas
-    renderBatteries(globalBatteryData);
-    // Dölj laddningsskärmen och visa batterierna
-    const loadingState = document.getElementById("loading-state");
-    const batteryContainer = document.getElementById("battery-container");
-
-    if (loadingState && batteryContainer) {
-      loadingState.classList.add("hidden");
-      batteryContainer.classList.remove("hidden");
-    }
-  } catch (error) {
-    console.error("Kunde inte ladda batteridatan från Google Sheets:", error);
-
-    // Hantera fel på skärmen
-    const loadingState = document.getElementById("loading-state");
-    if (loadingState) {
-      loadingState.innerHTML = `
-      <i data-lucide="alert-circle" class="w-10 h-10 text-red-500 mb-4 mx-auto"></i>
-      <p class="text-lg font-medium text-gray-900">Kunde inte ladda modellerna</p>
-      <p class="text-sm text-gray-500 mt-2">Vänligen ladda om sidan eller försök igen senare.</p>
-    `;
-      // Rita om Lucide-ikonen
-      if (typeof lucide !== "undefined") {
-        lucide.createIcons();
-      }
-    }
-  }
-}
-
-// 2. Din uppdaterade Sökfunktion som läser från den globala listan
-function filterBatteries() {
-  const query = document.getElementById("batterySearch").value.toLowerCase();
-
-  // Filtrera från den nyligen nedladdade datan
-  const filtered = globalBatteryData.filter(
-    (b) =>
-      b.brand.toLowerCase().includes(query) ||
-      b.model.toLowerCase().includes(query)
-  );
-
-  renderBatteries(filtered);
-}
-
-// Kör igång allt när sidan laddats
-document.addEventListener("DOMContentLoaded", function () {
-  const container = document.getElementById("battery-container");
-  const searchInput = document.getElementById("batterySearch");
-
-  if (container) {
-    // Hämta och visa datan
-    fetchAndRenderBatteries();
-
-    // Lägg till en event-lyssnare på sökfältet (om den inte redan ligger som onkeyup i HTML)
-    if (searchInput) {
-      searchInput.addEventListener("input", filterBatteries);
-    }
-  }
-});
-//------------------------------------------------------------------------------------
