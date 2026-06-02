@@ -261,16 +261,16 @@ function generatePriceRow(
         isSmall ? "py-3" : "py-5"
       } flex justify-between items-center gap-4">
           <div class="flex items-center flex-wrap gap-3">
-              <span class="${isSmall ? "text-base" : "text-lg"} font-medium">${
-    priceObj.cap
-  }</span>
               ${badgeHtml}
               ${descHtml}
           </div>
           <div class="flex items-center gap-4">
               <span class="${
                 isSmall ? "text-base" : "text-xl"
-              } font-medium whitespace-nowrap">${priceObj.price}</span>
+              } font-medium whitespace-nowrap text-gray-800">Pris från - ${
+    priceObj.price
+  }</span>
+              
               <button onclick="openActionModal('${brand}', '${model}', '${
     priceObj.cap
   }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}')" 
