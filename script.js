@@ -249,7 +249,7 @@ function generatePriceRow(
   isSmall = false
 ) {
   const badgeHtml = priceObj.badge
-    ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full tracking-tighter whitespace-nowrap shadow-sm">I lager</span>`
+    ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full tracking-tighter whitespace-nowrap shadow-sm">Tillgänglig för direktköp</span>`
     : ``;
   const descHtml = priceObj.desc
     ? `<span class="text-gray-400 text-xs">${priceObj.desc}</span>`
