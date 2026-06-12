@@ -1044,3 +1044,73 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const tabButtons = document.querySelectorAll(".faq-tab-btn");
+  const faqItems = document.querySelectorAll(".faq-item");
+
+  // --- LOGIK FÖR FLIKAR (KATEGORIER) ---
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetCategory = button.getAttribute("data-target");
+
+      // 1. Uppdatera aktiva/inaktiva klasser på knapparna för Tailwind-stilen
+      tabButtons.forEach((btn) => {
+        btn.classList.remove("bg-stone-200", "text-black", "font-medium");
+        btn.classList.add("text-stone-500", "hover:text-black");
+      });
+      button.classList.add("bg-stone-200", "text-black", "font-medium");
+      button.classList.remove("text-stone-500", "hover:text-black");
+
+      // 2. Visa rätt frågor och dölj resten, samt stäng eventuellt öppna svar
+      faqItems.forEach((item) => {
+        const itemCategory = item.getAttribute("data-category");
+
+        if (itemCategory === targetCategory) {
+          item.classList.remove("hidden");
+        } else {
+          item.classList.add("hidden");
+        }
+
+        // Återställ alla frågor till stängt läge när man byter kategori
+        const content = item.querySelector(".faq-content");
+        const icon = item.querySelector(".faq-icon");
+        content.classList.add("hidden");
+        if (icon) icon.textContent = "+";
+      });
+    });
+  });
+
+  // --- LOGIK FÖR DRAGSPEL (ÖPPNA/STÄNGA FRÅGOR) ---
+  faqItems.forEach((item) => {
+    const trigger = item.querySelector(".faq-trigger");
+    const content = item.querySelector(".faq-content");
+    const icon = item.querySelector(".faq-icon");
+
+    trigger.addEventListener("click", () => {
+      const isOpen = !content.classList.contains("hidden");
+
+      // Valfritt: Stäng alla andra öppna frågor i SAMMA kategori först
+      if (!isOpen) {
+        faqItems.forEach((otherItem) => {
+          if (
+            otherItem.getAttribute("data-category") ===
+            item.getAttribute("data-category")
+          ) {
+            otherItem.querySelector(".faq-content").classList.add("hidden");
+            const otherIcon = otherItem.querySelector(".faq-icon");
+            if (otherIcon) otherIcon.textContent = "+";
+          }
+        });
+      }
+
+      // Växla (toggle) synlighet för den klickade frågan
+      if (isOpen) {
+        content.classList.add("hidden");
+        if (icon) icon.textContent = "+";
+      } else {
+        content.classList.remove("hidden");
+        if (icon) icon.textContent = "−"; // Använder ett riktigt minustecken
+      }
+    });
+  });
+});

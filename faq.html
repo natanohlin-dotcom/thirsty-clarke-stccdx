@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vanliga frågor | Batterilabbet</title>
+    <meta name="description" content="Företagssamarbete med Batterilabbet." />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/android-chrome-512x512.png"
+    />
+    <link rel="manifest" href="assets/site.webmanifest" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <script defer src="script.js"></script>
+  </head>
+
+  <body>
+    <nav class="fixed w-full z-50 px-6 py-4">
+      <div
+        class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative"
+      >
+        <a
+          href="/index"
+          class="flex items-center gap-3 text-xl font-semibold tracking-tighter hover:opacity-70 transition"
+        >
+          <span>Batterilabbet</span>
+        </a>
+
+        <div class="hidden md:flex gap-8 text-sm font-medium">
+          <a href="/reparation" class="hover:opacity-60 transition"
+            >Vår process</a
+          >
+          <a href="/om-oss" class="hover:opacity-60 transition">Om oss</a>
+          <a href="/certifiering" class="hover:opacity-60 transition"
+            >Säkerhet och kvalitet</a
+          >
+          <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
+        </div>
+
+        <div class="flex items-center">
+          <a
+            href="/hitta-din-modell"
+            class="hidden md:inline-flex items-center justify-center gap-1.5 bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:scale-105 transition"
+          >
+            <span>Reparera nu</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+
+          <button
+            id="mobile-menu-btn"
+            class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-2"
+          >
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-menu" class="hidden md:hidden max-w-7xl mx-auto mt-2">
+        <div
+          class="bg-white/95 backdrop-blur-md rounded-3xl border border-black/5 shadow-xl p-6 flex flex-col gap-6 text-center text-lg font-medium"
+        >
+          <a
+            href="/hitta-din-modell"
+            class="mobile-link flex items-center justify-center gap-2 bg-black text-white py-4 rounded-full shadow-md hover:scale-105 transition active:scale-95"
+          >
+            <span>Reparera nu</span>
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </a>
+
+          <div class="h-px bg-gray-200 w-full rounded-full"></div>
+
+          <a href="/reparation" class="mobile-link hover:opacity-60 transition"
+            >Vår process</a
+          >
+          <a href="/om-oss" class="mobile-link hover:opacity-60 transition"
+            >Om oss</a
+          >
+          <a
+            href="/certifiering"
+            class="mobile-link hover:opacity-60 transition"
+            >Säkerhet och kvalitet</a
+          >
+          <a href="/kontakt" class="mobile-link hover:opacity-60 transition"
+            >Kontakt</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-40 pb-32 px-6">
+      <section id="faq" class="py-10 px-6 scroll-mt-24">
+        <div class="max-w-3xl mx-auto">
+          <h1 class="text-5xl font-medium mb-12 text-center">Vanliga frågor</h1>
+
+          <div class="flex flex-wrap justify-center gap-2 mb-12" id="faq-tabs">
+            <button
+              data-target="allmant"
+              class="faq-tab-btn px-5 py-2.5 rounded-lg text-lg transition-colors bg-stone-200 text-black font-medium"
+            >
+              Allmänt
+            </button>
+            <button
+              data-target="betalning"
+              class="faq-tab-btn px-5 py-2.5 rounded-lg text-lg transition-colors text-stone-500 hover:text-black"
+            >
+              Betalning
+            </button>
+            <button
+              data-target="renovera"
+              class="faq-tab-btn px-5 py-2.5 rounded-lg text-lg transition-colors text-stone-500 hover:text-black"
+            >
+              Renovera
+            </button>
+            <button
+              data-target="underhall"
+              class="faq-tab-btn px-5 py-2.5 rounded-lg text-lg transition-colors text-stone-500 hover:text-black"
+            >
+              Underhåll
+            </button>
+            <button
+              data-target="specialfall"
+              class="faq-tab-btn px-5 py-2.5 rounded-lg text-lg transition-colors text-stone-500 hover:text-black"
+            >
+              Specialfall
+            </button>
+          </div>
+
+          <div id="faq-container" class="space-y-3">
+            <div
+              data-category="allmant"
+              class="faq-item bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Jag hittar inte mitt batteri i er lista
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Ingen panik om du inte kan hitta ditt batteri. Vi har
+                  erfarenhet av alla typer av batterier och kan lösa de flesta.
+                  De vi inte kan ta emot hittar du nedan:
+                </p>
+                <p class="mb-3 text-stone-600">
+                  Ingen panik om du inte kan hitta ditt batteri. Vi har
+                  erfarenhet av alla typer av batterier och kan reparera de
+                  flesta, med undantag för vissa modeller, som vi listat under
+                  fliken "Specialfall".
+                </p>
+
+                <p>
+                  Kontakta oss
+                  <a
+                    href="/kontakt"
+                    class="text-black hover:text-gray-500 transition"
+                  >
+                    här</a
+                  >
+                  så återkommer vi med prisförslag för reparation.
+                </p>
+              </div>
+            </div>
+
+            <div
+              data-category="allmant"
+              class="faq-item bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">Ger ni någon garanti?</h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Ja, vi lämnar alltid två års garanti på alla våra
+                  batterireparationer och utbytta celler. Läs mer om vår garanti
+                  <a
+                    href="/garanti"
+                    class="text-black hover:text-gray-500 transition"
+                  >
+                    här</a
+                  >.
+                </p>
+              </div>
+            </div>
+
+            <div
+              data-category="betalning"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Vad kostar det att laga sitt batteri?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Vi har en prislista för de vanligaste elcykelbatterierna, som
+                  du kommer till om du klickar
+                  <a
+                    href="/hitta-din-modell"
+                    class="text-black hover:text-gray-500 transition"
+                  >
+                    här</a
+                  >. För övriga batterireparationer varierar priset beroende på
+                  storlek. Fyll i formuläret så återkommer vi till dig med
+                  prisförslag.
+                </p>
+              </div>
+            </div>
+
+            <div
+              data-category="renovera"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Hur lång tid tar en reparation?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Normalt tar det 5-10 arbetsdagar från det att vi mottagit ditt
+                  batteri tills det skickas tillbaka.
+                </p>
+              </div>
+            </div>
+            <div
+              data-category="renovera"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Varför ska jag renovera mitt batteri?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Det finns många anledningar till att renovera sitt gamla
+                  batteri, de viktigaste är: pris, kapacitet, livslängd och
+                  hållbarhet. Läs mer om varför du ska renovera ditt batteri
+                  <a
+                    href="/reparation"
+                    class="text-black hover:text-gray-500 transition"
+                  >
+                    här</a
+                  >.
+                </p>
+              </div>
+            </div>
+
+            <div
+              data-category="underhall"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Vad är underhållsladdning?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Efter att batteriet inte används under en längre tid (maximalt
+                  6 månader) så ska laddningsnivån kontrolleras och underhållas
+                  vid behov. Om laddningsnivån vid kontroll är under 30 % ska
+                  batteriet laddas, batteriet ska då kontrolleras efter 6
+                  månader igen.
+                </p>
+              </div>
+            </div>
+            <div
+              data-category="specialfall"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Batterier vi ej tar emot
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  De dyraste premiumsystem låser sig efter reparation, därför
+                  tar vi inte emot ditt batteri om du har ett batteri (eller en
+                  motor) från:
+                </p>
+                <ul
+                  class="list-disc list-inside space-y-1 mb-2 text-stone-600 pl-2"
+                >
+                  <li>Shimano</li>
+                  <li>Brose</li>
+                  <li>Yamaha</li>
+                  <li>Crescent SR20</li>
+                </ul>
+              </div>
+            </div>
+            <div
+              data-category="specialfall"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">Crescent SF03</h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Vi tar emot vissa batterier av denna sort om de inte har
+                  smart-BMS, vilket är uppmärkt med klistermärke på batteriet.
+                </p>
+              </div>
+            </div>
+            <div
+              data-category="specialfall"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">Elscooterbatteri?</h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Vi tar emot en del elscooterbatterier. Följande modeller kan
+                  vi tyvärr inte reparera:
+                </p>
+                <ul
+                  class="list-disc list-inside space-y-1 mb-2 text-stone-600 pl-2"
+                >
+                  <li>Batterier till Xiaomi-elscootrar</li>
+                  <li>Batterier till Ninebot-elscooter</li>
+                </ul>
+                <p>
+                  Om du inte har ett av dessa batterier, kontakta oss
+                  <a
+                    href="/kontakt"
+                    class="text-black hover:text-gray-500 transition"
+                  >
+                    här</a
+                  >
+                  så återkommer vi med prisförslag.
+                </p>
+              </div>
+            </div>
+          </div>
+          <h2 class="text-3xl font-medium mt-10 text-center">
+            Undrar du över något mer?
+          </h2>
+          <div class="mt-5 text-center px-4">
+            <a
+              href="/kontakt"
+              class="inline-block btn-primary px-6 py-4 md:px-12 md:py-6 rounded-3xl md:rounded-full text-base md:text-lg font-medium shadow-xl transition-transform hover:scale-105"
+            >
+              Kontakta oss
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="py-20 px-6 border-t border-gray-300 bg-white">
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12"
+      >
+        <div class="flex flex-col">
+          <a
+            href="/index"
+            class="text-2xl font-semibold mb-2 text-left hover:opacity-70 transition"
+            >Batterilabbet</a
+          >
+          <p class="text-gray-400">Powered by science. Made in Uppsala.</p>
+
+          <p>
+            <img
+              src="assets/batterlabbet_potential_logo.png"
+              alt="Batterilabbet"
+              class="w-20 h-20 rounded-md object-cover"
+            />
+          </p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
+          <div class="space-y-4">
+            <p class="font-medium">Tjänsten</p>
+            <a href="/index" class="block text-gray-500 hover:text-black"
+              >Hem</a
+            >
+            <a href="/reparation" class="block text-gray-500 hover:text-black"
+              >Vår process</a
+            >
+            <a
+              href="/hitta-din-modell"
+              class="block text-gray-500 hover:text-black"
+              >Reparera nu</a
+            >
+          </div>
+          <div class="space-y-4">
+            <p class="font-medium">Information</p>
+            <a href="/om-oss" class="block text-gray-500 hover:text-black"
+              >Om oss</a
+            >
+            <a href="/faq" class="block text-gray-500 hover:text-black"
+              >Vanliga frågor</a
+            >
+            <a href="/garanti" class="block text-gray-500 hover:text-black"
+              >Garanti</a
+            >
+            <a href="/frakt" class="block text-gray-500 hover:text-black"
+              >Frakt</a
+            >
+          </div>
+          <div class="space-y-4">
+            <p class="font-medium">Kontakt</p>
+            <a href="/kontakt" class="block text-gray-500 hover:text-black"
+              >Kontakta oss</a
+            >
+            <a
+              href="https://www.instagram.com/batterilabbet/"
+              class="block text-gray-500 hover:text-black"
+              >Instagram</a
+            >
+            <a
+              href="https://www.linkedin.com/company/batterilabbet"
+              class="block text-gray-500 hover:text-black"
+              >Linkedin</a
+            >
+          </div>
+        </div>
+      </div>
+      <div
+        class="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-50 text-sm text-gray-400 flex flex-col md:flex-row justify-between gap-4"
+      >
+        <div class="flex flex-col gap-1">
+          <p>© 2026 Batterilabbet AB</p>
+          <p>756 56 Uppsala</p>
+          <p>Org.nr: 559585-0321</p>
+        </div>
+
+        <div class="flex gap-6 items-start">
+          <a href="/allmanna-villkor" class="hover:text-black transition"
+            >Allmänna villkor</a
+          >
+          <a href="/integritetspolicy" class="hover:text-black transition"
+            >Integritetspolicy</a
+          >
+        </div>
+      </div>
+    </footer>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
