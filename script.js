@@ -900,7 +900,7 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycby7isjI1_maZZcYI0xKWsUQzx-37m8p-Zk5-ZbrCjentCfPbQ3bISgvWpjrq6dZ5JmpjA/exec";
+  "https://script.google.com/macros/s/AKfycbzhMJJrZmzc4xkaVInghKaudMRrfi2CbMAWnNuaVCHblEwKpDYooO99U0nt8Q2a32PGjg/exec";
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();
@@ -950,6 +950,7 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       if (errorRadio) selectedError = errorRadio.value;
 
+      // Samla all data (din gamla data)
       const formData = new FormData();
       formData.append("orderNumber", orderNumber);
       formData.append(
@@ -1015,6 +1016,32 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       formData.append("shipping", shippingChoice);
 
+      // --- NYTT: FÅNGA UPP PRISERNA FRÅN SKÄRMEN ---
+      const basePrice =
+        document.getElementById("base-price-display")?.innerText || "";
+      const finalPrice =
+        document.getElementById("final-price")?.innerText || "";
+
+      // Kolla om uppgradering är vald (om raden INTE är dold)
+      const upgradeRow = document.getElementById("upgrade-row");
+      const upgradePrice =
+        !upgradeRow || upgradeRow.classList.contains("hidden")
+          ? ""
+          : document.getElementById("upgrade-price-display")?.innerText || "";
+
+      // Kolla om rabatt är vald
+      const discountRow = document.getElementById("discount-row");
+      const discountAmount =
+        !discountRow || discountRow.classList.contains("hidden")
+          ? ""
+          : document.getElementById("discount-amount")?.innerText || "";
+
+      // Lägg till i formData så Google Script får det
+      formData.append("basePrice", basePrice);
+      formData.append("upgradePrice", upgradePrice);
+      formData.append("discountAmount", discountAmount);
+      formData.append("finalPrice", finalPrice);
+
       fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         body: formData,
@@ -1024,11 +1051,14 @@ document.addEventListener("DOMContentLoaded", function () {
           const brandVal = formData.get("brand") || "Ej angivet";
           const modelVal = formData.get("model") || "Ej angivet";
           const capacityVal = formData.get("capacity") || "";
+
+          // NYTT: Vi skickar nu även med det finala priset i URL:en till bekräftelsesidan
           const params = new URLSearchParams({
             order: orderNumber,
             brand: brandVal,
             model: modelVal,
             capacity: capacityVal,
+            price: finalPrice,
           });
           window.location.href = `/confirmation?${params.toString()}`;
         })
