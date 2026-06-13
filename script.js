@@ -900,7 +900,7 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzhMJJrZmzc4xkaVInghKaudMRrfi2CbMAWnNuaVCHblEwKpDYooO99U0nt8Q2a32PGjg/exec";
+  "https://script.google.com/macros/s/AKfycbyw4yoDjmoIJrxndz668RvBbFXkk7yHGMKTfb3nB85ZayMiFeMKplEK-VUMSPGh972nrQ/exec";
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();
@@ -949,9 +949,22 @@ document.addEventListener("DOMContentLoaded", function () {
         'input[name="error_type"]:checked'
       );
       if (errorRadio) selectedError = errorRadio.value;
-
+      // NYTT: Räkna ut om det är Reparation eller Nybeställning
+      let orderType = "Beställning / Ärende";
+      if (
+        window.currentBatteryData &&
+        window.currentBatteryData.action === "repair"
+      ) {
+        orderType = "Reparation / Renovering";
+      } else if (
+        window.currentBatteryData &&
+        window.currentBatteryData.action === "order"
+      ) {
+        orderType = "Nybeställning";
+      }
       // Samla all data (din gamla data)
       const formData = new FormData();
+      formData.append("orderType", orderType); // <--- NY RAD
       formData.append("orderNumber", orderNumber);
       formData.append(
         "brand",
@@ -1062,6 +1075,7 @@ document.addEventListener("DOMContentLoaded", function () {
             upgradePrice: upgradePrice,
             discountAmount: discountAmount,
             finalPrice: finalPrice,
+            orderType: orderType, // <--- NY RAD
           });
           window.location.href = `/confirmation?${params.toString()}`;
         })
