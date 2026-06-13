@@ -8,15 +8,33 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link 
-      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" 
-      rel="stylesheet" 
-    />
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="styles.css" />
+    <style>
+      :root {
+        --font-inter: "Inter", sans-serif;
+        --font-comfortaa: "Comfortaa", sans-serif;
+        --font-main: var(--font-comfortaa);
+      }
+      body {
+        font-family: var(--font-main);
+        background-color: #faf9f6;
+        color: #1a1a1a;
+        scroll-behavior: smooth;
+      }
+      .btn-primary {
+        background-color: #000;
+        color: #fff;
+        transition: all 0.3s ease;
+        text-align: center;
+      }
+      .btn-primary:hover {
+        background-color: #333;
+        transform: translateY(-2px);
+      }
+    </style>
   </head>
 
   <body class="bg-[#f8f5f1] min-h-screen flex flex-col">
@@ -28,8 +46,6 @@
           href="/index"
           class="flex items-center gap-3 text-xl font-semibold tracking-tighter hover:opacity-70 transition"
         >
-          
-
           <span>Batterilabbet</span>
         </a>
       </div>
@@ -41,7 +57,6 @@
       <div
         class="max-w-xl w-full mx-auto bg-white p-6 sm:p-8 md:p-12 rounded-3xl md:rounded-[40px] shadow-sm border border-black/5 text-center"
       >
-        <!-- Check-ikon -->
         <div
           class="w-16 h-16 md:w-20 md:h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8"
         >
@@ -56,7 +71,6 @@
           din e-post. Vi behandlar ditt ärende så snabbt vi kan.
         </p>
 
-        <!-- Ordernummer -->
         <div
           class="bg-[#F3F2EE] rounded-2xl p-4 md:p-6 mb-6 inline-block w-full sm:w-auto"
         >
@@ -73,16 +87,16 @@
           </p>
         </div>
 
-        <!-- NY SEKTION: Orderdetaljer (Kvittot) -->
         <div
           class="bg-gray-50 border border-gray-100 rounded-2xl p-5 md:p-6 mb-8 text-left w-full mx-auto sm:w-4/5 md:w-3/4"
         >
           <h3
             class="font-medium text-gray-900 mb-3 pb-3 border-b border-gray-200"
           >
-            Valt batteri
+            Din orderöversikt
           </h3>
-          <ul class="space-y-3 text-sm md:text-base text-gray-600">
+
+          <ul class="space-y-3 text-sm md:text-base text-gray-600 mb-6">
             <li class="flex justify-between items-center">
               <span class="text-gray-500">Märke:</span>
               <span
@@ -99,24 +113,60 @@
                 >-</span
               >
             </li>
-            <li
-              id="capacity-container"
-              class="flex justify-between items-center"
-            >
-              <span class="text-gray-500">Kapacitet:</span>
-              <span
-                id="display-capacity"
-                class="font-medium text-gray-900 text-right"
-                >-</span
-              >
-            </li>
           </ul>
+
+          <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100">
+            <div
+              id="base-price-container"
+              class="flex justify-between items-center mb-2"
+            >
+              <span class="text-sm md:text-base text-gray-500">Grundpris</span>
+              <span
+                id="display-base-price"
+                class="font-medium text-sm md:text-base"
+                >...</span
+              >
+            </div>
+
+            <div
+              id="upgrade-container"
+              class="flex justify-between items-center mb-2 hidden"
+            >
+              <span class="text-sm md:text-base text-gray-500"
+                >Tillval: <span id="display-capacity"></span
+              ></span>
+              <span
+                id="display-upgrade-price"
+                class="font-medium text-sm md:text-base text-black"
+                >...</span
+              >
+            </div>
+
+            <div
+              id="discount-container"
+              class="flex justify-between items-center mb-2 text-green-600 hidden text-sm md:text-base"
+            >
+              <span>Rabatt</span>
+              <span id="display-discount">-0 kr</span>
+            </div>
+
+            <div
+              class="flex justify-between items-center pt-2 border-t border-gray-100 mt-2"
+            >
+              <span class="font-semibold text-base md:text-lg">Totalt</span>
+              <span
+                id="display-final-price"
+                class="font-bold text-lg md:text-xl"
+                >...</span
+              >
+            </div>
+          </div>
         </div>
 
         <div>
           <a
             href="/index"
-            class="btn-primary inline-block py-4 px-8 rounded-2xl font-medium shadow-sm w-full sm:w-auto"
+            class="btn-primary inline-block py-4 px-8 rounded-2xl shadow-sm w-full sm:w-auto"
           >
             Tillbaka till startsidan
           </a>
@@ -136,7 +186,13 @@
         const model = urlParams.get("model");
         const capacity = urlParams.get("capacity");
 
-        // Fyll i datan på sidan
+        // Hämta de nya pris-parametrarna
+        const basePrice = urlParams.get("basePrice");
+        const upgradePrice = urlParams.get("upgradePrice");
+        const discountAmount = urlParams.get("discountAmount");
+        const finalPrice = urlParams.get("finalPrice");
+
+        // Fyll i standard-datan på sidan
         document.getElementById("display-order-number").textContent =
           orderId || "Okänt";
         document.getElementById("display-brand").textContent =
@@ -144,11 +200,39 @@
         document.getElementById("display-model").textContent =
           model || "Ej angivet";
 
-        // Om kapacitet inte är ifyllt döljer vi den raden i kvittot så det ser snyggt ut
-        if (capacity) {
-          document.getElementById("display-capacity").textContent = capacity;
+        // ---- FYLL I KVITTOT ----
+
+        // Grundpris
+        if (basePrice) {
+          document.getElementById("display-base-price").textContent = basePrice;
         } else {
-          document.getElementById("capacity-container").style.display = "none";
+          document.getElementById("base-price-container").style.display =
+            "none";
+        }
+
+        // Slutpris
+        if (finalPrice) {
+          document.getElementById("display-final-price").textContent =
+            finalPrice;
+        }
+
+        // Tillval (Uppgradering visas bara om upgradePrice finns och inte är tomt)
+        if (upgradePrice && capacity) {
+          document
+            .getElementById("upgrade-container")
+            .classList.remove("hidden");
+          document.getElementById("display-capacity").textContent = capacity;
+          document.getElementById("display-upgrade-price").textContent =
+            upgradePrice;
+        }
+
+        // Rabatt (Visas bara om discountAmount finns och inte är tomt)
+        if (discountAmount) {
+          document
+            .getElementById("discount-container")
+            .classList.remove("hidden");
+          document.getElementById("display-discount").textContent =
+            discountAmount;
         }
       });
     </script>

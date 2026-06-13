@@ -1052,13 +1052,16 @@ document.addEventListener("DOMContentLoaded", function () {
           const modelVal = formData.get("model") || "Ej angivet";
           const capacityVal = formData.get("capacity") || "";
 
-          // NYTT: Vi skickar nu även med det finala priset i URL:en till bekräftelsesidan
+          // NYTT: Nu skickar vi med hela kvittot i URL:en till bekräftelsesidan
           const params = new URLSearchParams({
             order: orderNumber,
             brand: brandVal,
             model: modelVal,
             capacity: capacityVal,
-            price: finalPrice,
+            basePrice: basePrice,
+            upgradePrice: upgradePrice,
+            discountAmount: discountAmount,
+            finalPrice: finalPrice,
           });
           window.location.href = `/confirmation?${params.toString()}`;
         })
