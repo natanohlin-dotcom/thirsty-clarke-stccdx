@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Samarbete | Batterilabbet</title>
-    <meta name="description" content="Företagssamarbete med Batterilabbet." />
+    <title>Cirkularitet & Säker hantering | Batterilabbet</title>
+    <meta
+      name="description"
+      content="Cirkulär batterihantering och avfallsåtervinning"
+    />
 
     <link
       rel="apple-touch-icon"
@@ -135,58 +138,178 @@
         <h1
           class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 break-words"
         >
-          Samarbeta med Batterilabbet
+          Cirkularitet & Säker hantering
         </h1>
         <p class="text-xl">
-          Erbjud era kunder batterireparation och batterier till marknadens
-          bästa priser: ett mervärde för både er och era kunder.
+          Hur vi hanterar batterier cirkulärt och hanterar avfallet på ett
+          säkert sätt
         </p>
-        <h2>Samarbetspartner med Batterilabbet</h2>
+        <h2>Cirkuläritet</h2>
         <p>
-          Som samarbetspartner tar vi hand om de batterier som ni själva inte
-          kan hantera. Genom detta får ni möjligheten till försäljning av nya
-          batterier, samt blir av med defekta batterier. Allt till ett mycket
-          förmånligt pris.
-        </p>
-        <h2>Fördelar som samarbetspartner</h2>
-        <ul>
-          <li>
-            Möjlighet till försäljning av nya batterier till marknadens bästa
-            pris
-          </li>
-          <li>Renovation av utgågna batterier</li>
-          <li>Fri frakt vid order om +3 batterier</li>
-          <li>Egen supportlinje Måndag - Fredag</li>
-          <li>Prioriterad tid för felsökning och snabb offert</li>
-          <li>
-            Upphämtning och omhändertagande av defekta batterier som ej kan
-            lagas
-          </li>
-        </ul>
-        <h2>Priser</h2>
-        <p>
-          Ni kan erbjuda era kunder de bästa priserna genom en personlig
-          rabattkod som ni delar ut. När kunden skriver in rabattkoden får de
-          10% rabatt på beställningen, och det loggas i vårt system att er kod
-          använts.
+          Vi tror på cirkuläritet när det gäller batterier. Vad det innebär
+          konkret är att vi vill att varje batteri ska ge maximal nytta och inte
+          bara "slängas". Därför byter vi komponenter, eller återanvänder delar
+          för att ge batteriet ett nytt liv.
         </p>
         <p>
-          Ni får 15% på beställningens värde när en kund använder er rabattkod.
+          Oftast kan batteriet återgå till att tjäna sin grundfunktion, men
+          ibland måste vi låta det ta över en annan funktion. På så sätt ser vi
+          till att öka hållbarheten inom den moderna batteritekniken genom en
+          cirkulär batterihantering.
         </p>
-        <h2>Hur det går till</h2>
-        <p>
-          En beställning görs på vår webbplats av er eller direkt av er kund. Ni
-          anger er specifika rabattkod i checkout.
-        </p>
-        <p>
-          Som samarbetspartner gäller samma garanti (två år) och villkor som för
-          privatpersoner.
-        </p>
-        <h2>Bli samarbetspartner</h2>
-        <p>
-          Kontakta oss på admin@batterilabbet.com så kan vi tillsammans ta fram
-          ett samarbete som passar er verksamhet.
-        </p>
+      </div>
+
+      <section id="cirkular-hantering" class="relative py-20 px-6 scroll-mt-20">
+        <h2 class="text-4xl font-medium mt-0 mb-10 text-center">
+          Hur ett batteri återvinns
+        </h2>
+
+        <div class="max-w-7xl mx-auto">
+          <!-- Ändrat till lg:grid-cols-3 men med bara 3 kort, vilket fyller exakt en rad -->
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          >
+            <!-- KORT 1: Demontering och sortering -->
+            <div class="glass-card p-5 lg:p-6 flex flex-col h-full group">
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/spare_parts.png"
+                  alt="Demontering av batteri"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-bricka -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="layers" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">Källsortering i labbet</h3>
+                <div class="space-y-4 text-gray-500 flex-grow">
+                  <p>
+                    Batterier som inte går att rädda plockas försiktigt isär för
+                    hand. Vi separerar plast, metall, kretskort (BMS) och
+                    litiumceller direkt på plats för att maximera
+                    återvinningsgraden.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- KORT 2: End of life (Säker urladdning) -->
+            <div class="glass-card p-5 lg:p-6 flex flex-col h-full group">
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/spot_welding.png"
+                  alt="Säker urladdning av batteri"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-bricka -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="zap-off" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">End-of-life & Säkerhet</h3>
+                <div class="space-y-4 text-gray-500 flex-grow">
+                  <p>
+                    Innan defekta celler lämnar våra lokaler genomgår de en
+                    rigorös "end-of-life"-process. De laddas ur helt för att
+                    neutralisera energin och eliminera brandrisken under
+                    transport.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- KORT 3: Elkretsen och Naturvårdsverket -->
+            <div class="glass-card p-5 lg:p-6 flex flex-col h-full group">
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/recylce.png"
+                  alt="Återvinning av sällsynta metaller"
+                  class="w-full h-full object-cover object-[50%_70%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-bricka -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="recycle" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">
+                  Certifierad återvinning
+                </h3>
+                <div class="space-y-4 text-gray-500 flex-grow">
+                  <p>
+                    Vi samarbetar med Elkretsen och följer Naturvårdsverkets
+                    strikta standarder. Det garanterar att värdefulla metaller
+                    som litium, kobolt och nickel extraheras och används i nya
+                    produkter.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- CALL TO ACTION (Reparera) -->
+      <div class="mt-20 max-w-3xl mx-auto px-4">
+        <div
+          class="bg-stone-50 border border-stone-200 rounded-3xl p-8 md:p-12 text-center shadow-sm"
+        >
+          <h3 class="text-2xl md:text-3xl font-medium mb-4">
+            Är du redo att ge ditt batteri nytt liv?
+          </h3>
+          <p class="text-stone-600 mb-8 max-w-xl mx-auto">
+            Vi har rätt verktyg och expertis för att utföra en säker och
+            långsiktig reparation.
+          </p>
+          <a
+            href="/hitta-din-modell"
+            class="inline-flex items-center justify-center gap-2 btn-primary px-8 py-4 md:px-12 md:py-5 rounded-full text-lg font-medium shadow-xl transition-transform hover:scale-105"
+          >
+            <i data-lucide="wrench" class="w-5 h-5"></i>
+            <span>Reparera nu</span>
+          </a>
+        </div>
+      </div>
+      <!-- LÄS-NAVIGERING (SISTA SIDAN) -->
+      <div
+        class="mt-12 mb-10 max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 px-4"
+      >
+        <a
+          href="/reparation"
+          class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-full text-base font-medium border border-stone-200 bg-white hover:bg-stone-50 transition-all text-stone-600 hover:text-black"
+        >
+          <i data-lucide="arrow-left" class="w-5 h-5"></i>
+          <span>Föregående: Reparation</span>
+        </a>
+
+        <!-- Valfri bonus: En väg tillbaka till startsidan -->
+        <a
+          href="/index"
+          class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-full text-base font-medium border border-transparent hover:bg-stone-100 transition-all text-stone-500 hover:text-black"
+        >
+          <i data-lucide="home" class="w-5 h-5"></i>
+          <span>Till startsidan</span>
+        </a>
       </div>
     </main>
 

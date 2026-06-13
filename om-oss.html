@@ -72,8 +72,8 @@
         </a>
 
         <div class="hidden md:flex gap-8 text-sm font-medium">
-          <a href="/reparation" class="hover:opacity-60 transition"
-            >Vår process</a
+          <a href="/om-oss#vad-vi-gor" class="hover:opacity-60 transition"
+            >Om batterireparation</a
           >
           <a href="/om-oss" class="hover:opacity-60 transition">Om oss</a>
           <a href="/certifiering" class="hover:opacity-60 transition"
@@ -114,8 +114,8 @@
 
           <div class="h-px bg-gray-200 w-full rounded-full"></div>
 
-          <a href="/reparation" class="mobile-link hover:opacity-60 transition"
-            >Vår process</a
+          <a href="/om-oss#vad-vi-gor" class="mobile-link hover:opacity-60 transition"
+            >Om batterireparation</a
           >
           <a href="/om-oss" class="mobile-link hover:opacity-60 transition"
             >Om oss</a
@@ -128,88 +128,94 @@
           <a href="/kontakt" class="mobile-link hover:opacity-60 transition"
             >Kontakt</a
           >
+          <a href="/faq" class="mobile-link hover:opacity-60 transition">Vanliga frågor</a>
         </div>
       </div>
     </nav>
 
     <main class="pt-40 pb-32">
-      <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
-          Om Batterilabbet
-        </h1>
-        <p class="text-xl">Batterier som möjliggör framtidens mobilitet</p>
-        <h2>Varför Batterilabbet?</h2>
+      <section id="Om batterilabbet" class="py-2 px-6">
+        <div class="max-w-3xl mx-auto prose">
+          <h1
+            class="text-6xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 break-words"
+          >
+            Om Batterilabbet
+          </h1>
+          <p class="text-xl">Batterier som möjliggör framtidens mobilitet</p>
+        <h2 class="text-4xl font-medium tracking-tight mb-8">
+          Varför Batterilabbet?
+        </h2>
         <p>
           Batterilabbet uppstod ur målet att sätta en ny standard för hur
           elcykelbatterier repareras i Sverige med säkerhet, transparens och
           korrekt hantering som grund.
         </p>
-        <section id="vilka-ar-vi" class="py-5 px-6">
+      </section>
+      <section id="vilka-ar-vi" class="py-5 pb-10 px-6">
+        <div
+          class="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 items-center"
+        >
+          <div class="md:w-1/2">
+            <h2 class="text-4xl font-medium tracking-tight mb-8">
+              Vilka är vi?
+            </h2>
+
+            <p>
+              Vi är fyra ingenjörsstudenter från Uppsala universitet med en
+              bakgrund i batteribranschen som sträcker sig tillbaka till 2020
+              och ett stort intresse för batteriteknik, hållbarhet och smarta
+              lösningar för att underlätta för alla med elcyklar.
+            </p>
+          </div>
           <div
-            class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center"
+            id="om-oss-slider"
+            class="swipe-slider relative w-full aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group"
           >
-            <div class="md:w-1/2">
-              <h2 class="text-5xl font-medium tracking-tight mb-8">
-                Vilka är vi?
-              </h2>
+            <img
+              src="photos/teamet.png"
+              alt="Teamet på Batterilabbet, studenter vid Uppsala Universitet"
+              class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-100"
+              alt="Bild 1"
+            />
 
-              <p>
-                Vi är fyra ingenjörsstudenter från Uppsala universitet med en
-                bakgrund i batteribranschen som sträcker sig tillbaka till 2020
-                och ett stort intresse för batteriteknik, hållbarhet och smarta
-                lösningar för att underlätta för alla med elcyklar.
-              </p>
-            </div>
-            <div
-              id="om-oss-slider"
-              class="swipe-slider relative w-3/4 aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group"
+            <img
+              src="photos/vilgot_loder.png"
+              alt="Batterilabbet löder på ett batteri"
+              class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0"
+              alt="Bild 2"
+            />
+
+            <button
+              onclick="moveStandaloneSlide('om-oss-slider', -1)"
+              class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
             >
-              <img
-                src="photos/teamet.png"
-                alt="Teamet på Batterilabbet, studenter vid Uppsala Universitet"
-                class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-100"
-                alt="Bild 1"
-              />
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button
+              onclick="moveStandaloneSlide('om-oss-slider', 1)"
+              class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
+            >
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
 
-              <img
-                src="photos/vilgot_loder.png"
-                alt="Batterilabbet löder på ett batteri"
-                class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0"
-                alt="Bild 2"
-              />
-
-              <button
-                onclick="moveStandaloneSlide('om-oss-slider', -1)"
-                class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
-              >
-                <i data-lucide="chevron-left" class="w-5 h-5"></i>
-              </button>
-              <button
-                onclick="moveStandaloneSlide('om-oss-slider', 1)"
-                class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
-              >
-                <i data-lucide="chevron-right" class="w-5 h-5"></i>
-              </button>
-
+            <div
+              class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full"
+            >
               <div
-                class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full"
-              >
-                <div
-                  class="slider-dot w-2 h-2 rounded-full transition-colors bg-black cursor-pointer"
-                  onclick="goToStandaloneSlide('om-oss-slider', 0)"
-                ></div>
-                <div
-                  class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer"
-                  onclick="goToStandaloneSlide('om-oss-slider', 1)"
-                ></div>
-              </div>
+                class="slider-dot w-2 h-2 rounded-full transition-colors bg-black cursor-pointer"
+                onclick="goToStandaloneSlide('om-oss-slider', 0)"
+              ></div>
+              <div
+                class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer"
+                onclick="goToStandaloneSlide('om-oss-slider', 1)"
+              ></div>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
-      <section id="vad-vi-gor" class="relative py-4 px-6 scroll-mt-20">
-        <h2 class="text-3xl font-medium mt-0 mb-6 text-center">Vad gör vi?</h2>
+      <section id="vad-vi-gor" class="relative py-20 px-6 scroll-mt-20">
+        <h2 class="text-4xl font-medium mt-0 mb-6 text-center">Vad gör vi?</h2>
         <div class="max-w-7xl mx-auto">
           <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8"
@@ -227,7 +233,7 @@
                 <img
                   src="photos/voltage_control.jpg"
                   alt="Felsökning av elcykelbatteri"
-                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                  class="w-full h-full object-cover object-[50%_40%] group-hover:scale-105 transition-transform duration-700"
                 />
                 <!-- Ikon-brickan som flyter över bilden -->
                 <div
@@ -239,7 +245,7 @@
               <!-- Text-innehåll -->
               <div class="flex flex-col flex-grow">
                 <h3 class="text-xl font-medium mb-3">
-                  Felsökning och diagnostik
+                  Felsökning & Diagnostik
                 </h3>
                 <!-- Använder space-y-4 för styckeavstånd istället för <br> -->
                 <div class="space-y-4 text-gray-500 mb-6 flex-grow">
@@ -286,9 +292,7 @@
               </div>
               <!-- Text-innehåll -->
               <div class="flex flex-col flex-grow">
-                <h3 class="text-xl font-medium mb-3">
-                  Reparation och underhåll
-                </h3>
+                <h3 class="text-xl font-medium mb-3">Reparation & Underhåll</h3>
                 <!-- Använder space-y-4 för styckeavstånd istället för <br> -->
                 <div class="space-y-4 text-gray-500 mb-6 flex-grow">
                   <p>
@@ -313,7 +317,7 @@
 
             <!-- KORT 3: Återvinning -->
             <a
-              href="#"
+              href="/cirkularitet"
               class="glass-card p-5 lg:p-6 block cursor-pointer hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col h-full group"
             >
               <!-- Bild-behållare -->
@@ -321,7 +325,7 @@
                 class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
               >
                 <img
-                  src="photos/open-battery.png"
+                  src="photos/open_battery_2.png"
                   alt="Felsökning av elcykelbatteri"
                   class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
                 />
@@ -335,7 +339,7 @@
               <!-- Text-innehåll -->
               <div class="flex flex-col flex-grow">
                 <h3 class="text-xl font-medium mb-3">
-                  Cirkulär och säker hantering
+                  Cirkulär & Säker hantering
                 </h3>
                 <!-- Använder space-y-4 för styckeavstånd istället för <br> -->
                 <div class="space-y-4 text-gray-500 mb-6 flex-grow">
@@ -362,6 +366,9 @@
       </section>
 
       <section id="Mission Vision" class="py-2 px-6">
+        <h2 class="text-4xl font-medium mt-0 mb-6 text-center">
+          Varför gör vi det här?
+        </h2>
         <div class="max-w-3xl mx-auto prose">
           <h2 class="flex items-center gap-3">
             <span>Vårt mål </span> <i data-lucide="book-check"></i>
@@ -383,15 +390,16 @@
           </p>
         </div>
       </section>
-
-      <div class="max-w-3xl mx-auto prose">
-        <h2>Varför välja oss</h2>
-        <p>
-          Vi tror inte på massproduktion utan själ. Därför byggs alla våra
-          batteripack för hand på plats i våra verkstäder i Uppsala och Tyresö.
-          För oss är säkerhet och prestanda två sidor av samma mynt.
-        </p>
-      </div>
+      <section id="varfor-oss" class="py-2 px-6">
+        <div class="max-w-3xl mx-auto prose">
+          <h2>Varför välja oss?</h2>
+          <p>
+            Vi tror inte på massproduktion utan själ. Därför byggs alla våra
+            batteripack för hand på plats i våra verkstäder i Uppsala och
+            Tyresö. För oss är säkerhet och prestanda två sidor av samma mynt.
+          </p>
+        </div>
+      </section>
     </main>
 
     <footer class="py-20 px-6 border-t border-gray-100 bg-white">
@@ -414,14 +422,14 @@
             />
           </p>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-10">
           <div class="space-y-4">
             <p class="font-medium">Tjänsten</p>
             <a href="/index" class="block text-gray-500 hover:text-black"
               >Hem</a
             >
-            <a href="/reparation" class="block text-gray-500 hover:text-black"
-              >Vår process</a
+            <a href="/om-oss#vad-vi-gor" class="block text-gray-500 hover:text-black"
+              >Om batterireparation</a
             >
             <a
               href="/hitta-din-modell"

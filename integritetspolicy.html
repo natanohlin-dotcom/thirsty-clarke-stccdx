@@ -48,9 +48,9 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link 
-      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" 
-      rel="stylesheet" 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
     />
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -60,22 +60,20 @@
   </head>
 
   <body>
-    
     <nav class="fixed w-full z-50 px-6 py-4">
       <div
         class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative"
       >
-      <a
-      href="/index"
-      class="flex items-center gap-3 text-xl font-semibold tracking-tighter hover:opacity-70 transition"
-    >
-     
-      <span>Batterilabbet</span>
-    </a>
-    
+        <a
+          href="/index"
+          class="flex items-center gap-3 text-xl font-semibold tracking-tighter hover:opacity-70 transition"
+        >
+          <span>Batterilabbet</span>
+        </a>
+
         <div class="hidden md:flex gap-8 text-sm font-medium">
-          <a href="/reparation" class="hover:opacity-60 transition"
-            >Vår process</a
+          <a href="/om-oss#vad-vi-gor" class="hover:opacity-60 transition"
+            >Om batterireparation</a
           >
           <a href="/om-oss" class="hover:opacity-60 transition">Om oss</a>
           <a href="/certifiering" class="hover:opacity-60 transition"
@@ -83,7 +81,7 @@
           >
           <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
         </div>
-    
+
         <div class="flex items-center">
           <a
             href="/hitta-din-modell"
@@ -92,7 +90,7 @@
             <span>Reparera nu</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </a>
-    
+
           <button
             id="mobile-menu-btn"
             class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-2"
@@ -101,7 +99,7 @@
           </button>
         </div>
       </div>
-    
+
       <div id="mobile-menu" class="hidden md:hidden max-w-7xl mx-auto mt-2">
         <div
           class="bg-white/95 backdrop-blur-md rounded-3xl border border-black/5 shadow-xl p-6 flex flex-col gap-6 text-center text-lg font-medium"
@@ -113,11 +111,13 @@
             <span>Reparera nu</span>
             <i data-lucide="arrow-right" class="w-5 h-5"></i>
           </a>
-    
+
           <div class="h-px bg-gray-200 w-full rounded-full"></div>
-    
-          <a href="/reparation" class="mobile-link hover:opacity-60 transition"
-            >Vår process</a
+
+          <a
+            href="/om-oss#vad-vi-gor"
+            class="mobile-link hover:opacity-60 transition"
+            >Om batterireparation</a
           >
           <a href="/om-oss" class="mobile-link hover:opacity-60 transition"
             >Om oss</a
@@ -130,13 +130,18 @@
           <a href="/kontakt" class="mobile-link hover:opacity-60 transition"
             >Kontakt</a
           >
+          <a href="/faq" class="mobile-link hover:opacity-60 transition"
+            >Vanliga frågor</a
+          >
         </div>
       </div>
     </nav>
 
     <main class="pt-40 pb-32 px-6 min-h-screen">
       <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
+        <h1
+          class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 break-words"
+        >
           Integritetspolicy
         </h1>
         <p class="text-xl">Hur vi hanterar dina personuppgifter</p>
@@ -231,12 +236,14 @@
             >Batterilabbet</a
           >
           <p class="text-gray-400">Powered by science. Made in Uppsala.</p>
-          
-          <p><img
-            src="assets/batterlabbet_potential_logo.png"
-            alt="Batterilabbet"
-            class="w-20 h-20 rounded-md object-cover"
-          /></p>
+
+          <p>
+            <img
+              src="assets/batterlabbet_potential_logo.png"
+              alt="Batterilabbet"
+              class="w-20 h-20 rounded-md object-cover"
+            />
+          </p>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
           <div class="space-y-4">
@@ -244,8 +251,10 @@
             <a href="/index" class="block text-gray-500 hover:text-black"
               >Hem</a
             >
-            <a href="/reparation" class="block text-gray-500 hover:text-black"
-              >Vår process</a
+            <a
+              href="/om-oss#vad-vi-gor"
+              class="block text-gray-500 hover:text-black"
+              >Om batterireparation</a
             >
             <a
               href="/hitta-din-modell"
@@ -259,8 +268,8 @@
               >Om oss</a
             >
             <a href="/faq" class="block text-gray-500 hover:text-black"
-            >Vanliga frågor</a
-          >
+              >Vanliga frågor</a
+            >
             <a href="/garanti" class="block text-gray-500 hover:text-black"
               >Garanti</a
             >
@@ -271,17 +280,23 @@
           <div class="space-y-4">
             <p class="font-medium">Kontakt</p>
             <a href="/kontakt" class="block text-gray-500 hover:text-black"
-            >Kontakta oss</a
-          >
-            <a href="https://www.instagram.com/batterilabbet/" class="block text-gray-500 hover:text-black"
-            >Instagram</a
-          >
-          <a href="https://www.facebook.com/profile.php?id=61589751819870&locale=sv_SE" class="block text-gray-500 hover:text-black"
-            >Facebook</a
-          >
-          <a href="https://www.linkedin.com/company/batterilabbet" class="block text-gray-500 hover:text-black"
-            >Linkedin</a
-          >
+              >Kontakta oss</a
+            >
+            <a
+              href="https://www.instagram.com/batterilabbet/"
+              class="block text-gray-500 hover:text-black"
+              >Instagram</a
+            >
+            <a
+              href="https://www.facebook.com/profile.php?id=61589751819870&locale=sv_SE"
+              class="block text-gray-500 hover:text-black"
+              >Facebook</a
+            >
+            <a
+              href="https://www.linkedin.com/company/batterilabbet"
+              class="block text-gray-500 hover:text-black"
+              >Linkedin</a
+            >
           </div>
         </div>
       </div>

@@ -267,7 +267,7 @@ function generatePriceRow(
           <div class="flex items-center gap-4">
               <span class="${
                 isSmall ? "text-base" : "text-xl"
-              } font-medium whitespace-nowrap text-gray-800">Pris från - ${
+              } font-medium whitespace-nowrap text-gray-800">Från ${
     priceObj.price
   }</span>
               

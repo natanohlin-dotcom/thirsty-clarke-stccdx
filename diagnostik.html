@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Felsökning och diagnostik | Batterilabbet</title>
+    <title>Felsökning & diagnostik | Batterilabbet</title>
     <meta
       name="description"
-      content="Renovera batteri, laga batteri eller reparera batteri hos Batterilabbet."
+      content="Felsöka batteri för att laga batteri eller reparera batteri hos Batterilabbet."
     />
 
     <link
@@ -48,9 +48,9 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link 
-      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" 
-      rel="stylesheet" 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
     />
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -64,17 +64,16 @@
       <div
         class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative"
       >
-      <a
-      href="/index"
-      class="flex items-center gap-3 text-xl font-semibold tracking-tighter hover:opacity-70 transition"
-    >
-      
-      <span>Batterilabbet</span>
-    </a>
-    
+        <a
+          href="/index"
+          class="flex items-center gap-3 text-xl font-semibold tracking-tighter hover:opacity-70 transition"
+        >
+          <span>Batterilabbet</span>
+        </a>
+
         <div class="hidden md:flex gap-8 text-sm font-medium">
-          <a href="/reparation" class="hover:opacity-60 transition"
-            >Vår process</a
+          <a href="/om-oss#vad-vi-gor" class="hover:opacity-60 transition"
+            >Om batterireparation</a
           >
           <a href="/om-oss" class="hover:opacity-60 transition">Om oss</a>
           <a href="/certifiering" class="hover:opacity-60 transition"
@@ -82,7 +81,7 @@
           >
           <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
         </div>
-    
+
         <div class="flex items-center">
           <a
             href="/hitta-din-modell"
@@ -91,7 +90,7 @@
             <span>Reparera nu</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </a>
-    
+
           <button
             id="mobile-menu-btn"
             class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-2"
@@ -100,7 +99,7 @@
           </button>
         </div>
       </div>
-    
+
       <div id="mobile-menu" class="hidden md:hidden max-w-7xl mx-auto mt-2">
         <div
           class="bg-white/95 backdrop-blur-md rounded-3xl border border-black/5 shadow-xl p-6 flex flex-col gap-6 text-center text-lg font-medium"
@@ -112,11 +111,13 @@
             <span>Reparera nu</span>
             <i data-lucide="arrow-right" class="w-5 h-5"></i>
           </a>
-    
+
           <div class="h-px bg-gray-200 w-full rounded-full"></div>
-    
-          <a href="/reparation" class="mobile-link hover:opacity-60 transition"
-            >Vår process</a
+
+          <a
+            href="/om-oss#vad-vi-gor"
+            class="mobile-link hover:opacity-60 transition"
+            >Om batterireparation</a
           >
           <a href="/om-oss" class="mobile-link hover:opacity-60 transition"
             >Om oss</a
@@ -129,144 +130,287 @@
           <a href="/kontakt" class="mobile-link hover:opacity-60 transition"
             >Kontakt</a
           >
+          <a href="/faq" class="mobile-link hover:opacity-60 transition">Vanliga frågor</a>
         </div>
       </div>
     </nav>
-    
+
     <main class="pt-40 pb-32 px-6">
       <div class="max-w-3xl mx-auto prose">
-        <h1 class="text-5xl font-medium tracking-tight mb-8">
-          Felsökning och diagnostik
-        </h1>
-        <p class="text-xl">
-          Hur vi felsöker och diagnostiserar batterier
-        </p>
-        <h2>Felsökning</h2>
-        <p>Vi felsöker</p>
-        
-        
-          <h2 class="text-6xl font-medium mt-0 mb-10 text-center">Hur en reparation går till</h2>
-        <section id="steg-1-3" class="py-5 px-6">
-          
-          <div class="max-w-3xl mx-auto prose">
-            
-            <div
-              class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center"
-            >
-              
-              <div class="md:w-1/2">
-                <p>
-                  <strong>Steg 1: </strong> Vi felsöker batteriet, identifierar problemet och hur det ska repareras. 
-                </p>
-                <p>
-                  <strong>Steg 2: </strong> Vi 3D-printar insatser designade för batteriet.
-                </p>
-                <p>
-                  <strong>Steg 3: </strong> Vi punktsvetsar och sätter ihop batteriet.
-                </p>
-              </div>
-              <div id="steg-1-3-slider" class="swipe-slider relative w-1/2 aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group">
-
-                <img src="photos/voltage_control.jpg" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-100" alt="Bild 1">
-    
-                <img src="photos/3d-print.png" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0" alt="Bild 2">
-                
-                <img src="photos/loder_closeup.png" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0" alt="Bild 3">
-                
-                <button onclick="moveStandaloneSlide('steg-1-3-slider', -1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100">
-                  <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                </button>
-                <button onclick="moveStandaloneSlide('steg-1-3-slider', 1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100">
-                  <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                </button>
-              
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full">
-                  <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black cursor-pointer" onclick="goToStandaloneSlide('steg-1-3-slider', 0)"></div>
-                  <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer" onclick="goToStandaloneSlide('steg-1-3-slider', 1)"></div>
-                  <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer" onclick="goToStandaloneSlide('steg-1-3-slider', 2)"></div>
-                </div>
-              </div>
-              
-              
-            </div>
-          </div>
-        </section>
-        
-        <section id="steg-4-5" class="py-5 px-6">
-          <div class="max-w-3xl mx-auto prose">
-            <div
-              class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center"
-            > 
-            <div id="steg-4-5-slider" class="swipe-slider relative w-1/2 aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group">
-
-              <img src="photos/assembled_battery_readyFor_casing.jpg" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-100" alt="Bild 1">
-
-              <img src="photos/shrinkwrap.png" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0" alt="Bild 2">
-              
-              <button onclick="moveStandaloneSlide('steg-4-5-slider', -1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100">
-                <i data-lucide="chevron-left" class="w-5 h-5"></i>
-              </button>
-              <button onclick="moveStandaloneSlide('steg-4-5-slider', 1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100">
-                <i data-lucide="chevron-right" class="w-5 h-5"></i>
-              </button>
-            
-              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full">
-                <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black cursor-pointer" onclick="goToStandaloneSlide('steg-4-5-slider', 0)"></div>
-                <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer" onclick="goToStandaloneSlide('steg-4-5-slider', 1)"></div>
-              </div>
-            </div>
-            <div class="md:w-1/2">
-                <p>
-                  <strong>Steg 4: </strong> Vi monterar ihop batteriet och installerar BMS (kretskort)
-                </p>
-                <p>
-                  <strong>Steg 5: </strong> Vi applicerar krympplast och förseglar med silikon. Batteriet blir vattentätt.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        <section id="steg-6-7" class="py-5 px-6">
-          <div class="max-w-3xl mx-auto prose">
-            <div
-              class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center"
-            > 
-            
-            <div class="md:w-1/2">
-              <p>
-                <strong>Steg 6: </strong> Vi installerar batteriet i dess skal. Batteriet skyddas med säkringar.
-              </p>
-              <p>
-                <strong>Steg 7: </strong> Vi genomför kvalitetskontroll av batterier för 
-                att säkerställa att det lever upp till vår standard.
-              </p>
-              </div>
-              <div id="steg-6-7-slider" class="swipe-slider relative w-1/2 aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group">
-
-                <img src="photos/case_completed_battery.png" class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-100" alt="Bild 1">
-                
-                <button onclick="moveStandaloneSlide('steg-6-7-slider', -1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100">
-                  <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                </button>
-                <button onclick="moveStandaloneSlide('steg-6-7-slider', 1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100">
-                  <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                </button>
-              
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full">
-                  <div class="slider-dot w-2 h-2 rounded-full transition-colors bg-black cursor-pointer" onclick="goToStandaloneSlide('steg-6-7-slider', 0)"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      
-      <div class="mt-20 text-center px-4">
-        <a
-          href="/hitta-din-modell"
-          class="inline-block btn-primary px-6 py-4 md:px-12 md:py-6 rounded-3xl md:rounded-full text-base md:text-lg font-medium shadow-xl transition-transform hover:scale-105"
+        <h1
+          class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 break-words"
         >
-          Reparera nu
+          Felsökning & Diagnostik
+        </h1>
+        <p class="text-xl">Hur vi felsöker och diagnostiserar batterier</p>
+        <h2>Felsökning</h2>
+        <p>
+          Vi felsöker batterier både för att diagnostisera fel men även för att
+          hitta förbättringsåtgärder där batteriets livslängd kan förlängas. En
+          vanlig åtgärd vi brukar utföra är att kontrollera programvara hos
+          batteriets BMS (kretskort) och uppdatera den. Denna åtgärd kan
+          förlänga livslängden på de flesta batterier, utan att en enda cell
+          behövt bytas.
+        </p>
+
+        <section id="bms" class="py-5 px-6">
+          <div class="max-w-3xl mx-auto prose">
+            <div
+              class="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 items-center"
+            >
+              <div class="md:w-1/2">
+                <h2 class="text-5xl font-medium tracking-tight mb-8">
+                  Vad är BMS?
+                </h2>
+                <p>
+                  BMS står för Battery Management System och är kretskortet som
+                  utgör "hjärnan" i ett batteri. BMS övervakar spänning och
+                  temperatur, förhindrar över- och underladdning och ser till
+                  att battericellerna balanseras för maximal livslängd och
+                  säkerhet.
+                </p>
+              </div>
+              <div
+                class="md:w-1/2 w-full aspect-[4/3] rounded-[40px] overflow-hidden relative shadow-sm"
+              >
+                <img
+                  src="photos/bms.jpg"
+                  alt="batterireparation"
+                  class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section id="felsokning-steg" class="relative py-20 px-6 scroll-mt-20">
+        <h2 class="text-4xl font-medium mt-0 mb-10 text-center">
+          Så går felsökningen till
+        </h2>
+
+        <div class="max-w-7xl mx-auto">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          >
+            <!-- KORT 1: Urladdningstest -->
+            <div class="glass-card p-5 lg:p-6 flex flex-col h-full group">
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/voltage_control.jpg"
+                  alt="Urladdningstest"
+                  class="w-full h-full object-cover object-[50%_40%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-bricka -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="battery-medium" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">Urladdningstest</h3>
+                <div class="space-y-4 text-gray-500 flex-grow">
+                  <p>
+                    Vi belastar batteriet under kontrollerade former för att
+                    simulera verklig användning. Detta visar hur batteriet
+                    presterar under tryck och avslöjar dolda spänningsfall.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- KORT 2: BMS-kontroll -->
+            <div class="glass-card p-5 lg:p-6 flex flex-col h-full group">
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/bms.jpg"
+                  alt="BMS-kontroll"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-bricka -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="cpu" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">Kontroll av BMS</h3>
+                <div class="space-y-4 text-gray-500 flex-grow">
+                  <p>
+                    Vi mäter och analyserar batteriets hjärna (Battery
+                    Management System) för att säkerställa att kretskortet
+                    kommunicerar korrekt och skyddar cellerna mot överladdning.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- KORT 3: Kablage & Lödningar -->
+            <div class="glass-card p-5 lg:p-6 flex flex-col h-full group">
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/cable_managment_battery.png"
+                  alt="Kablage och lödningar"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-bricka -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="plug" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">Kablage & Anslutningar</h3>
+                <div class="space-y-4 text-gray-500 flex-grow">
+                  <p>
+                    Vi inspekterar alla inre kablar, nickelband och lödpunkter
+                    manuellt. Många fel beror på mikrosprickor i lödningar eller
+                    skadade kontaktdon till följd av vibrationer.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- KORT 4: Cellbalansering -->
+            <div class="glass-card p-5 lg:p-6 flex flex-col h-full group">
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/pre-assembly.png"
+                  alt="Cellbalansering"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-bricka -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="scale" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">Cellbalansering</h3>
+                <div class="space-y-4 text-gray-500 flex-grow">
+                  <p>
+                    Spänningen mäts över varje enskild cellgrupp. Om cellerna är
+                    i obalans kan batteriet stänga av sig i förtid. Vi
+                    utvärderar om cellpaketet kan balanseras om eller måste
+                    bytas.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- KORT 5: Kapacitetsmätning -->
+            <div class="glass-card p-5 lg:p-6 flex flex-col h-full group">
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/spot_welding.png"
+                  alt="Kapacitetsmätning"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-bricka -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="bar-chart" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">Kapacitetsmätning</h3>
+                <div class="space-y-4 text-gray-500 flex-grow">
+                  <p>
+                    Vi mäter batteriets faktiska kvarvarande kapacitet (Ah) och
+                    jämför det med originalspecifikationen för att se exakt hur
+                    mycket räckvidd som gått förlorad över tid.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- KORT 6: Säkerhetsanalys -->
+            <div class="glass-card p-5 lg:p-6 flex flex-col h-full group">
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/1_stage_open_battery.png"
+                  alt="Säkerhetsanalys"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-bricka -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">Säkerhetsanalys</h3>
+                <div class="space-y-4 text-gray-500 flex-grow">
+                  <p>
+                    Som ett sista steg säkerställer vi att batteriet inte utgör
+                    en brandrisk. Vi letar efter tecken på fuktskador, svullna
+                    celler eller kortslutningar i höljet.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- CALL TO ACTION (Reparera) -->
+      <div class="mt-20 max-w-3xl mx-auto px-4">
+        <div
+          class="bg-stone-50 border border-stone-200 rounded-3xl p-8 md:p-12 text-center shadow-sm"
+        >
+          <h3 class="text-2xl md:text-3xl font-medium mb-4">
+            Är du redo att ge ditt batteri nytt liv?
+          </h3>
+          <p class="text-stone-600 mb-8 max-w-xl mx-auto">
+            Vi har rätt verktyg och expertis för att utföra en säker och
+            långsiktig reparation.
+          </p>
+          <a
+            href="/hitta-din-modell"
+            class="inline-flex items-center justify-center gap-2 btn-primary px-8 py-4 md:px-12 md:py-5 rounded-full text-lg font-medium shadow-xl transition-transform hover:scale-105"
+          >
+            <i data-lucide="wrench" class="w-5 h-5"></i>
+            <span>Reparera nu</span>
+          </a>
+        </div>
+      </div>
+      <!-- LÄS-NAVIGERING (FÖRSTA SIDAN) -->
+      <div class="mt-12 mb-10 max-w-3xl mx-auto flex justify-center px-4">
+        <a
+          href="/reparation"
+          class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-full text-base font-medium border border-stone-200 bg-white hover:bg-stone-50 transition-all text-stone-600 hover:text-black"
+        >
+          <span>Nästa: Reparation & Underhåll</span>
+          <i data-lucide="arrow-right" class="w-5 h-5"></i>
         </a>
       </div>
     </main>
@@ -282,12 +426,14 @@
             >Batterilabbet</a
           >
           <p class="text-gray-400">Powered by science. Made in Uppsala.</p>
-          
-          <p><img
-            src="assets/batterlabbet_potential_logo.png"
-            alt="Batterilabbet"
-            class="w-20 h-20 rounded-md object-cover"
-          /></p>
+
+          <p>
+            <img
+              src="assets/batterlabbet_potential_logo.png"
+              alt="Batterilabbet"
+              class="w-20 h-20 rounded-md object-cover"
+            />
+          </p>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
           <div class="space-y-4">
@@ -296,9 +442,9 @@
               >Hem</a
             >
             <a
-              href="/reparation"
+              href="/om-oss#vad-vi-gor"
               class="block text-gray-500 hover:text-black"
-              >Vår process</a
+              >Om batterireparation</a
             >
             <a
               href="/hitta-din-modell"
@@ -312,8 +458,8 @@
               >Om oss</a
             >
             <a href="/faq" class="block text-gray-500 hover:text-black"
-            >Vanliga frågor</a
-          >
+              >Vanliga frågor</a
+            >
             <a href="/garanti" class="block text-gray-500 hover:text-black"
               >Garanti</a
             >
@@ -324,17 +470,23 @@
           <div class="space-y-4">
             <p class="font-medium">Kontakt</p>
             <a href="/kontakt" class="block text-gray-500 hover:text-black"
-            >Kontakta oss</a
-          >
-            <a href="https://www.instagram.com/batterilabbet/" class="block text-gray-500 hover:text-black"
-            >Instagram</a
-          >
-          <a href="https://www.facebook.com/profile.php?id=61589751819870&locale=sv_SE" class="block text-gray-500 hover:text-black"
-            >Facebook</a
-          >
-          <a href="https://www.linkedin.com/company/batterilabbet" class="block text-gray-500 hover:text-black"
-            >Linkedin</a
-          >
+              >Kontakta oss</a
+            >
+            <a
+              href="https://www.instagram.com/batterilabbet/"
+              class="block text-gray-500 hover:text-black"
+              >Instagram</a
+            >
+            <a
+              href="https://www.facebook.com/profile.php?id=61589751819870&locale=sv_SE"
+              class="block text-gray-500 hover:text-black"
+              >Facebook</a
+            >
+            <a
+              href="https://www.linkedin.com/company/batterilabbet"
+              class="block text-gray-500 hover:text-black"
+              >Linkedin</a
+            >
           </div>
         </div>
       </div>
