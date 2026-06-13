@@ -184,72 +184,80 @@
     </main>
 
     <script>
+      // 1. Initiera ikoner
       lucide.createIcons();
 
+      // 2. Kör koden när sidan har laddat klart
       document.addEventListener("DOMContentLoaded", () => {
-        // Hämta parametrarna från URL:en (t.ex. ?order=BL-123&brand=Bosch...)
+        // Hämta parametrarna från webbadressen (URL:en)
         const urlParams = new URLSearchParams(window.location.search);
 
-        const orderId = urlParams.get("order");
-        const brand = urlParams.get("brand");
-        const model = urlParams.get("model");
+        // Hämta alla värden och sätt standardvärden om något saknas
+        const orderId = urlParams.get("order") || "Okänt";
+        const brand = urlParams.get("brand") || "Ej angivet";
+        const model = urlParams.get("model") || "Ej angivet";
         const capacity = urlParams.get("capacity");
-
-        // Hämta de nya pris-parametrarna
         const basePrice = urlParams.get("basePrice");
         const upgradePrice = urlParams.get("upgradePrice");
         const discountAmount = urlParams.get("discountAmount");
         const finalPrice = urlParams.get("finalPrice");
+        const orderType = urlParams.get("orderType") || "Beställning";
 
-        // Fyll i standard-datan på sidan
-        document.getElementById("display-order-number").textContent =
-          orderId || "Okänt";
-        document.getElementById("display-brand").textContent =
-          brand || "Ej angivet";
-        document.getElementById("display-model").textContent =
-          model || "Ej angivet";
+        // ---- FYLL I STANDARD-DATAN ----
+        const displayOrderId = document.getElementById("display-order-number");
+        if (displayOrderId) displayOrderId.textContent = orderId;
+
+        const displayBrand = document.getElementById("display-brand");
+        if (displayBrand) displayBrand.textContent = brand;
+
+        const displayModel = document.getElementById("display-model");
+        if (displayModel) displayModel.textContent = model;
+
+        const displayTypeEl = document.getElementById("display-order-type");
+        if (displayTypeEl) displayTypeEl.textContent = orderType;
 
         // ---- FYLL I KVITTOT ----
 
         // Grundpris
-        if (basePrice) {
-          document.getElementById("display-base-price").textContent = basePrice;
-        } else {
-          document.getElementById("base-price-container").style.display =
-            "none";
+        const basePriceContainer = document.getElementById(
+          "base-price-container"
+        );
+        const displayBasePrice = document.getElementById("display-base-price");
+        if (basePrice && displayBasePrice) {
+          displayBasePrice.textContent = basePrice;
+        } else if (basePriceContainer) {
+          basePriceContainer.style.display = "none";
         }
 
         // Slutpris
-        if (finalPrice) {
-          document.getElementById("display-final-price").textContent =
-            finalPrice;
+        const displayFinalPrice = document.getElementById(
+          "display-final-price"
+        );
+        if (finalPrice && displayFinalPrice) {
+          displayFinalPrice.textContent = finalPrice;
         }
 
-        // Tillval (Uppgradering visas bara om upgradePrice finns och inte är tomt)
-        if (upgradePrice && capacity) {
-          document
-            .getElementById("upgrade-container")
-            .classList.remove("hidden");
-          document.getElementById("display-capacity").textContent = capacity;
-          document.getElementById("display-upgrade-price").textContent =
-            upgradePrice;
+        // Tillval
+        const upgradeContainer = document.getElementById("upgrade-container");
+        const displayCapacity = document.getElementById("display-capacity");
+        const displayUpgradePrice = document.getElementById(
+          "display-upgrade-price"
+        );
+        if (upgradePrice && capacity && upgradeContainer) {
+          upgradeContainer.classList.remove("hidden");
+          if (displayCapacity) displayCapacity.textContent = capacity;
+          if (displayUpgradePrice)
+            displayUpgradePrice.textContent = upgradePrice;
         }
 
-        // Rabatt (Visas bara om discountAmount finns och inte är tomt)
-        if (discountAmount) {
-          document
-            .getElementById("discount-container")
-            .classList.remove("hidden");
-          document.getElementById("display-discount").textContent =
-            discountAmount;
+        // Rabatt
+        const discountContainer = document.getElementById("discount-container");
+        const displayDiscount = document.getElementById("display-discount");
+        if (discountAmount && discountContainer) {
+          discountContainer.classList.remove("hidden");
+          if (displayDiscount) displayDiscount.textContent = discountAmount;
         }
       });
-      // Hämta typen (tillsammans med de andra)
-      const orderType = urlParams.get("orderType");
-
-      // Fyll i datan
-      document.getElementById("display-order-type").textContent =
-        orderType || "Okänt";
     </script>
   </body>
 </html>

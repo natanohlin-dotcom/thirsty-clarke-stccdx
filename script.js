@@ -900,7 +900,7 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyw4yoDjmoIJrxndz668RvBbFXkk7yHGMKTfb3nB85ZayMiFeMKplEK-VUMSPGh972nrQ/exec";
+  "https://script.google.com/macros/s/AKfycbzVDh7VPMe0NCWjDGLP-Jmm4UM_JLRVNMESqptDGq_9KKZtUGMyA58CFqW0TYJ6QNda/exec";
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();
@@ -949,22 +949,36 @@ document.addEventListener("DOMContentLoaded", function () {
         'input[name="error_type"]:checked'
       );
       if (errorRadio) selectedError = errorRadio.value;
-      // NYTT: Räkna ut om det är Reparation eller Nybeställning
-      let orderType = "Beställning / Ärende";
+      // NY, skottsäker logik för att veta vilken typ av order det är
+      let orderType = "Nybeställning"; // Standard
       if (
-        window.currentBatteryData &&
-        window.currentBatteryData.action === "repair"
+        window.location.href.includes("skicka-in") ||
+        window.location.href.includes("reparation")
       ) {
         orderType = "Reparation / Renovering";
-      } else if (
-        window.currentBatteryData &&
-        window.currentBatteryData.action === "order"
-      ) {
-        orderType = "Nybeställning";
       }
-      // Samla all data (din gamla data)
+
+      // Fånga upp priserna
+      const basePrice =
+        document.getElementById("base-price-display")?.innerText || "";
+      const finalPrice =
+        document.getElementById("final-price")?.innerText || "";
+
+      const upgradeRow = document.getElementById("upgrade-row");
+      const upgradePrice =
+        !upgradeRow || upgradeRow.classList.contains("hidden")
+          ? ""
+          : document.getElementById("upgrade-price-display")?.innerText || "";
+
+      const discountRow = document.getElementById("discount-row");
+      const discountAmount =
+        !discountRow || discountRow.classList.contains("hidden")
+          ? ""
+          : document.getElementById("discount-amount")?.innerText || "";
+
+      // Samla in i formData
       const formData = new FormData();
-      formData.append("orderType", orderType); // <--- NY RAD
+      formData.append("orderType", orderType); // <--- LÄGGS TILL HÄR FÖR GOOGLE SCRIPTS
       formData.append("orderNumber", orderNumber);
       formData.append(
         "brand",
@@ -1029,27 +1043,6 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       formData.append("shipping", shippingChoice);
 
-      // --- NYTT: FÅNGA UPP PRISERNA FRÅN SKÄRMEN ---
-      const basePrice =
-        document.getElementById("base-price-display")?.innerText || "";
-      const finalPrice =
-        document.getElementById("final-price")?.innerText || "";
-
-      // Kolla om uppgradering är vald (om raden INTE är dold)
-      const upgradeRow = document.getElementById("upgrade-row");
-      const upgradePrice =
-        !upgradeRow || upgradeRow.classList.contains("hidden")
-          ? ""
-          : document.getElementById("upgrade-price-display")?.innerText || "";
-
-      // Kolla om rabatt är vald
-      const discountRow = document.getElementById("discount-row");
-      const discountAmount =
-        !discountRow || discountRow.classList.contains("hidden")
-          ? ""
-          : document.getElementById("discount-amount")?.innerText || "";
-
-      // Lägg till i formData så Google Script får det
       formData.append("basePrice", basePrice);
       formData.append("upgradePrice", upgradePrice);
       formData.append("discountAmount", discountAmount);
@@ -1065,7 +1058,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const modelVal = formData.get("model") || "Ej angivet";
           const capacityVal = formData.get("capacity") || "";
 
-          // NYTT: Nu skickar vi med hela kvittot i URL:en till bekräftelsesidan
+          // SKICKA MED ALLT TILL BEKRÄFTELSESIDAN
           const params = new URLSearchParams({
             order: orderNumber,
             brand: brandVal,
@@ -1075,7 +1068,7 @@ document.addEventListener("DOMContentLoaded", function () {
             upgradePrice: upgradePrice,
             discountAmount: discountAmount,
             finalPrice: finalPrice,
-            orderType: orderType, // <--- NY RAD
+            orderType: orderType, // <--- Måste skickas i URL:en!
           });
           window.location.href = `/confirmation?${params.toString()}`;
         })
