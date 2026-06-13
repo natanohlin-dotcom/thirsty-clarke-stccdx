@@ -130,9 +130,25 @@
     </nav>
 
     <main class="pt-40 pb-32 px-6">
-      <section id="faq" class="py-10 px-6 scroll-mt-24">
+      <section id="faq" class="max-w-3xl mx-auto scroll-mt-24">
         <div class="max-w-3xl mx-auto">
           <h1 class="text-5xl font-medium mb-12 text-center">Vanliga frågor</h1>
+
+          <!-- Sökfält -->
+          <div class="max-w-xl mx-auto mb-12 relative">
+            <i
+              data-lucide="search"
+              class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none"
+            ></i>
+
+            <input
+              type="text"
+              id="faq-search"
+              placeholder="Sök bland vanliga frågor och svar..."
+              class="w-full pr-4 py-4 rounded-2xl border border-black/5 shadow-sm transition-all focus:outline-none focus:border-stone-400 focus:ring-1 focus:ring-stone-400 bg-white"
+              style="padding-left: 3rem !important"
+            />
+          </div>
 
           <div class="flex flex-wrap justify-center gap-2 mb-12" id="faq-tabs">
             <button
@@ -160,6 +176,12 @@
               Underhåll
             </button>
             <button
+              data-target="frakt"
+              class="faq-tab-btn px-5 py-2.5 rounded-lg text-lg transition-colors text-stone-500 hover:text-black"
+            >
+              Frakt
+            </button>
+            <button
               data-target="specialfall"
               class="faq-tab-btn px-5 py-2.5 rounded-lg text-lg transition-colors text-stone-500 hover:text-black"
             >
@@ -168,6 +190,82 @@
           </div>
 
           <div id="faq-container" class="space-y-3">
+            <div
+              data-category="allmant"
+              class="faq-item bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Reparerar ni bara elcykelbatterier?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Nej vi reparerar batterier av alla sorter och har lång
+                  erfarenhet av de flesta typer av batterier. Om du känner dig
+                  osäker på ditt batteri kika under fliken "Specialfall".
+                </p>
+                <br />
+                <p>
+                  Hittar du inte ditt batteri under "Specialfall", kontakta oss
+                  <a
+                    href="/kontakt"
+                    class="text-black underline decoration-dotted underline-offset-4 hover:text-gray-500 hover:decoration-gray-500 transition-all"
+                  >
+                    här</a
+                  >
+                  så återkommer vi med prisförslag.
+                </p>
+              </div>
+            </div>
+
+            <div
+              data-category="allmant"
+              class="faq-item bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Hur går felsökningen till och vad kostar den?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-stone-600 leading-relaxed"
+              >
+                <p class="mb-3">
+                  För att kunna ge dig ett exakt och rättvist pris för en
+                  reparation gör vi alltid en inledande felsökning av ditt
+                  batteri. Denna kostar normalt 500 kr, men fungerar så här i
+                  praktiken:
+                </p>
+                <ul class="list-disc list-outside ml-5 space-y-2 pl-1">
+                  <li>
+                    <strong>Godkänd reparation:</strong> Om du väljer att gå
+                    vidare med vårt prisförslag bjuder vi på felsökningsavgiften
+                    (den dras av från totalpriset).
+                  </li>
+                  <li>
+                    <strong>Oreparerbart batteri:</strong> Visar felsökningen
+                    att batteriet tyvärr är helt utom räddning, stryker vi också
+                    hela avgiften.
+                  </li>
+                  <li>
+                    <strong>Avböjd reparation:</strong> Om batteriet går att
+                    laga, men du väljer att avstå efter att ha fått offerten,
+                    debiteras du 500 kr för felsökningen samt kostnaden för
+                    returfrakt.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
             <div
               data-category="allmant"
               class="faq-item bg-stone-100 rounded-2xl overflow-hidden"
@@ -185,8 +283,8 @@
               >
                 <p>
                   Ingen panik om du inte kan hitta ditt batteri. Vi har
-                  erfarenhet av alla typer av batterier och kan lösa de flesta.
-                  De vi inte kan ta emot hittar du nedan:
+                  erfarenhet av alla typer av batterier och kan reparera de
+                  flesta. De vi inte kan ta emot hittar du nedan:
                 </p>
                 <p class="mb-3 text-stone-600">
                   Ingen panik om du inte kan hitta ditt batteri. Vi har
@@ -199,7 +297,7 @@
                   Kontakta oss
                   <a
                     href="/kontakt"
-                    class="text-black hover:text-gray-500 transition"
+                    class="text-black underline decoration-dotted underline-offset-4 hover:text-gray-500 hover:decoration-gray-500 transition-all"
                   >
                     här</a
                   >
@@ -226,10 +324,39 @@
                   batterireparationer och utbytta celler. Läs mer om vår garanti
                   <a
                     href="/garanti"
-                    class="text-black hover:text-gray-500 transition"
+                    class="text-black underline decoration-dotted underline-offset-4 hover:text-gray-500 hover:decoration-gray-500 transition-all"
                   >
                     här</a
                   >.
+                </p>
+              </div>
+            </div>
+
+            <div
+              data-category="betalning"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  När och hur betalar jag för reparationen?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-stone-600 leading-relaxed"
+              >
+                <p>
+                  Betalning sker efter att arbetet är utfört. Vi skickar en
+                  faktura till dig med 10 dagars förfallodatum. Du kan enkelt
+                  och smidigt välja att betala denna via antingen
+                  <strong>Swish</strong> eller <strong>bankgiro</strong>.
+                </p>
+                <p class="mt-3 text-sm italic">
+                  Observera: När du har godkänt vårt prisförslag efter
+                  felsökningen övergår det till ett bindande avtal som inte kan
+                  avbrytas efter att vi påbörjat själva reparationsarbetet.
                 </p>
               </div>
             </div>
@@ -254,7 +381,7 @@
                   du kommer till om du klickar
                   <a
                     href="/hitta-din-modell"
-                    class="text-black hover:text-gray-500 transition"
+                    class="text-black underline decoration-dotted underline-offset-4 hover:text-gray-500 hover:decoration-gray-500 transition-all"
                   >
                     här</a
                   >. För övriga batterireparationer varierar priset beroende på
@@ -306,11 +433,159 @@
                   hållbarhet. Läs mer om varför du ska renovera ditt batteri
                   <a
                     href="/reparation"
-                    class="text-black hover:text-gray-500 transition"
+                    class="text-black underline decoration-dotted underline-offset-4 hover:text-gray-500 hover:decoration-gray-500 transition-all"
                   >
                     här</a
                   >.
                 </p>
+              </div>
+            </div>
+
+            <div
+              data-category="renovera"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Hur fungerar era utbytesbatterier?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-stone-600 leading-relaxed"
+              >
+                <p class="mb-3">
+                  För vissa populära elcykelmodeller har vi färdigrenoverade
+                  batterier redo direkt i vårt lager, så att du slipper vänta på
+                  själva renoveringstiden.
+                </p>
+                <ol class="list-decimal list-outside ml-5 space-y-2 pl-1">
+                  <li>
+                    Du beställer utbytesbatteriet via vårt vanliga formulär.
+                  </li>
+                  <li>
+                    Vi skickar ett färdigrenoverat batteri direkt hem till dig i
+                    en specialanpassad förpackning.
+                  </li>
+                  <li>
+                    Du lägger ditt gamla, defekta batteri i samma förpackning
+                    och skickar tillbaka det till oss för återvinning.
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            <div
+              data-category="renovera"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Vad ingår i er 24-månaders garanti?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-stone-600 leading-relaxed"
+              >
+                <p class="mb-3">
+                  Vi lämnar alltid två års garanti på totalrenoverade batterier
+                  (inklusive byte av celler och BMS (kretskort)). För att garantin ska gälla
+                  krävs att batteriet har skötts enligt anvisningarna. Garantin
+                  täcker <strong>inte</strong>:
+                </p>
+                <ul class="list-disc list-outside ml-5 space-y-2 pl-1">
+                  <li>
+                    Skador orsakade av djupurladdning (batteriet måste
+                    underhållsladdas och får ej förvaras tomt).
+                  </li>
+                  <li>
+                    Fukt- eller vattenskador (såvida det inte uttryckligen anges
+                    i vår prislista för just din modell).
+                  </li>
+                  <li>
+                    Mekaniska skador som fall, stötar eller åverkan på kablar.
+                  </li>
+                  <li>
+                    Om batteriet har öppnats, plomberingen brutits eller
+                    manipulerats av dig eller tredje part.
+                  </li>
+                </ul>
+                <p class="mt-3 text-sm">
+                  Garantin är personlig och gäller ursprungskunden.
+                  Fraktkostnader vid eventuella garantiärenden bekostas av
+                  kunden.
+                </p>
+              </div>
+            </div>
+
+            <div
+              data-category="renovera"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Finns det risk för skrapmärken när ni öppnar batteriet?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-stone-600 leading-relaxed"
+              >
+                <p>
+                  Många moderna batterier är tyvärr inte designade från fabrik
+                  för att öppnas igen. Vi gör alltid vårt allra yttersta för att
+                  öppna och försluta höljet så försiktigt och skonsamt som
+                  möjligt, men det finns en liten risk för mindre kosmetisk
+                  påverkan på plasten.
+                </p>
+              </div>
+            </div>
+
+            <div
+              data-category="underhall"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Hur ska jag ladda och förvara mitt batteri?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-stone-600 leading-relaxed"
+              >
+                <p class="mb-3">
+                  Elcykelbatterier är färskvara och kräver lite omsorg för att
+                  hålla länge, och för att din garanti ska gälla:
+                </p>
+                <ul class="list-disc list-outside ml-5 space-y-2 pl-1">
+                  <li>
+                    <strong>Laddning:</strong> Använd endast originalladdare
+                    eller en laddare godkänd av oss. Ladda aldrig batteriet om
+                    dess temperatur är under 0°C.
+                  </li>
+                  <li>
+                    <strong>Underhållsladdning:</strong> Används inte batteriet
+                    måste det underhållsladdas minst var sjätte månad. Om nivån
+                    sjunker under 30%, ladda upp det igen.
+                  </li>
+                  <li>
+                    <strong>Förvaring:</strong> Förvara batteriet inomhus i torr
+                    miljö. Om det förvaras längre än 14 dagar ska temperaturen
+                    ligga mellan 15-25°C. Det får aldrig förvaras helt urladdat
+                    (under 25%) i mer än 60 dagar. Undvik extrem värme, som
+                    t.ex. en solvarm bil.
+                  </li>
+                </ul>
               </div>
             </div>
 
@@ -338,6 +613,62 @@
                 </p>
               </div>
             </div>
+
+            <div
+              data-category="underhall"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">
+                  Hur länge håller mitt renoverade batteri?
+                </h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-gray-600 leading-relaxed"
+              >
+                <p>
+                  Ditt renoverade batteri håller minst lika länge, om inte
+                  längre, än orginalbatteriet. Detta är möjligt tack vare de
+                  högkvalitativa komponenterna vi använder i varje reparation.
+                  Efter 500-1000 laddcykler, vilket motsvarar ungefär 8 års
+                  daglig användning har batteriet normalt kvar 80 % av sin
+                  ursprungliga kapacitet. Givetvis kan du fortsätta använda
+                  batteriet långt efter det, ofta upp till 12 år.
+                </p>
+                <br />
+                <p>
+                  För dig med extra höga krav erbjuder vi även batteribyggen med
+                  premiunmceller som klarar 1000-2000 cykler. Tack vare vårt
+                  fokus på kvalitetsceller och precision i hantverket lämnar vi
+                  alltid två års garanti på vårt arbete.
+                </p>
+              </div>
+            </div>
+
+            <div
+              data-category="frakt"
+              class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
+            >
+              <button
+                class="faq-trigger w-full px-6 py-5 flex justify-between items-center text-left hover:bg-stone-200 transition-colors"
+              >
+                <h3 class="text-xl font-medium pr-8">Hur fungerar frakten?</h3>
+                <span class="faq-icon text-2xl font-light select-none">+</span>
+              </button>
+              <div
+                class="faq-content hidden px-6 pb-6 text-stone-600 leading-relaxed"
+              >
+                <p>
+                  När du vill reparera ett batteri skickar du in det till oss
+                  och ansvarar då för frakten. Efter genomförd reparation
+                  skickar vi tillbaka det renoverade batteriet till dig.
+                </p>
+              </div>
+            </div>
+
             <div
               data-category="specialfall"
               class="faq-item hidden bg-stone-100 rounded-2xl overflow-hidden"
@@ -383,7 +714,7 @@
               >
                 <p>
                   Vi tar emot vissa batterier av denna sort om de inte har
-                  smart-BMS, vilket är uppmärkt med klistermärke på batteriet.
+                  smart-BMS (kretskort), vilket är uppmärkt med klistermärke på batteriet.
                 </p>
               </div>
             </div>
@@ -411,10 +742,10 @@
                   <li>Batterier till Ninebot-elscooter</li>
                 </ul>
                 <p>
-                  Om du inte har ett av dessa batterier, kontakta oss
+                  Om du inte har ett batteri av typen ovan, kontakta oss
                   <a
                     href="/kontakt"
-                    class="text-black hover:text-gray-500 transition"
+                    class="text-black underline decoration-dotted underline-offset-4 hover:text-gray-500 hover:decoration-gray-500 transition-all"
                   >
                     här</a
                   >
@@ -426,7 +757,7 @@
           <h2 class="text-3xl font-medium mt-10 text-center">
             Undrar du över något mer?
           </h2>
-          <div class="mt-5 text-center px-4">
+          <div class="mt-8 text-center px-4">
             <a
               href="/kontakt"
               class="inline-block btn-primary px-6 py-4 md:px-12 md:py-6 rounded-3xl md:rounded-full text-base md:text-lg font-medium shadow-xl transition-transform hover:scale-105"
@@ -438,7 +769,7 @@
       </section>
     </main>
 
-    <footer class="py-20 px-6 border-t border-gray-300 bg-white">
+    <footer class="py-20 px-6 border-t border-gray-100 bg-white">
       <div
         class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12"
       >
@@ -498,6 +829,9 @@
               class="block text-gray-500 hover:text-black"
               >Instagram</a
             >
+            <a href="https://www.facebook.com/profile.php?id=61589751819870&locale=sv_SE" class="block text-gray-500 hover:text-black"
+            >Facebook</a
+          >
             <a
               href="https://www.linkedin.com/company/batterilabbet"
               class="block text-gray-500 hover:text-black"

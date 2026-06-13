@@ -1044,6 +1044,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+// ==========================================
+// 8. FAQ LOGIK
+// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
   const tabButtons = document.querySelectorAll(".faq-tab-btn");
   const faqItems = document.querySelectorAll(".faq-item");
@@ -1112,5 +1115,66 @@ document.addEventListener("DOMContentLoaded", () => {
         if (icon) icon.textContent = "−"; // Använder ett riktigt minustecken
       }
     });
+  });
+  // --- LOGIK FÖR SÖKFUNKTION ---
+  const searchInput = document.getElementById("faq-search");
+  const faqTabsContainer = document.getElementById("faq-tabs");
+
+  searchInput.addEventListener("input", (e) => {
+    // Hämta sökordet, gör det till små bokstäver och ta bort mellanslag i början/slutet
+    const searchTerm = e.target.value.toLowerCase().trim();
+
+    if (searchTerm === "") {
+      // 1. OM SÖKFÄLTET ÄR TOMT: Återställ till normal flik-vy
+      faqTabsContainer.style.display = "flex"; // Visa flikarna igen
+
+      // Hitta vilken flik som är aktiv just nu
+      const activeTab = document.querySelector(".faq-tab-btn.bg-stone-200");
+      const activeCategory = activeTab
+        ? activeTab.getAttribute("data-target")
+        : "allmant";
+
+      // Återställ frågorna baserat på aktiv flik
+      faqItems.forEach((item) => {
+        if (item.getAttribute("data-category") === activeCategory) {
+          item.classList.remove("hidden");
+        } else {
+          item.classList.add("hidden");
+        }
+
+        // Stäng alla öppna svar
+        item.querySelector(".faq-content").classList.add("hidden");
+        const icon = item.querySelector(".faq-icon");
+        if (icon) icon.textContent = "+";
+      });
+    } else {
+      // 2. OM ANVÄNDAREN SÖKER:
+      faqTabsContainer.style.display = "none"; // Dölj flikarna under sökning för tydlighet
+
+      faqItems.forEach((item) => {
+        // Hämta texten från både rubriken och svaret (i små bokstäver för enklare matchning)
+        const questionText = item
+          .querySelector(".faq-trigger")
+          .textContent.toLowerCase();
+        const answerText = item
+          .querySelector(".faq-content")
+          .textContent.toLowerCase();
+
+        // Kolla om sökordet finns i frågan ELLER svaret
+        if (
+          questionText.includes(searchTerm) ||
+          answerText.includes(searchTerm)
+        ) {
+          item.classList.remove("hidden"); // Visa frågan
+
+          // Fäll ut svaret automatiskt så användaren ser träffen
+          item.querySelector(".faq-content").classList.remove("hidden");
+          const icon = item.querySelector(".faq-icon");
+          if (icon) icon.textContent = "−";
+        } else {
+          item.classList.add("hidden"); // Dölj frågan om den inte matchar
+        }
+      });
+    }
   });
 });

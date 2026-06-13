@@ -138,6 +138,12 @@
           Om Batterilabbet
         </h1>
         <p class="text-xl">Batterier som möjliggör framtidens mobilitet</p>
+        <h2>Varför Batterilabbet?</h2>
+        <p>
+          Batterilabbet uppstod ur målet att sätta en ny standard för hur
+          elcykelbatterier repareras i Sverige med säkerhet, transparens och
+          korrekt hantering som grund.
+        </p>
         <section id="vilka-ar-vi" class="py-5 px-6">
           <div
             class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center"
@@ -146,11 +152,7 @@
               <h2 class="text-5xl font-medium tracking-tight mb-8">
                 Vilka är vi?
               </h2>
-              <p>
-                Batterilabbet uppstod ur målet att sätta en ny standard för hur
-                elcykelbatterier repareras i Sverige med säkerhet, transparens
-                och korrekt hantering som grund.
-              </p>
+
               <p>
                 Vi är fyra ingenjörsstudenter från Uppsala universitet med en
                 bakgrund i batteribranschen som sträcker sig tillbaka till 2020
@@ -159,20 +161,208 @@
               </p>
             </div>
             <div
-              class="md:w-1/2 w-full aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden relative shadow-sm"
+              id="om-oss-slider"
+              class="swipe-slider relative w-3/4 aspect-[4/3] bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group"
             >
               <img
                 src="photos/teamet.png"
                 alt="Teamet på Batterilabbet, studenter vid Uppsala Universitet"
-                class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-100"
+                alt="Bild 1"
               />
+
+              <img
+                src="photos/vilgot_loder.png"
+                alt="Batterilabbet löder på ett batteri"
+                class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0"
+                alt="Bild 2"
+              />
+
+              <button
+                onclick="moveStandaloneSlide('om-oss-slider', -1)"
+                class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
+              >
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+              </button>
+              <button
+                onclick="moveStandaloneSlide('om-oss-slider', 1)"
+                class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
+              >
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+              </button>
+
+              <div
+                class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full"
+              >
+                <div
+                  class="slider-dot w-2 h-2 rounded-full transition-colors bg-black cursor-pointer"
+                  onclick="goToStandaloneSlide('om-oss-slider', 0)"
+                ></div>
+                <div
+                  class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer"
+                  onclick="goToStandaloneSlide('om-oss-slider', 1)"
+                ></div>
+              </div>
             </div>
           </div>
-        </div>
         </section>
-        
-        <section id="Mission Vision" class="py-5 px-6">
-          <div class="max-w-3xl mx-auto prose">
+      </div>
+
+      <section id="vad-vi-gor" class="relative py-4 px-6 scroll-mt-20">
+        <h2 class="text-3xl font-medium mt-0 mb-6 text-center">Vad gör vi?</h2>
+        <div class="max-w-7xl mx-auto">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8"
+          >
+            <!-- KORT 1: Felsökning -->
+            <a
+              href="/diagnostik"
+              class="glass-card p-5 lg:p-6 block cursor-pointer hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col h-full group"
+            >
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <!-- Byt ut src mot din riktiga bildväg -->
+                <img
+                  src="photos/voltage_control.jpg"
+                  alt="Felsökning av elcykelbatteri"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-brickan som flyter över bilden -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="search-alert" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">
+                  Felsökning och diagnostik
+                </h3>
+                <!-- Använder space-y-4 för styckeavstånd istället för <br> -->
+                <div class="space-y-4 text-gray-500 mb-6 flex-grow">
+                  <p>
+                    Vi felsöker batterier på flera nivåer genom att bland annat
+                    kontrollera BMS (kretskort), laddningskapacitet och kablage.
+                  </p>
+                  <p>
+                    Diagnostik genomförs innan och efter reparation samt inför
+                    avfallsåtervinning för att säkerställa att batteriet
+                    ger/givit maximal nytta.
+                  </p>
+                </div>
+                <!-- Länk-texten i botten -->
+                <p
+                  class="text-black font-medium text-sm flex items-center gap-1 group-hover:underline underline-offset-4"
+                >
+                  Läs mer om felsökning
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </p>
+              </div>
+            </a>
+
+            <!-- KORT 2: Reparation -->
+            <a
+              href="/reparation"
+              class="glass-card p-5 lg:p-6 block cursor-pointer hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col h-full group"
+            >
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/loder_closeup.png"
+                  alt="Felsökning av elcykelbatteri"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-brickan som flyter över bilden -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="battery-full" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">
+                  Reparation och underhåll
+                </h3>
+                <!-- Använder space-y-4 för styckeavstånd istället för <br> -->
+                <div class="space-y-4 text-gray-500 mb-6 flex-grow">
+                  <p>
+                    Vi reparerar batterier genom att ersätta defekta BMS
+                    (kretskort), byta kablage och byta celler i batteriet.
+                  </p>
+                  <p>
+                    Vi underhåller batterier med förebyggande åtgärder såsom att
+                    kontrollera BMS (kretskort) och balansera laddningen hos
+                    cellerna, så att slitaget fördelas jämnt.
+                  </p>
+                </div>
+                <!-- Länk-texten i botten -->
+                <p
+                  class="text-black font-medium text-sm flex items-center gap-1 group-hover:underline underline-offset-4"
+                >
+                  Läs mer om reparation och underhåll
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </p>
+              </div>
+            </a>
+
+            <!-- KORT 3: Återvinning -->
+            <a
+              href="#"
+              class="glass-card p-5 lg:p-6 block cursor-pointer hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col h-full group"
+            >
+              <!-- Bild-behållare -->
+              <div
+                class="relative w-full h-48 mb-6 rounded-xl overflow-hidden shrink-0"
+              >
+                <img
+                  src="photos/open-battery.png"
+                  alt="Felsökning av elcykelbatteri"
+                  class="w-full h-full object-cover object-[50%_35%] group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Ikon-brickan som flyter över bilden -->
+                <div
+                  class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-2.5 rounded-lg shadow-sm text-black"
+                >
+                  <i data-lucide="recycle" class="w-6 h-6"></i>
+                </div>
+              </div>
+              <!-- Text-innehåll -->
+              <div class="flex flex-col flex-grow">
+                <h3 class="text-xl font-medium mb-3">
+                  Cirkulär och säker hantering
+                </h3>
+                <!-- Använder space-y-4 för styckeavstånd istället för <br> -->
+                <div class="space-y-4 text-gray-500 mb-6 flex-grow">
+                  <p>
+                    Vi främjar cirkuläritet inom batteriteknik genom att
+                    återvinna så mycket som möjligt av ett gammalt batteri.
+                  </p>
+                  <p>
+                    Det vi inte kan återvinna, hanterar vi korrekt och lämnar in
+                    som avfall enligt Naturvårdsverkets standard.
+                  </p>
+                </div>
+                <!-- Länk-texten i botten -->
+                <p
+                  class="text-black font-medium text-sm flex items-center gap-1 group-hover:underline underline-offset-4"
+                >
+                  Läs mer om cirkularitet och återvinning
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="Mission Vision" class="py-2 px-6">
+        <div class="max-w-3xl mx-auto prose">
           <h2 class="flex items-center gap-3">
             <span>Vårt mål </span> <i data-lucide="book-check"></i>
           </h2>
@@ -192,53 +382,16 @@
             samtidigt bra för plånboken.
           </p>
         </div>
-        </section>
-        <section id="varför-batterireparation" class="bg-[#F5F4F0] py-5 px-6">
-          <div class="max-w-3xl mx-auto prose">
-          <div
-            class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center"
-          >
-            <div
-              class="md:w-1/2 w-full aspect-[4/3] rounded-[40px] overflow-hidden relative shadow-sm"
-            >
-              <img
-                src="photos/batterirep.webp"
-                alt="batterireparation"
-                class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-              />
-            </div>
-            <div class="md:w-1/2">
-              <h2 class="text-5xl font-medium tracking-tight mb-8">
-                Varför batterireparation?
-              </h2>
-              <p>
-                Litiumjonbatterier har tagit världen med storm. Det är svårt att
-                genomgå en dag i livet utan att använda ett: vi bär dem med oss
-                i mobilen, åker elscooter, elcykel eller elbil som alla drivs av
-                litiumjonbatterier. Då vi är så beroende av litiumjonbatterier
-                är det viktigt att batteriet fungerar som det ska!
-              </p>
-              <p>
-                Batterilabbet finns här för dig om batteriet slutar att fungera.
-                Istället för att du måste köpa nytt så reparerar och renoverar
-                vi batteriet genom att ersätta de gamla cellerna med nya
-                kvalitets-celler, så att det blir som nytt igen (fast bättre).
-                Billigare och bättre än original! Dessutom kommer ditt
-                renoverade batteri få en ordentlig skjuts i sin livslängd – bra
-                för både din plånbok och miljön.
-              </p>
-            </div>
-          </div>
-        </div>
-        </section>
-        <div class="max-w-3xl mx-auto prose">
-          <h2>Varför välja oss</h2>
-          <p>
-            Vi tror inte på massproduktion utan själ. Därför byggs alla våra
-            batteripack för hand på plats i våra verkstäder i Uppsala och
-            Tyresö. För oss är säkerhet och prestanda två sidor av samma mynt.
-          </p>
-        </div>
+      </section>
+
+      <div class="max-w-3xl mx-auto prose">
+        <h2>Varför välja oss</h2>
+        <p>
+          Vi tror inte på massproduktion utan själ. Därför byggs alla våra
+          batteripack för hand på plats i våra verkstäder i Uppsala och Tyresö.
+          För oss är säkerhet och prestanda två sidor av samma mynt.
+        </p>
+      </div>
     </main>
 
     <footer class="py-20 px-6 border-t border-gray-100 bg-white">
@@ -282,8 +435,8 @@
               >Om oss</a
             >
             <a href="/faq" class="block text-gray-500 hover:text-black"
-            >Vanliga frågor</a
-          >
+              >Vanliga frågor</a
+            >
             <a href="/garanti" class="block text-gray-500 hover:text-black"
               >Garanti</a
             >
@@ -294,14 +447,23 @@
           <div class="space-y-4">
             <p class="font-medium">Kontakt</p>
             <a href="/kontakt" class="block text-gray-500 hover:text-black"
-            >Kontakta oss</a
-          >
-            <a href="https://www.instagram.com/batterilabbet/" class="block text-gray-500 hover:text-black"
-            >Instagram</a
-          >
-          <a href="https://www.linkedin.com/company/batterilabbet" class="block text-gray-500 hover:text-black"
-            >Linkedin</a
-          >
+              >Kontakta oss</a
+            >
+            <a
+              href="https://www.instagram.com/batterilabbet/"
+              class="block text-gray-500 hover:text-black"
+              >Instagram</a
+            >
+            <a
+              href="https://www.facebook.com/profile.php?id=61589751819870&locale=sv_SE"
+              class="block text-gray-500 hover:text-black"
+              >Facebook</a
+            >
+            <a
+              href="https://www.linkedin.com/company/batterilabbet"
+              class="block text-gray-500 hover:text-black"
+              >Linkedin</a
+            >
           </div>
         </div>
       </div>
