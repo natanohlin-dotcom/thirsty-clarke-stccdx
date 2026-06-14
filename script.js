@@ -409,10 +409,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (searchInput) searchInput.addEventListener("input", filterBatteries);
   }
 });
-
 // ==========================================
 // 4. MODAL-FUNKTIONER
 // ==========================================
+
+// Huvudströmbrytare för modalen:
+// true = Modalen öppnas som vanligt.
+// false = Kunder skickas direkt till /skicka-in (reparation) när de klickar "Välj".
+const MODAL_ON = false;
+
 let currentSelectedBattery = null;
 
 // FIXAT: Lade till allPricesEncoded och noteEncoded här
@@ -431,6 +436,24 @@ window.openActionModal = function (
   );
   const note = decodeURIComponent(noteEncoded || "");
 
+  // NYTT: Om modalen är avstängd, kringgå den helt och hållet
+  if (!MODAL_ON) {
+    const batteryData = {
+      brand: brand,
+      model: model,
+      capacity: originalCap,
+      selectedCap: selectedCap,
+      voltage: voltage,
+      action: "repair", // Tvingar valet till reparation
+      options: allPrices,
+      note: note,
+    };
+    sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
+    window.location.href = "/skicka-in";
+    return; // Avbryter funktionen så koden nedan inte körs
+  }
+
+  // Om MODAL_ON === true, körs koden nedan precis som vanligt
   currentSelectedBattery = {
     brand,
     model,
@@ -498,7 +521,6 @@ window.handleModalChoice = function (choice) {
   if (choice === "repair") window.location.href = "/skicka-in";
   else if (choice === "order") window.location.href = "/checkout";
 };
-
 // ==========================================
 // 5. FORMULÄR & AUTOFILL & STAPELDIAGRAM
 // ==========================================
@@ -902,7 +924,7 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK & FRAKTDYNAMIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxgBNMA7RN4jhQ_T_RlrFeQkk4N0l2vOlYmFl3Nnx_kIMbPYGf32pJvhhrapF9uFTo4lg/exec";
+  "https://script.google.com/macros/s/AKfycbzyPHu2uscFr_oAVOowqivXvxIOOW9u5-r-EtI8PwjJDCIpISbayHg1fxN327OjiiGUVg/exec";
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();

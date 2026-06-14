@@ -186,14 +186,28 @@
               >
             </div>
           </div>
+          <!-- ... Din Orderöversikt och Kvitto slutar här ... -->
+        </div>
+
+        <!-- NYTT: Informationsrutan på bekräftelsesidan -->
+        <div
+          id="price-disclaimer"
+          class="p-4 md:p-5 bg-[#FAF9F6] rounded-xl text-xs md:text-sm leading-relaxed text-gray-500 border border-black/5 italic text-left w-full mx-auto sm:w-4/5 md:w-3/4 mb-8"
+        >
+          OBS! Priserna du ser är uppskattade baserat på tidigare batterier vi
+          fått in. Priset kan komma att avvika från de priser du hittar på denna
+          sida beroende på felets omfattning, dock gäller det här priset i
+          majoriteten av fallen. Du får alltid en offert med pris innan
+          reparation påbörjas.
         </div>
 
         <div>
           <a
             href="/index"
-            class="btn-primary inline-block py-4 px-8 rounded-2xl shadow-sm w-full sm:w-auto"
+            class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-full text-base font-medium border border-transparent hover:bg-stone-100 transition-all text-stone-500 hover:text-black"
           >
-            Tillbaka till startsidan
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span>Till startsidan</span>
           </a>
         </div>
       </div>
@@ -221,6 +235,7 @@
         const shippingCost = urlParams.get("shippingCost");
         const orderLabelEl = document.getElementById("order-number-label");
         const receiptBoxEl = document.getElementById("receipt-box");
+        const disclaimerEl = document.getElementById("price-disclaimer");
 
         if (orderType === "Allmän förfrågan") {
           // Byt texten från Ordernummer till Ärendenummer
@@ -228,6 +243,7 @@
 
           // Dölj hela den vita kvitto-boxen (inklusive frakt & priser)
           if (receiptBoxEl) receiptBoxEl.style.display = "none";
+          if (disclaimerEl) disclaimerEl.style.display = "none";
         }
         // ---- FYLL I STANDARD-DATAN ----
         const displayOrderId = document.getElementById("display-order-number");
