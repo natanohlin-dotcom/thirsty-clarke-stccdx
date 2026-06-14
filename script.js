@@ -818,6 +818,7 @@ function setCustomerType(type) {
 // ==========================================
 // 6. RABATTKODSMOTOR
 // ==========================================
+let currentDiscountCodeUsed = "";
 let currentDiscountPercent = 0;
 const GOOGLE_DISCOUNT_URL =
   "https://script.google.com/macros/s/AKfycbx-ZW7Z_ZZrCNWGj5Em09_Qvc_0HUC1Qp9rPo2txXVhTzLh1j-yk8RS_dAZSwAfuC-w/exec"; // Ersätt vid behov
@@ -841,6 +842,7 @@ async function checkDiscountCode() {
 
     if (data.success) {
       currentDiscountPercent = data.discount;
+      currentDiscountCodeUsed = code;
       showMessage(
         `Rabattkod aktiverad! ${data.discount}% dras av.`,
         "text-green-600"
@@ -900,7 +902,7 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxCALCKiKy54vz-1jgot-Q65NU-hJe6pDM8ua7x2lSUjrjyvKOSyq-xtOS12gYByBn9WA/exec";
+  "https://script.google.com/macros/s/AKfycbwMaA8JNwelquNNg92txmzJNiFEqQ2_xQxdvk0HbWpJxBH4dn2gt-f6LVEAYXsTconiGA/exec";
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();
@@ -919,12 +921,14 @@ document.addEventListener("DOMContentLoaded", function () {
     repairForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
+      // Honungsfälla för bottar
       const botCheckEl = document.getElementById("form-botcheck");
       if (botCheckEl && botCheckEl.value !== "") {
         window.location.href = "/bekraftelse.html";
         return;
       }
 
+      // Hantera knappens utseende vid klick
       const submitBtn = document.getElementById("submit-btn");
       let originalText = "Skicka in";
       if (submitBtn) {
@@ -934,23 +938,38 @@ document.addEventListener("DOMContentLoaded", function () {
         submitBtn.classList.add("opacity-50");
       }
 
+      // Generera ordernummer
       const orderNumber = generateOrderNumber();
-      const shipSelf = document.getElementById("ship-self");
-      const shipLabel = document.getElementById("ship-label");
-      let shippingChoice =
-        shipSelf && shipSelf.checked
-          ? shipSelf.value
-          : shipLabel && shipLabel.checked
-          ? shipLabel.value
-          : "Ej valt";
 
+      // Hämta feltyp
       let selectedError = "";
       const errorRadio = document.querySelector(
         'input[name="error_type"]:checked'
       );
       if (errorRadio) selectedError = errorRadio.value;
-      // NY, skottsäker logik för att veta vilken typ av order det är
-      let orderType = "Nybeställning"; // Standard
+
+      // Logik för fraktval och kostnad (Rensad från dubbletter!)
+      const shipSelf = document.getElementById("ship-self");
+      const shipLabel = document.getElementById("ship-label");
+
+      let shippingChoice = "Ej valt";
+      let shippingCost = 0;
+      let shippingCostDisplay = "Gratis";
+
+      if (shipSelf && shipSelf.checked) {
+        shippingChoice = shipSelf.value;
+        shippingCost = 0;
+        shippingCostDisplay = "Gratis";
+      } else if (shipLabel && shipLabel.checked) {
+        shippingChoice = shipLabel.value;
+        // Här kan du i framtiden ändra '0' till t.ex. '149' om frakten ska kosta pengar
+        shippingCost = 0;
+        shippingCostDisplay =
+          shippingCost > 0 ? `${shippingCost} kr` : "Gratis";
+      }
+
+      // Hämta orderType
+      let orderType = "Nybeställning";
       if (
         window.location.href.includes("skicka-in") ||
         window.location.href.includes("reparation")
@@ -958,18 +977,16 @@ document.addEventListener("DOMContentLoaded", function () {
         orderType = "Reparation / Renovering";
       }
 
-      // Fånga upp priserna
+      // Hämta priser från skärmen
       const basePrice =
         document.getElementById("base-price-display")?.innerText || "";
       const finalPrice =
         document.getElementById("final-price")?.innerText || "";
-
       const upgradeRow = document.getElementById("upgrade-row");
       const upgradePrice =
         !upgradeRow || upgradeRow.classList.contains("hidden")
           ? ""
           : document.getElementById("upgrade-price-display")?.innerText || "";
-
       const discountRow = document.getElementById("discount-row");
       const discountAmount =
         !discountRow || discountRow.classList.contains("hidden")
@@ -978,8 +995,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Samla in i formData
       const formData = new FormData();
-      formData.append("orderType", orderType); // <--- LÄGGS TILL HÄR FÖR GOOGLE SCRIPTS
+      formData.append("orderType", orderType);
       formData.append("orderNumber", orderNumber);
+
+      // Befintliga fält
       formData.append(
         "brand",
         document.getElementById("form-brand")?.value || ""
@@ -1041,7 +1060,17 @@ document.addEventListener("DOMContentLoaded", function () {
         "reference",
         document.getElementById("form-reference")?.value || ""
       );
+
+      // Nya fält
       formData.append("shipping", shippingChoice);
+      formData.append("shippingCost", shippingCostDisplay);
+
+      // Säkra upp ifall rabattkoden inte definierats globalt ännu
+      const safeDiscountCode =
+        typeof currentDiscountCodeUsed !== "undefined"
+          ? currentDiscountCodeUsed
+          : "";
+      formData.append("discountCode", safeDiscountCode);
 
       formData.append("basePrice", basePrice);
       formData.append("upgradePrice", upgradePrice);
@@ -1052,13 +1081,15 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         body: formData,
       })
-        .then(() => {
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result === "error") throw new Error(data.error);
+
           sessionStorage.removeItem("prefilledBattery");
           const brandVal = formData.get("brand") || "Ej angivet";
           const modelVal = formData.get("model") || "Ej angivet";
           const capacityVal = formData.get("capacity") || "";
 
-          // SKICKA MED ALLT TILL BEKRÄFTELSESIDAN
           const params = new URLSearchParams({
             order: orderNumber,
             brand: brandVal,
@@ -1068,13 +1099,15 @@ document.addEventListener("DOMContentLoaded", function () {
             upgradePrice: upgradePrice,
             discountAmount: discountAmount,
             finalPrice: finalPrice,
-            orderType: orderType, // <--- Måste skickas i URL:en!
+            orderType: orderType,
+            shippingChoice: shippingChoice,
+            shippingCost: shippingCostDisplay,
           });
           window.location.href = `/confirmation?${params.toString()}`;
         })
         .catch((error) => {
-          console.error("Error!", error.message);
-          alert("Något gick fel. Vänligen försök igen.");
+          console.error("Fel:", error.message);
+          alert("Något gick fel i systemet: " + error.message);
           if (submitBtn) {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;

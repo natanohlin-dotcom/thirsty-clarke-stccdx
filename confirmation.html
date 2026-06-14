@@ -150,7 +150,19 @@
                 >...</span
               >
             </div>
-
+            <div
+              id="shipping-container"
+              class="flex justify-between items-center mb-2 hidden"
+            >
+              <span class="text-sm md:text-base text-gray-500"
+                >Frakt (<span id="display-shipping-choice"></span>)</span
+              >
+              <span
+                id="display-shipping-price"
+                class="font-medium text-sm md:text-base text-black"
+                >Laddar...</span
+              >
+            </div>
             <div
               id="discount-container"
               class="flex justify-between items-center mb-2 text-green-600 hidden text-sm md:text-base"
@@ -191,7 +203,6 @@
       document.addEventListener("DOMContentLoaded", () => {
         // Hämta parametrarna från webbadressen (URL:en)
         const urlParams = new URLSearchParams(window.location.search);
-
         // Hämta alla värden och sätt standardvärden om något saknas
         const orderId = urlParams.get("order") || "Okänt";
         const brand = urlParams.get("brand") || "Ej angivet";
@@ -202,6 +213,8 @@
         const discountAmount = urlParams.get("discountAmount");
         const finalPrice = urlParams.get("finalPrice");
         const orderType = urlParams.get("orderType") || "Beställning";
+        const shippingChoice = urlParams.get("shippingChoice");
+        const shippingCost = urlParams.get("shippingCost");
 
         // ---- FYLL I STANDARD-DATAN ----
         const displayOrderId = document.getElementById("display-order-number");
@@ -236,7 +249,25 @@
         if (finalPrice && displayFinalPrice) {
           displayFinalPrice.textContent = finalPrice;
         }
+        // Frakt (Dynamisk!)
+        const shippingContainer = document.getElementById("shipping-container");
+        const displayShippingChoice = document.getElementById(
+          "display-shipping-choice"
+        );
+        const displayShippingPrice = document.getElementById(
+          "display-shipping-price"
+        );
 
+        if (shippingChoice && shippingContainer) {
+          shippingContainer.classList.remove("hidden");
+          if (displayShippingChoice)
+            displayShippingChoice.textContent = shippingChoice;
+
+          // Om shippingCost skickades med (t.ex. "Gratis" eller "149 kr") skriver vi ut det
+          if (displayShippingPrice && shippingCost) {
+            displayShippingPrice.textContent = shippingCost;
+          }
+        }
         // Tillval
         const upgradeContainer = document.getElementById("upgrade-container");
         const displayCapacity = document.getElementById("display-capacity");
