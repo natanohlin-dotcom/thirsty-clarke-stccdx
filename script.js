@@ -900,7 +900,7 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzVDh7VPMe0NCWjDGLP-Jmm4UM_JLRVNMESqptDGq_9KKZtUGMyA58CFqW0TYJ6QNda/exec";
+  "https://script.google.com/macros/s/AKfycbzlxr143ltgCoDW0KQ3jSbppXXTUG84xt1SdyNt7vq5RFZA7f7Uvg5Sv8Ydi_cKvvfcYA/exec";
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();
