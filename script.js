@@ -897,9 +897,9 @@ function showMessage(text, colorClass) {
   messageEl.className = `text-sm mt-2 ${colorClass}`;
   messageEl.classList.remove("hidden");
 }
-
+// 
 // ==========================================
-// 7. GOOGLE SHEETS SUBMIT LOGIK
+// 7. GOOGLE SHEETS SUBMIT LOGIK & FRAKTDYNAMIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwMaA8JNwelquNNg92txmzJNiFEqQ2_xQxdvk0HbWpJxBH4dn2gt-f6LVEAYXsTconiGA/exec";
@@ -914,21 +914,45 @@ function generateOrderNumber() {
   return `BL-${timePart}-${randomPart}`;
 }
 
+// NYTT: Funktion för att uppdatera frakttexten i Steg 6 dynamiskt
+function updateShippingSummary() {
+  const shipSelf = document.getElementById("ship-self");
+  const shipLabel = document.getElementById("ship-label");
+  
+  const summaryChoiceEl = document.getElementById("summary-shipping-choice");
+  const summaryPriceEl = document.getElementById("shipping-price-display");
+
+  if (!summaryChoiceEl || !summaryPriceEl) return;
+
+  if (shipSelf && shipSelf.checked) {
+    summaryChoiceEl.innerText = "(Inlämning)";
+    summaryPriceEl.innerText = "Gratis";
+  } else if (shipLabel && shipLabel.checked) {
+    summaryChoiceEl.innerText = "(Post)";
+    // Ändra "Gratis" till t.ex. "149 kr" här om du tar betalt för frakt i framtiden
+    summaryPriceEl.innerText = "Gratis"; 
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const repairForm = document.getElementById("repairForm");
 
   if (repairForm) {
+    // Koppla lyssnare på frakt-radioknapparna så att Steg 6 uppdateras i realtid när man klickar
+    const shipSelf = document.getElementById("ship-self");
+    const shipLabel = document.getElementById("ship-label");
+    if (shipSelf) shipSelf.addEventListener("change", updateShippingSummary);
+    if (shipLabel) shipLabel.addEventListener("change", updateShippingSummary);
+
     repairForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      // Honungsfälla för bottar
       const botCheckEl = document.getElementById("form-botcheck");
       if (botCheckEl && botCheckEl.value !== "") {
         window.location.href = "/bekraftelse.html";
         return;
       }
 
-      // Hantera knappens utseende vid klick
       const submitBtn = document.getElementById("submit-btn");
       let originalText = "Skicka in";
       if (submitBtn) {
@@ -938,140 +962,59 @@ document.addEventListener("DOMContentLoaded", function () {
         submitBtn.classList.add("opacity-50");
       }
 
-      // Generera ordernummer
       const orderNumber = generateOrderNumber();
+      const selectedError = document.querySelector('input[name="error_type"]:checked')?.value || "";
 
-      // Hämta feltyp
-      let selectedError = "";
-      const errorRadio = document.querySelector(
-        'input[name="error_type"]:checked'
-      );
-      if (errorRadio) selectedError = errorRadio.value;
-
-      // Logik för fraktval och kostnad (Rensad från dubbletter!)
-      const shipSelf = document.getElementById("ship-self");
-      const shipLabel = document.getElementById("ship-label");
-
+      // Hämta fraktdata för inskicket
       let shippingChoice = "Ej valt";
-      let shippingCost = 0;
       let shippingCostDisplay = "Gratis";
 
       if (shipSelf && shipSelf.checked) {
-        shippingChoice = shipSelf.value;
-        shippingCost = 0;
-        shippingCostDisplay = "Gratis";
+          shippingChoice = shipSelf.value;
+          shippingCostDisplay = "Gratis";
       } else if (shipLabel && shipLabel.checked) {
-        shippingChoice = shipLabel.value;
-        // Här kan du i framtiden ändra '0' till t.ex. '149' om frakten ska kosta pengar
-        shippingCost = 0;
-        shippingCostDisplay =
-          shippingCost > 0 ? `${shippingCost} kr` : "Gratis";
+          shippingChoice = shipLabel.value;
+          shippingCostDisplay = "Gratis"; // Kan ändras till t.ex. "149 kr"
       }
 
-      // Hämta orderType
       let orderType = "Nybeställning";
-      if (
-        window.location.href.includes("skicka-in") ||
-        window.location.href.includes("reparation")
-      ) {
-        orderType = "Reparation / Renovering";
+      if (window.location.href.includes("skicka-in") || window.location.href.includes("reparation")) {
+          orderType = "Reparation / Renovering";
       }
 
-      // Hämta priser från skärmen
-      const basePrice =
-        document.getElementById("base-price-display")?.innerText || "";
-      const finalPrice =
-        document.getElementById("final-price")?.innerText || "";
+      const basePrice = document.getElementById("base-price-display")?.innerText || "";
+      const finalPrice = document.getElementById("final-price")?.innerText || "";
       const upgradeRow = document.getElementById("upgrade-row");
-      const upgradePrice =
-        !upgradeRow || upgradeRow.classList.contains("hidden")
-          ? ""
-          : document.getElementById("upgrade-price-display")?.innerText || "";
+      const upgradePrice = (!upgradeRow || upgradeRow.classList.contains("hidden")) ? "" : document.getElementById("upgrade-price-display")?.innerText || "";
       const discountRow = document.getElementById("discount-row");
-      const discountAmount =
-        !discountRow || discountRow.classList.contains("hidden")
-          ? ""
-          : document.getElementById("discount-amount")?.innerText || "";
+      const discountAmount = (!discountRow || discountRow.classList.contains("hidden")) ? "" : document.getElementById("discount-amount")?.innerText || "";
 
-      // Samla in i formData
       const formData = new FormData();
       formData.append("orderType", orderType);
       formData.append("orderNumber", orderNumber);
-
-      // Befintliga fält
-      formData.append(
-        "brand",
-        document.getElementById("form-brand")?.value || ""
-      );
-      formData.append(
-        "model",
-        document.getElementById("form-model")?.value || ""
-      );
-      formData.append(
-        "voltage",
-        document.getElementById("form-voltage")?.value || ""
-      );
-      formData.append(
-        "capacity",
-        document.getElementById("form-capacity")?.value || ""
-      );
+      formData.append("brand", document.getElementById("form-brand")?.value || "");
+      formData.append("model", document.getElementById("form-model")?.value || "");
+      formData.append("voltage", document.getElementById("form-voltage")?.value || "");
+      formData.append("capacity", document.getElementById("form-capacity")?.value || "");
       formData.append("errorType", selectedError);
-      formData.append(
-        "problem",
-        document.getElementById("form-problem")?.value || ""
-      );
-      formData.append(
-        "name",
-        document.getElementById("form-name")?.value || ""
-      );
-      formData.append(
-        "email",
-        document.getElementById("form-email")?.value || ""
-      );
-      formData.append(
-        "phone",
-        document.getElementById("form-phone")?.value || ""
-      );
-      formData.append(
-        "address",
-        document.getElementById("form-address")?.value || ""
-      );
-      formData.append(
-        "postcode",
-        document.getElementById("form-postcode")?.value || ""
-      );
-      formData.append(
-        "city",
-        document.getElementById("form-city")?.value || ""
-      );
-      formData.append(
-        "customerType",
-        document.getElementById("form-customer-type")?.value || "private"
-      );
-      formData.append(
-        "companyName",
-        document.getElementById("form-company-name")?.value || ""
-      );
-      formData.append(
-        "orgNr",
-        document.getElementById("form-org-nr")?.value || ""
-      );
-      formData.append(
-        "reference",
-        document.getElementById("form-reference")?.value || ""
-      );
-
-      // Nya fält
+      formData.append("problem", document.getElementById("form-problem")?.value || "");
+      formData.append("name", document.getElementById("form-name")?.value || "");
+      formData.append("email", document.getElementById("form-email")?.value || "");
+      formData.append("phone", document.getElementById("form-phone")?.value || "");
+      formData.append("address", document.getElementById("form-address")?.value || "");
+      formData.append("postcode", document.getElementById("form-postcode")?.value || "");
+      formData.append("city", document.getElementById("form-city")?.value || "");
+      formData.append("customerType", document.getElementById("form-customer-type")?.value || "private");
+      formData.append("companyName", document.getElementById("form-company-name")?.value || "");
+      formData.append("orgNr", document.getElementById("form-org-nr")?.value || "");
+      formData.append("reference", document.getElementById("form-reference")?.value || "");
+      
       formData.append("shipping", shippingChoice);
-      formData.append("shippingCost", shippingCostDisplay);
-
-      // Säkra upp ifall rabattkoden inte definierats globalt ännu
-      const safeDiscountCode =
-        typeof currentDiscountCodeUsed !== "undefined"
-          ? currentDiscountCodeUsed
-          : "";
-      formData.append("discountCode", safeDiscountCode);
-
+      formData.append("shippingCost", shippingCostDisplay); 
+      
+      const safeDiscountCode = typeof currentDiscountCodeUsed !== 'undefined' ? currentDiscountCodeUsed : "";
+      formData.append("discountCode", safeDiscountCode); 
+      
       formData.append("basePrice", basePrice);
       formData.append("upgradePrice", upgradePrice);
       formData.append("discountAmount", discountAmount);
@@ -1081,15 +1024,15 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.result === "error") throw new Error(data.error);
-
+        .then(response => response.text()) // FIXAT: Läser som .text() istället för .json() för att klara "Success"
+        .then(text => {
+          if (text.includes("error")) throw new Error(text);
+          
           sessionStorage.removeItem("prefilledBattery");
           const brandVal = formData.get("brand") || "Ej angivet";
           const modelVal = formData.get("model") || "Ej angivet";
           const capacityVal = formData.get("capacity") || "";
-
+          
           const params = new URLSearchParams({
             order: orderNumber,
             brand: brandVal,
@@ -1101,13 +1044,13 @@ document.addEventListener("DOMContentLoaded", function () {
             finalPrice: finalPrice,
             orderType: orderType,
             shippingChoice: shippingChoice,
-            shippingCost: shippingCostDisplay,
+            shippingCost: shippingCostDisplay
           });
           window.location.href = `/confirmation?${params.toString()}`;
         })
         .catch((error) => {
           console.error("Fel:", error.message);
-          alert("Något gick fel i systemet: " + error.message);
+          alert("Något gick fel vid inskicket. Vänligen försök igen.");
           if (submitBtn) {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
@@ -1193,61 +1136,55 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("faq-search");
   const faqTabsContainer = document.getElementById("faq-tabs");
 
-  searchInput.addEventListener("input", (e) => {
-    // Hämta sökordet, gör det till små bokstäver och ta bort mellanslag i början/slutet
-    const searchTerm = e.target.value.toLowerCase().trim();
+  // LÄGG TILL DENNA IF-SATS: Kör bara koden om sökfältet faktiskt existerar på sidan
+  if (searchInput && faqTabsContainer) {
+    searchInput.addEventListener("input", (e) => {
+      const searchTerm = e.target.value.toLowerCase().trim();
 
-    if (searchTerm === "") {
-      // 1. OM SÖKFÄLTET ÄR TOMT: Återställ till normal flik-vy
-      faqTabsContainer.style.display = "flex"; // Visa flikarna igen
+      if (searchTerm === "") {
+        faqTabsContainer.style.display = "flex";
 
-      // Hitta vilken flik som är aktiv just nu
-      const activeTab = document.querySelector(".faq-tab-btn.bg-stone-200");
-      const activeCategory = activeTab
-        ? activeTab.getAttribute("data-target")
-        : "allmant";
+        const activeTab = document.querySelector(".faq-tab-btn.bg-stone-200");
+        const activeCategory = activeTab
+          ? activeTab.getAttribute("data-target")
+          : "allmant";
 
-      // Återställ frågorna baserat på aktiv flik
-      faqItems.forEach((item) => {
-        if (item.getAttribute("data-category") === activeCategory) {
-          item.classList.remove("hidden");
-        } else {
-          item.classList.add("hidden");
-        }
+        faqItems.forEach((item) => {
+          if (item.getAttribute("data-category") === activeCategory) {
+            item.classList.remove("hidden");
+          } else {
+            item.classList.add("hidden");
+          }
 
-        // Stäng alla öppna svar
-        item.querySelector(".faq-content").classList.add("hidden");
-        const icon = item.querySelector(".faq-icon");
-        if (icon) icon.textContent = "+";
-      });
-    } else {
-      // 2. OM ANVÄNDAREN SÖKER:
-      faqTabsContainer.style.display = "none"; // Dölj flikarna under sökning för tydlighet
-
-      faqItems.forEach((item) => {
-        // Hämta texten från både rubriken och svaret (i små bokstäver för enklare matchning)
-        const questionText = item
-          .querySelector(".faq-trigger")
-          .textContent.toLowerCase();
-        const answerText = item
-          .querySelector(".faq-content")
-          .textContent.toLowerCase();
-
-        // Kolla om sökordet finns i frågan ELLER svaret
-        if (
-          questionText.includes(searchTerm) ||
-          answerText.includes(searchTerm)
-        ) {
-          item.classList.remove("hidden"); // Visa frågan
-
-          // Fäll ut svaret automatiskt så användaren ser träffen
-          item.querySelector(".faq-content").classList.remove("hidden");
+          const content = item.querySelector(".faq-content");
           const icon = item.querySelector(".faq-icon");
-          if (icon) icon.textContent = "−";
-        } else {
-          item.classList.add("hidden"); // Dölj frågan om den inte matchar
-        }
-      });
-    }
-  });
+          content.classList.add("hidden");
+          if (icon) icon.textContent = "+";
+        });
+      } else {
+        faqTabsContainer.style.display = "none";
+
+        faqItems.forEach((item) => {
+          const questionText = item
+            .querySelector(".faq-trigger")
+            .textContent.toLowerCase();
+          const answerText = item
+            .querySelector(".faq-content")
+            .textContent.toLowerCase();
+
+          if (
+            questionText.includes(searchTerm) ||
+            answerText.includes(searchTerm)
+          ) {
+            item.classList.remove("hidden");
+            item.querySelector(".faq-content").classList.remove("hidden");
+            const icon = item.querySelector(".faq-icon");
+            if (icon) icon.textContent = "−";
+          } else {
+            item.classList.add("hidden");
+          }
+        });
+      }
+    });
+  } // Stäng if-satsen här
 });
