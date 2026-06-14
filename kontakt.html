@@ -64,12 +64,12 @@
       <div
         class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative"
       >
-      <a
-      href="/index"
-      class="flex items-center gap-3 text-xl font-semibold tracking-[0.14em] hover:opacity-70 transition"
-    >
-      <span>Batterilabbet</span>
-    </a>
+        <a
+          href="/index"
+          class="flex items-center gap-3 text-xl font-semibold tracking-[0.14em] hover:opacity-70 transition"
+        >
+          <span>Batterilabbet</span>
+        </a>
 
         <div class="hidden md:flex gap-8 text-sm font-medium">
           <a href="/om-oss#vad-vi-gor" class="hover:opacity-60 transition"
@@ -114,7 +114,9 @@
 
           <div class="h-px bg-gray-200 w-full rounded-full"></div>
 
-          <a href="/om-oss#vad-vi-gor" class="mobile-link hover:opacity-60 transition"
+          <a
+            href="/om-oss#vad-vi-gor"
+            class="mobile-link hover:opacity-60 transition"
             >Om batterireparation</a
           >
           <a href="/om-oss" class="mobile-link hover:opacity-60 transition"
@@ -128,19 +130,20 @@
           <a href="/kontakt" class="mobile-link hover:opacity-60 transition"
             >Kontakt</a
           >
-          <a href="/faq" class="mobile-link hover:opacity-60 transition">Vanliga frågor</a>
+          <a href="/faq" class="mobile-link hover:opacity-60 transition"
+            >Vanliga frågor</a
+          >
         </div>
       </div>
     </nav>
 
     <main class="pt-40 pb-32 px-6">
       <div class="max-w-3xl mx-auto prose">
-        
         <h1
-            class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 break-words"
-          >
-            Kontakt
-          </h1>
+          class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 break-words"
+        >
+          Kontakt
+        </h1>
         <p class="text-xl">
           Du når oss via mail eller formuläret. Vi råder dig som vill lämna in
           ett batteri att använda formuläret i första hand.
@@ -152,9 +155,7 @@
           Vi försöker svara så snabbt som möjligt med målsättningen att du inte
           ska behöva vänta mer än 24h.
         </p>
-        <h2>
-          Har du funderingar kring reparation eller allmänna frågor?
-        </h2>
+        <h2>Har du funderingar kring reparation eller allmänna frågor?</h2>
         <p>
           Vi har sammanställt de vanligaste frågorna vi får om hur betalning,
           garanti, frakt och reparation fungerar. Du hittar de vanligaste
@@ -238,7 +239,7 @@
                     <input
                       type="text"
                       id="form-model"
-                      placeholder="t.ex. PowerPack 500"
+                      placeholder="t.ex. Monterat på pakethållare"
                       class="w-full rounded-xl"
                       required
                     />
@@ -652,9 +653,10 @@
                   </button>
                   <button
                     type="submit"
-                    class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm"
+                    id="submit-btn"
+                    class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm flex justify-center items-center gap-2"
                   >
-                    Skicka in förfrågan
+                    <span>Skicka in förfrågan</span>
                   </button>
                 </div>
               </div>
@@ -690,7 +692,9 @@
             <a href="/index" class="block text-gray-500 hover:text-black"
               >Hem</a
             >
-            <a href="/om-oss#vad-vi-gor" class="block text-gray-500 hover:text-black"
+            <a
+              href="/om-oss#vad-vi-gor"
+              class="block text-gray-500 hover:text-black"
               >Om batterireparation</a
             >
             <a
@@ -724,9 +728,11 @@
               class="block text-gray-500 hover:text-black"
               >Instagram</a
             >
-            <a href="https://www.facebook.com/profile.php?id=61589751819870&locale=sv_SE" class="block text-gray-500 hover:text-black"
-            >Facebook</a
-          >
+            <a
+              href="https://www.facebook.com/profile.php?id=61589751819870&locale=sv_SE"
+              class="block text-gray-500 hover:text-black"
+              >Facebook</a
+            >
             <a
               href="https://www.linkedin.com/company/batterilabbet"
               class="block text-gray-500 hover:text-black"

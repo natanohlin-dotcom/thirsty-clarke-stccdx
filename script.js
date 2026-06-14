@@ -897,12 +897,12 @@ function showMessage(text, colorClass) {
   messageEl.className = `text-sm mt-2 ${colorClass}`;
   messageEl.classList.remove("hidden");
 }
-// 
+//
 // ==========================================
 // 7. GOOGLE SHEETS SUBMIT LOGIK & FRAKTDYNAMIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwMaA8JNwelquNNg92txmzJNiFEqQ2_xQxdvk0HbWpJxBH4dn2gt-f6LVEAYXsTconiGA/exec";
+  "https://script.google.com/macros/s/AKfycbxg-21PMXLheSliWUvw5-PG1xLaDw5bwzk8IUjQ1zCVRUe-eiXXucB9c_rAOM8ZAikzZA/exec";
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();
@@ -918,7 +918,7 @@ function generateOrderNumber() {
 function updateShippingSummary() {
   const shipSelf = document.getElementById("ship-self");
   const shipLabel = document.getElementById("ship-label");
-  
+
   const summaryChoiceEl = document.getElementById("summary-shipping-choice");
   const summaryPriceEl = document.getElementById("shipping-price-display");
 
@@ -930,7 +930,7 @@ function updateShippingSummary() {
   } else if (shipLabel && shipLabel.checked) {
     summaryChoiceEl.innerText = "(Post)";
     // Ändra "Gratis" till t.ex. "149 kr" här om du tar betalt för frakt i framtiden
-    summaryPriceEl.innerText = "Gratis"; 
+    summaryPriceEl.innerText = "Gratis";
   }
 }
 
@@ -963,58 +963,120 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const orderNumber = generateOrderNumber();
-      const selectedError = document.querySelector('input[name="error_type"]:checked')?.value || "";
+      const selectedError =
+        document.querySelector('input[name="error_type"]:checked')?.value || "";
 
       // Hämta fraktdata för inskicket
       let shippingChoice = "Ej valt";
       let shippingCostDisplay = "Gratis";
 
       if (shipSelf && shipSelf.checked) {
-          shippingChoice = shipSelf.value;
-          shippingCostDisplay = "Gratis";
+        shippingChoice = shipSelf.value;
+        shippingCostDisplay = "Gratis";
       } else if (shipLabel && shipLabel.checked) {
-          shippingChoice = shipLabel.value;
-          shippingCostDisplay = "Gratis"; // Kan ändras till t.ex. "149 kr"
+        shippingChoice = shipLabel.value;
+        shippingCostDisplay = "Gratis"; // Kan ändras till t.ex. "149 kr"
       }
 
       let orderType = "Nybeställning";
-      if (window.location.href.includes("skicka-in") || window.location.href.includes("reparation")) {
-          orderType = "Reparation / Renovering";
+      if (shippingChoice === "Allmänt inskick") {
+        orderType = "Allmän förfrågan";
+      } else if (
+        window.location.href.includes("skicka-in") ||
+        window.location.href.includes("reparation")
+      ) {
+        orderType = "Reparation / Renovering";
       }
 
-      const basePrice = document.getElementById("base-price-display")?.innerText || "";
-      const finalPrice = document.getElementById("final-price")?.innerText || "";
+      const basePrice =
+        document.getElementById("base-price-display")?.innerText || "";
+      const finalPrice =
+        document.getElementById("final-price")?.innerText || "";
       const upgradeRow = document.getElementById("upgrade-row");
-      const upgradePrice = (!upgradeRow || upgradeRow.classList.contains("hidden")) ? "" : document.getElementById("upgrade-price-display")?.innerText || "";
+      const upgradePrice =
+        !upgradeRow || upgradeRow.classList.contains("hidden")
+          ? ""
+          : document.getElementById("upgrade-price-display")?.innerText || "";
       const discountRow = document.getElementById("discount-row");
-      const discountAmount = (!discountRow || discountRow.classList.contains("hidden")) ? "" : document.getElementById("discount-amount")?.innerText || "";
+      const discountAmount =
+        !discountRow || discountRow.classList.contains("hidden")
+          ? ""
+          : document.getElementById("discount-amount")?.innerText || "";
 
       const formData = new FormData();
       formData.append("orderType", orderType);
       formData.append("orderNumber", orderNumber);
-      formData.append("brand", document.getElementById("form-brand")?.value || "");
-      formData.append("model", document.getElementById("form-model")?.value || "");
-      formData.append("voltage", document.getElementById("form-voltage")?.value || "");
-      formData.append("capacity", document.getElementById("form-capacity")?.value || "");
+      formData.append(
+        "brand",
+        document.getElementById("form-brand")?.value || ""
+      );
+      formData.append(
+        "model",
+        document.getElementById("form-model")?.value || ""
+      );
+      formData.append(
+        "voltage",
+        document.getElementById("form-voltage")?.value || ""
+      );
+      formData.append(
+        "capacity",
+        document.getElementById("form-capacity")?.value || ""
+      );
       formData.append("errorType", selectedError);
-      formData.append("problem", document.getElementById("form-problem")?.value || "");
-      formData.append("name", document.getElementById("form-name")?.value || "");
-      formData.append("email", document.getElementById("form-email")?.value || "");
-      formData.append("phone", document.getElementById("form-phone")?.value || "");
-      formData.append("address", document.getElementById("form-address")?.value || "");
-      formData.append("postcode", document.getElementById("form-postcode")?.value || "");
-      formData.append("city", document.getElementById("form-city")?.value || "");
-      formData.append("customerType", document.getElementById("form-customer-type")?.value || "private");
-      formData.append("companyName", document.getElementById("form-company-name")?.value || "");
-      formData.append("orgNr", document.getElementById("form-org-nr")?.value || "");
-      formData.append("reference", document.getElementById("form-reference")?.value || "");
-      
+      formData.append(
+        "problem",
+        document.getElementById("form-problem")?.value || ""
+      );
+      formData.append(
+        "name",
+        document.getElementById("form-name")?.value || ""
+      );
+      formData.append(
+        "email",
+        document.getElementById("form-email")?.value || ""
+      );
+      formData.append(
+        "phone",
+        document.getElementById("form-phone")?.value || ""
+      );
+      formData.append(
+        "address",
+        document.getElementById("form-address")?.value || ""
+      );
+      formData.append(
+        "postcode",
+        document.getElementById("form-postcode")?.value || ""
+      );
+      formData.append(
+        "city",
+        document.getElementById("form-city")?.value || ""
+      );
+      formData.append(
+        "customerType",
+        document.getElementById("form-customer-type")?.value || "private"
+      );
+      formData.append(
+        "companyName",
+        document.getElementById("form-company-name")?.value || ""
+      );
+      formData.append(
+        "orgNr",
+        document.getElementById("form-org-nr")?.value || ""
+      );
+      formData.append(
+        "reference",
+        document.getElementById("form-reference")?.value || ""
+      );
+
       formData.append("shipping", shippingChoice);
-      formData.append("shippingCost", shippingCostDisplay); 
-      
-      const safeDiscountCode = typeof currentDiscountCodeUsed !== 'undefined' ? currentDiscountCodeUsed : "";
-      formData.append("discountCode", safeDiscountCode); 
-      
+      formData.append("shippingCost", shippingCostDisplay);
+
+      const safeDiscountCode =
+        typeof currentDiscountCodeUsed !== "undefined"
+          ? currentDiscountCodeUsed
+          : "";
+      formData.append("discountCode", safeDiscountCode);
+
       formData.append("basePrice", basePrice);
       formData.append("upgradePrice", upgradePrice);
       formData.append("discountAmount", discountAmount);
@@ -1024,15 +1086,15 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         body: formData,
       })
-        .then(response => response.text()) // FIXAT: Läser som .text() istället för .json() för att klara "Success"
-        .then(text => {
+        .then((response) => response.text()) // FIXAT: Läser som .text() istället för .json() för att klara "Success"
+        .then((text) => {
           if (text.includes("error")) throw new Error(text);
-          
+
           sessionStorage.removeItem("prefilledBattery");
           const brandVal = formData.get("brand") || "Ej angivet";
           const modelVal = formData.get("model") || "Ej angivet";
           const capacityVal = formData.get("capacity") || "";
-          
+
           const params = new URLSearchParams({
             order: orderNumber,
             brand: brandVal,
@@ -1044,7 +1106,7 @@ document.addEventListener("DOMContentLoaded", function () {
             finalPrice: finalPrice,
             orderType: orderType,
             shippingChoice: shippingChoice,
-            shippingCost: shippingCostDisplay
+            shippingCost: shippingCostDisplay,
           });
           window.location.href = `/confirmation?${params.toString()}`;
         })

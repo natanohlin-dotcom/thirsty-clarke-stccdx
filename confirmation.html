@@ -75,6 +75,7 @@
           class="bg-[#F3F2EE] rounded-2xl p-4 md:p-6 mb-6 inline-block w-full sm:w-auto"
         >
           <p
+            id="order-number-label"
             class="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-500 mb-1"
           >
             Ditt Ordernummer
@@ -124,7 +125,10 @@
             </li>
           </ul>
 
-          <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100">
+          <div
+            id="receipt-box"
+            class="bg-white p-4 md:p-5 rounded-xl border border-gray-100"
+          >
             <div
               id="base-price-container"
               class="flex justify-between items-center mb-2"
@@ -215,7 +219,16 @@
         const orderType = urlParams.get("orderType") || "Beställning";
         const shippingChoice = urlParams.get("shippingChoice");
         const shippingCost = urlParams.get("shippingCost");
+        const orderLabelEl = document.getElementById("order-number-label");
+        const receiptBoxEl = document.getElementById("receipt-box");
 
+        if (orderType === "Allmän förfrågan") {
+          // Byt texten från Ordernummer till Ärendenummer
+          if (orderLabelEl) orderLabelEl.textContent = "Ditt Ärendenummer";
+
+          // Dölj hela den vita kvitto-boxen (inklusive frakt & priser)
+          if (receiptBoxEl) receiptBoxEl.style.display = "none";
+        }
         // ---- FYLL I STANDARD-DATAN ----
         const displayOrderId = document.getElementById("display-order-number");
         if (displayOrderId) displayOrderId.textContent = orderId;
