@@ -902,7 +902,7 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK & FRAKTDYNAMIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyCtWmmYSX9HoJ5v_99Jr7sIBMtqdt8kvgSl-aNyQUss5t4JSN99E1bbY4woYItrKrAQw/exec";
+  "https://script.google.com/macros/s/AKfycbxgBNMA7RN4jhQ_T_RlrFeQkk4N0l2vOlYmFl3Nnx_kIMbPYGf32pJvhhrapF9uFTo4lg/exec";
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();
