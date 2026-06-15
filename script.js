@@ -299,11 +299,14 @@ function renderBatteries(data) {
     let imageSection = "";
     if (b.images && b.images.length > 0) {
       window.slideStates[index] = 0;
+      
+      // NYTT: Den första bilden (i === 0) sätts till 'relative h-auto'. 
+      // Detta tvingar containern att bli exakt lika hög och bred som bildens originalproportioner!
       let slidesHtml = b.images
         .map(
           (img, i) => `
-            <img id="slide-${index}-${i}" src="${img}" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
-            i === 0 ? "opacity-100" : "opacity-0"
+            <img id="slide-${index}-${i}" src="${img}" class="w-full object-cover transition-opacity duration-700 ease-in-out ${
+            i === 0 ? "relative h-auto opacity-100" : "absolute inset-0 h-full opacity-0"
           }" alt="${b.brand}">
         `
         )
@@ -330,7 +333,10 @@ function renderBatteries(data) {
             </div>
         `;
       }
-      imageSection = `<div class="w-full lg:w-2/5 shrink-0 relative min-h-[300px] lg:min-h-full bg-[#E8E6E1] rounded-[24px] overflow-hidden">${slidesHtml}${controlsHtml}</div>`;
+      
+      // NYTT: Tog bort 'min-h-[300px]' och lade till 'h-fit self-center'
+      // h-fit kramar åt bilden exakt, och self-center centrerar den bredvid texten ifall texten är jättelång.
+      imageSection = `<div class="w-full lg:w-2/5 shrink-0 relative h-fit self-center bg-[#E8E6E1] rounded-[24px] overflow-hidden">${slidesHtml}${controlsHtml}</div>`;
     }
 
     let html = `
@@ -353,11 +359,9 @@ function renderBatteries(data) {
                 <div class="divide-y divide-gray-100">
     `;
 
-    // Koda note och options
     const noteEncoded = encodeURIComponent(b.note || "");
     const allPricesEncoded = encodeURIComponent(JSON.stringify(b.prices || []));
 
-    // Visar BARA standardbatteriet i butiken, men vi skickar med allt till kassan
     if (!b.isMulti && b.prices && b.prices.length > 0) {
       const basePrice = b.prices[0];
       html += generatePriceRow(
@@ -391,8 +395,6 @@ function renderBatteries(data) {
       });
       html += `</div>`;
     }
-
-    // OBS-texten ÄR BORTTAGEN härifrån och ligger nu endast i Steg 1 i kassan!
 
     html += `</div></div></div>`;
     container.innerHTML += html;
