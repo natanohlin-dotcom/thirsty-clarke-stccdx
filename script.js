@@ -299,14 +299,16 @@ function renderBatteries(data) {
     let imageSection = "";
     if (b.images && b.images.length > 0) {
       window.slideStates[index] = 0;
-      
-      // NYTT: Den första bilden (i === 0) sätts till 'relative h-auto'. 
+
+      // NYTT: Den första bilden (i === 0) sätts till 'relative h-auto'.
       // Detta tvingar containern att bli exakt lika hög och bred som bildens originalproportioner!
       let slidesHtml = b.images
         .map(
           (img, i) => `
             <img id="slide-${index}-${i}" src="${img}" class="w-full object-cover transition-opacity duration-700 ease-in-out ${
-            i === 0 ? "relative h-auto opacity-100" : "absolute inset-0 h-full opacity-0"
+            i === 0
+              ? "relative h-auto opacity-100"
+              : "absolute inset-0 h-full opacity-0"
           }" alt="${b.brand}">
         `
         )
@@ -333,7 +335,7 @@ function renderBatteries(data) {
             </div>
         `;
       }
-      
+
       // NYTT: Tog bort 'min-h-[300px]' och lade till 'h-fit self-center'
       // h-fit kramar åt bilden exakt, och self-center centrerar den bredvid texten ifall texten är jättelång.
       imageSection = `<div class="w-full lg:w-2/5 shrink-0 relative h-fit self-center bg-[#E8E6E1] rounded-[24px] overflow-hidden">${slidesHtml}${controlsHtml}</div>`;
@@ -926,7 +928,7 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK & FRAKTDYNAMIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzyPHu2uscFr_oAVOowqivXvxIOOW9u5-r-EtI8PwjJDCIpISbayHg1fxN327OjiiGUVg/exec";
+  "https://script.google.com/macros/s/AKfycbzxMszljCQG7gVMBxan_j17N-OSlugjr6dOpAycGRaQ-VkQhlgXERfeERHfcXicUYCZJg/exec";
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();
