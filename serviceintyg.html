@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digitalt Serviceintyg | Batterilabbet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body
+    class="bg-[#f8f5f1] min-h-screen flex flex-col items-center justify-center p-6"
+  >
+    <!-- Liten logga i toppen -->
+    <a
+      href="/index"
+      class="text-xl font-semibold tracking-[0.14em] hover:opacity-70 transition font-['Comfortaa'] mb-8"
+    >
+      Batterilabbet
+    </a>
+
+    <!-- Huvudkortet -->
+    <div
+      class="glass-card bg-white p-8 md:p-12 rounded-3xl border border-black/5 shadow-xl w-full max-w-xl text-center relative overflow-hidden"
+    >
+      <!-- 1. Laddningsskärmen (Visas först) -->
+      <div id="loading-state" class="flex flex-col items-center py-10">
+        <svg
+          class="animate-spin h-10 w-10 text-black mb-4"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+        <p class="text-gray-500 font-medium animate-pulse">
+          Hämtar ditt serviceintyg...
+        </p>
+      </div>
+
+      <!-- 2. Error-skärmen (Om ID saknas eller är fel) -->
+      <div id="error-state" class="hidden flex-col items-center py-10">
+        <i data-lucide="alert-triangle" class="w-12 h-12 text-red-500 mb-4"></i>
+        <h2 class="text-2xl font-medium mb-2">Oj, något gick fel</h2>
+        <p id="error-msg" class="text-gray-500 mb-6">
+          Vi kunde inte hitta ditt intyg.
+        </p>
+        <a href="/kontakt" class="btn-primary px-6 py-3 rounded-xl font-medium"
+          >Kontakta support</a
+        >
+      </div>
+
+      <!-- 3. Success-skärmen (Själva intyget) -->
+      <div id="success-state" class="hidden text-left">
+        <div class="flex items-center gap-3 mb-6 pb-6 border-b border-gray-100">
+          <div class="bg-green-100 p-3 rounded-full text-green-600">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl font-medium">Digitalt Serviceintyg</h1>
+            <p class="text-sm text-gray-400">
+              Veriferad reparation från Batterilabbet AB
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-4 mb-8">
+          <div
+            class="flex justify-between bg-gray-50 p-4 rounded-xl border border-gray-100"
+          >
+            <span class="text-gray-500 text-sm">Ärendenummer</span>
+            <span id="display-id" class="font-bold text-sm">...</span>
+          </div>
+          <div
+            class="flex justify-between bg-gray-50 p-4 rounded-xl border border-gray-100"
+          >
+            <span class="text-gray-500 text-sm">Batteri / Modell</span>
+            <span id="display-battery" class="font-medium text-sm">...</span>
+          </div>
+          <div
+            class="flex justify-between bg-gray-50 p-4 rounded-xl border border-gray-100"
+          >
+            <span class="text-gray-500 text-sm">Reparationsdatum</span>
+            <span id="display-date" class="font-medium text-sm">...</span>
+          </div>
+        </div>
+
+        <h3 class="font-medium text-lg mb-4">Dina dokument</h3>
+        <div class="space-y-3">
+          <a
+            id="btn-protocol"
+            href="#"
+            target="_blank"
+            class="flex items-center justify-between p-4 bg-black text-white rounded-xl hover:scale-[1.02] transition shadow-md"
+          >
+            <div class="flex items-center gap-3">
+              <i data-lucide="file-check-2" class="w-5 h-5 opacity-80"></i>
+              <span class="font-medium text-sm md:text-base"
+                >Testprotokoll & Hälsostatus</span
+              >
+            </div>
+            <i data-lucide="download" class="w-4 h-4 opacity-50"></i>
+          </a>
+
+          <a
+            id="btn-manual"
+            href="#"
+            target="_blank"
+            class="flex items-center justify-between p-4 bg-white border-2 border-gray-100 text-black rounded-xl hover:border-black transition"
+          >
+            <div class="flex items-center gap-3">
+              <i data-lucide="book-open" class="w-5 h-5 text-gray-500"></i>
+              <span class="font-medium text-sm md:text-base"
+                >Användarmanual & Återvinning</span
+              >
+            </div>
+            <i data-lucide="external-link" class="w-4 h-4 text-gray-400"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      // HÄR KLISTRAR DU IN LÄNKEN TILL DITT GOOGLE APPS SCRIPT (Webbappen)
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbwUNDElUmSJYYqcC_6uoGM-8iNAr_TeGFf_vkocHo_75cMbjTwY4phVVdX-IqJlbsN-XQ/exec";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get("id");
+
+        const uiLoading = document.getElementById("loading-state");
+        const uiError = document.getElementById("error-state");
+        const uiSuccess = document.getElementById("success-state");
+        const errorMsg = document.getElementById("error-msg");
+
+        if (!orderId) {
+          uiLoading.classList.add("hidden");
+          uiError.classList.remove("hidden");
+          errorMsg.innerText =
+            "Ogiltig QR-kod. Inget ärendenummer hittades i länken.";
+          return;
+        }
+
+        // Hämta datan från Google Sheets
+        fetch(`${API_URL}?id=${orderId}`)
+          .then((response) => response.json())
+          .then((result) => {
+            uiLoading.classList.add("hidden");
+
+            if (result.success) {
+              // Fyll i datan i HTML
+              document.getElementById("display-id").innerText =
+                result.data.orderId;
+              document.getElementById("display-battery").innerText =
+                result.data.batteryInfo || "Ej specificerat";
+              document.getElementById("display-date").innerText =
+                result.data.date || "Okänt datum";
+
+              // Lägg in länkarna
+              const btnProtocol = document.getElementById("btn-protocol");
+              const btnManual = document.getElementById("btn-manual");
+
+              if (result.data.protocolLink) {
+                btnProtocol.href = result.data.protocolLink;
+              } else {
+                btnProtocol.classList.add("opacity-50", "pointer-events-none");
+                btnProtocol.querySelector("span").innerText =
+                  "Protokoll ej tillgängligt ännu";
+              }
+
+              if (result.data.manualLink) {
+                btnManual.href = result.data.manualLink;
+              } else {
+                btnManual.classList.add("opacity-50", "pointer-events-none");
+                btnManual.querySelector("span").innerText =
+                  "Manual ej tillgänglig ännu";
+              }
+
+              // Visa intyget
+              uiSuccess.classList.remove("hidden");
+            } else {
+              // Visa felmeddelande från scriptet
+              uiError.classList.remove("hidden");
+              errorMsg.innerText = result.error || "Något gick fel.";
+            }
+          })
+          .catch((err) => {
+            uiLoading.classList.add("hidden");
+            uiError.classList.remove("hidden");
+            errorMsg.innerText =
+              "Kunde inte ansluta till databasen. Försök igen om en stund.";
+          });
+      });
+    </script>
+  </body>
+</html>
