@@ -1276,3 +1276,83 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   } // Stäng if-satsen här
 });
+// ==========================================
+// 9. COOKIE BANNER & TRUSTPILOT LOGIK
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+  const cookieBanner = document.getElementById("cookie-banner");
+  const btnAccept = document.getElementById("btn-accept-cookies");
+  const btnReject = document.getElementById("btn-reject-cookies");
+  const tpContainer = document.getElementById("trustpilot-container");
+
+  if (!cookieBanner) return;
+
+  // Kolla om kunden redan har gjort ett val
+  const cookieConsent = localStorage.getItem("batterilabbet_cookie_consent");
+
+  if (!cookieConsent) {
+    // Har kunden inte valt, skjut upp bannern efter 1 sekund
+    setTimeout(() => {
+      cookieBanner.classList.remove("translate-y-full");
+    }, 1000);
+  } else if (cookieConsent === "accepted") {
+    // Har kunden redan accepterat sedan tidigare, ladda Trustpilot direkt
+    loadTrustpilot();
+  }
+
+  // Om kunden klickar Acceptera
+  if (btnAccept) {
+    btnAccept.addEventListener("click", () => {
+      localStorage.setItem("batterilabbet_cookie_consent", "accepted");
+      hideBanner();
+      loadTrustpilot();
+    });
+  }
+
+  // Om kunden klickar Neka
+  if (btnReject) {
+    btnReject.addEventListener("click", () => {
+      localStorage.setItem("batterilabbet_cookie_consent", "rejected");
+      hideBanner();
+    });
+  }
+
+  function hideBanner() {
+    cookieBanner.classList.add("translate-y-full");
+  }
+
+  // Funktionen som laddar in den faktiska widgeten
+  function loadTrustpilot() {
+    if (!tpContainer) return;
+
+    // Rensa platshållaren
+    tpContainer.innerHTML = "";
+
+    // Skapa Trustpilot-widgetens div
+    const tpWidget = document.createElement("div");
+    tpWidget.className = "trustpilot-widget";
+    tpWidget.setAttribute("data-locale", "en-US");
+    tpWidget.setAttribute("data-template-id", "56278e9abfbbba0bdcd568bc");
+    tpWidget.setAttribute("data-businessunit-id", "6a2b2e187cb9a8a897aba8e6");
+    tpWidget.setAttribute("data-style-height", "52px");
+    tpWidget.setAttribute("data-style-width", "100%");
+    tpWidget.setAttribute("data-token", "aab0124b-9bd7-48fb-a63a-6f19e9cbba4f");
+
+    const tpLink = document.createElement("a");
+    tpLink.href = "https://www.trustpilot.com/review/batterilabbet.se";
+    tpLink.target = "_blank";
+    tpLink.rel = "noopener";
+    tpLink.innerText = "Trustpilot";
+
+    tpWidget.appendChild(tpLink);
+    tpContainer.appendChild(tpWidget);
+
+    // Injicera Trustpilots skript-fil i dokumentet
+    const tpScript = document.createElement("script");
+    tpScript.type = "text/javascript";
+    tpScript.src =
+      "//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
+    tpScript.async = true;
+    document.head.appendChild(tpScript);
+  }
+});
