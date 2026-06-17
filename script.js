@@ -1277,7 +1277,7 @@ document.addEventListener("DOMContentLoaded", () => {
   } // Stäng if-satsen här
 });
 // ==========================================
-// 9. COOKIE BANNER & TRUSTPILOT LOGIK
+// 9. COOKIE BANNER, TRUSTPILOT & ANALYTICS
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
   const cookieBanner = document.getElementById("cookie-banner");
@@ -1296,8 +1296,8 @@ document.addEventListener("DOMContentLoaded", () => {
       cookieBanner.classList.remove("translate-y-full");
     }, 1000);
   } else if (cookieConsent === "accepted") {
-    // Har kunden redan accepterat sedan tidigare, ladda Trustpilot direkt
-    loadTrustpilot();
+    // Har kunden redan accepterat sedan tidigare, ladda allt direkt
+    loadThirdPartyScripts();
   }
 
   // Om kunden klickar Acceptera
@@ -1305,7 +1305,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnAccept.addEventListener("click", () => {
       localStorage.setItem("batterilabbet_cookie_consent", "accepted");
       hideBanner();
-      loadTrustpilot();
+      loadThirdPartyScripts();
     });
   }
 
@@ -1321,38 +1321,62 @@ document.addEventListener("DOMContentLoaded", () => {
     cookieBanner.classList.add("translate-y-full");
   }
 
-  // Funktionen som laddar in den faktiska widgeten
-  function loadTrustpilot() {
-    if (!tpContainer) return;
+  // Funktionen som laddar in Analytics och Trustpilot
+  function loadThirdPartyScripts() {
+    // --- 1. GOOGLE ANALYTICS (GA4) ---
+    // Kolla så vi inte laddar in scriptet två gånger av misstag
+    if (!document.getElementById("ga-script")) {
+      const gaScript1 = document.createElement("script");
+      gaScript1.id = "ga-script";
+      gaScript1.async = true;
+      gaScript1.src =
+        "https://www.googletagmanager.com/gtag/js?id=G-1ES3ZCTCVD";
+      document.head.appendChild(gaScript1);
 
-    // Rensa platshållaren
-    tpContainer.innerHTML = "";
+      const gaScript2 = document.createElement("script");
+      gaScript2.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1ES3ZCTCVD');
+      `;
+      document.head.appendChild(gaScript2);
+    }
 
-    // Skapa Trustpilot-widgetens div
-    const tpWidget = document.createElement("div");
-    tpWidget.className = "trustpilot-widget";
-    tpWidget.setAttribute("data-locale", "en-US");
-    tpWidget.setAttribute("data-template-id", "56278e9abfbbba0bdcd568bc");
-    tpWidget.setAttribute("data-businessunit-id", "6a2b2e187cb9a8a897aba8e6");
-    tpWidget.setAttribute("data-style-height", "52px");
-    tpWidget.setAttribute("data-style-width", "100%");
-    tpWidget.setAttribute("data-token", "aab0124b-9bd7-48fb-a63a-6f19e9cbba4f");
+    // --- 2. TRUSTPILOT ---
+    if (tpContainer && !tpContainer.querySelector(".trustpilot-widget")) {
+      // Rensa platshållaren
+      tpContainer.innerHTML = "";
 
-    const tpLink = document.createElement("a");
-    tpLink.href = "https://www.trustpilot.com/review/batterilabbet.se";
-    tpLink.target = "_blank";
-    tpLink.rel = "noopener";
-    tpLink.innerText = "Trustpilot";
+      // Skapa Trustpilot-widgetens div
+      const tpWidget = document.createElement("div");
+      tpWidget.className = "trustpilot-widget";
+      tpWidget.setAttribute("data-locale", "en-US");
+      tpWidget.setAttribute("data-template-id", "56278e9abfbbba0bdcd568bc");
+      tpWidget.setAttribute("data-businessunit-id", "6a2b2e187cb9a8a897aba8e6");
+      tpWidget.setAttribute("data-style-height", "52px");
+      tpWidget.setAttribute("data-style-width", "100%");
+      tpWidget.setAttribute(
+        "data-token",
+        "aab0124b-9bd7-48fb-a63a-6f19e9cbba4f"
+      );
 
-    tpWidget.appendChild(tpLink);
-    tpContainer.appendChild(tpWidget);
+      const tpLink = document.createElement("a");
+      tpLink.href = "https://www.trustpilot.com/review/batterilabbet.se";
+      tpLink.target = "_blank";
+      tpLink.rel = "noopener";
+      tpLink.innerText = "Trustpilot";
 
-    // Injicera Trustpilots skript-fil i dokumentet
-    const tpScript = document.createElement("script");
-    tpScript.type = "text/javascript";
-    tpScript.src =
-      "//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
-    tpScript.async = true;
-    document.head.appendChild(tpScript);
+      tpWidget.appendChild(tpLink);
+      tpContainer.appendChild(tpWidget);
+
+      // Injicera Trustpilots skript-fil i dokumentet
+      const tpScript = document.createElement("script");
+      tpScript.type = "text/javascript";
+      tpScript.src =
+        "//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
+      tpScript.async = true;
+      document.head.appendChild(tpScript);
+    }
   }
 });
