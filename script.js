@@ -417,14 +417,8 @@ document.addEventListener("DOMContentLoaded", function () {
 // 4. MODAL-FUNKTIONER
 // ==========================================
 
-// Huvudströmbrytare för modalen:
-// true = Modalen öppnas som vanligt.
-// false = Kunder skickas direkt till /skicka-in (reparation) när de klickar "Välj".
-const MODAL_ON = false;
-
 let currentSelectedBattery = null;
 
-// FIXAT: Lade till allPricesEncoded och noteEncoded här
 window.openActionModal = function (
   brand,
   model,
@@ -440,24 +434,6 @@ window.openActionModal = function (
   );
   const note = decodeURIComponent(noteEncoded || "");
 
-  // NYTT: Om modalen är avstängd, kringgå den helt och hållet
-  if (!MODAL_ON) {
-    const batteryData = {
-      brand: brand,
-      model: model,
-      capacity: originalCap,
-      selectedCap: selectedCap,
-      voltage: voltage,
-      action: "repair", // Tvingar valet till reparation
-      options: allPrices,
-      note: note,
-    };
-    sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
-    window.location.href = "/skicka-in";
-    return; // Avbryter funktionen så koden nedan inte körs
-  }
-
-  // Om MODAL_ON === true, körs koden nedan precis som vanligt
   currentSelectedBattery = {
     brand,
     model,
@@ -468,22 +444,31 @@ window.openActionModal = function (
     note,
   };
 
+  // Fyll i batteriets information i modalens rubrik/text
   document.getElementById(
     "modal-battery-info"
   ).innerText = `${brand} ${model} (${selectedCap})`;
 
   const orderBtn = document.getElementById("modal-order-btn");
   const outOfStockMsg = document.getElementById("modal-out-of-stock-msg");
+
   if (hasBadge) {
+    // Direktköp finns - Visa köp-knappen
     orderBtn.classList.remove("hidden");
     orderBtn.classList.add("flex");
-    outOfStockMsg.classList.add("hidden");
   } else {
+    // Direktköp saknas - Dölj köp-knappen helt
     orderBtn.classList.remove("flex");
     orderBtn.classList.add("hidden");
-    outOfStockMsg.classList.remove("hidden");
   }
 
+  // Vi ser till att "Ej i lager"-texten ALLTID är dold nu,
+  // så att kunden bara ser "Skicka in"-knappen om direktköp saknas.
+  if (outOfStockMsg) {
+    outOfStockMsg.classList.add("hidden");
+  }
+
+  // Animera in modalen
   const modal = document.getElementById("action-modal");
   modal.classList.remove("hidden");
   setTimeout(() => {
@@ -516,14 +501,18 @@ window.handleModalChoice = function (choice) {
     voltage: voltage,
     action: choice,
     options: allPrices,
-    note: note, // Skickas nu med in i formuläret
+    note: note,
   };
 
   sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
   closeActionModal();
 
-  if (choice === "repair") window.location.href = "/skicka-in";
-  else if (choice === "order") window.location.href = "/checkout";
+  // Dirigera kunden till rätt sida beroende på val
+  if (choice === "repair") {
+    window.location.href = "/skicka-in";
+  } else if (choice === "order") {
+    window.location.href = "/checkout";
+  }
 };
 // ==========================================
 // 5. FORMULÄR & AUTOFILL & STAPELDIAGRAM
