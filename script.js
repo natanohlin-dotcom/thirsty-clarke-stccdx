@@ -1498,3 +1498,85 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+// ==========================================
+// 10. DIGITALT SERVICEINTYG LOGIK
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Spärr: Kolla om vi faktiskt är på serviceintygs-sidan
+  const uiSuccess = document.getElementById("success-state");
+  const btnProtocol = document.getElementById("btn-protocol");
+
+  // Finns inte dessa element på sidan (dvs kunden är på index eller kontakt), avbryt direkt.
+  if (!uiSuccess || !btnProtocol) return;
+
+  const SERVICE_API_URL = GOOGLE_SCRIPT_URL;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderId = urlParams.get("id");
+
+  const uiLoading = document.getElementById("loading-state");
+  const uiError = document.getElementById("error-state");
+  const errorMsg = document.getElementById("error-msg");
+
+  // Om inget ID finns i webbadressen
+  if (!orderId) {
+    if (uiLoading) uiLoading.classList.add("hidden");
+    if (uiError) uiError.classList.remove("hidden");
+    if (errorMsg)
+      errorMsg.innerText =
+        "Ogiltig QR-kod. Inget ärendenummer hittades i länken.";
+    return;
+  }
+
+  // 2. Hämta datan från Google Sheets
+  fetch(`${SERVICE_API_URL}?id=${orderId}`)
+    .then((response) => response.json())
+    .then((result) => {
+      if (uiLoading) uiLoading.classList.add("hidden");
+
+      if (result.success) {
+        // Fyll i datan i HTML
+        document.getElementById("display-id").innerText = result.data.orderId;
+        document.getElementById("display-battery").innerText =
+          result.data.batteryInfo || "Ej specificerat";
+        document.getElementById("display-date").innerText =
+          result.data.date || "Okänt datum";
+
+        // Hantera länkarna
+        const btnManual = document.getElementById("btn-manual");
+
+        if (result.data.protocolLink) {
+          btnProtocol.href = result.data.protocolLink;
+        } else {
+          btnProtocol.classList.add("opacity-50", "pointer-events-none");
+          if (btnProtocol.querySelector("span"))
+            btnProtocol.querySelector("span").innerText =
+              "Protokoll ej tillgängligt ännu";
+        }
+
+        if (result.data.manualLink) {
+          btnManual.href = result.data.manualLink;
+        } else {
+          btnManual.classList.add("opacity-50", "pointer-events-none");
+          if (btnManual.querySelector("span"))
+            btnManual.querySelector("span").innerText =
+              "Manual ej tillgänglig ännu";
+        }
+
+        // Visa intyget
+        uiSuccess.classList.remove("hidden");
+      } else {
+        // Visa felmeddelande från scriptet (t.ex. "Ordern hittades inte")
+        if (uiError) uiError.classList.remove("hidden");
+        if (errorMsg) errorMsg.innerText = result.error || "Något gick fel.";
+      }
+    })
+    .catch((err) => {
+      if (uiLoading) uiLoading.classList.add("hidden");
+      if (uiError) uiError.classList.remove("hidden");
+      if (errorMsg)
+        errorMsg.innerText =
+          "Kunde inte ansluta till databasen. Försök igen om en stund.";
+      console.error("Fel vid hämtning av serviceintyg:", err);
+    });
+});
