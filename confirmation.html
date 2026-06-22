@@ -43,7 +43,7 @@
         class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative"
       >
         <a
-          href="/index"
+          href="/"
           class="flex items-center gap-3 text-xl font-semibold tracking-[0.14em] hover:opacity-70 transition"
         >
           <span>Batterilabbet</span>
@@ -188,24 +188,20 @@
               >
             </div>
           </div>
-          <!-- ... Din Orderöversikt och Kvitto slutar här ... -->
         </div>
 
-        <!-- NYTT: Informationsrutan på bekräftelsesidan -->
         <div
           id="price-disclaimer"
           class="p-4 md:p-5 bg-[#FAF9F6] rounded-xl text-xs md:text-sm leading-relaxed text-gray-500 border border-black/5 italic text-left w-full mx-auto sm:w-4/5 md:w-3/4 mb-8"
         >
-          OBS! Priserna du ser är uppskattade baserat på tidigare batterier vi
-          fått in. Priset kan komma att avvika från de priser du hittar på denna
-          sida beroende på felets omfattning, dock gäller det här priset i
-          majoriteten av fallen. Du får alltid en offert med pris innan
-          reparation påbörjas.
+          OBS! Detta är ett prisförslag. Priset kan komma att avvika beroende på
+          felets omfattning, dock aldrig högre än detta prisförslag. Du får
+          alltid en offert med slutgiltigt pris innan reparation påbörjas.
         </div>
 
         <div>
           <a
-            href="/index"
+            href="/"
             class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-full text-base font-medium border border-transparent hover:bg-stone-100 transition-all text-stone-500 hover:text-black"
           >
             <i data-lucide="home" class="w-5 h-5"></i>
@@ -216,14 +212,11 @@
     </main>
 
     <script>
-      // 1. Initiera ikoner
       lucide.createIcons();
 
-      // 2. Kör koden när sidan har laddat klart
       document.addEventListener("DOMContentLoaded", () => {
-        // Hämta parametrarna från webbadressen (URL:en)
         const urlParams = new URLSearchParams(window.location.search);
-        // Hämta alla värden och sätt standardvärden om något saknas
+
         const orderId = urlParams.get("order") || "Okänt";
         const brand = urlParams.get("brand") || "Ej angivet";
         const model = urlParams.get("model") || "Ej angivet";
@@ -235,19 +228,22 @@
         const orderType = urlParams.get("orderType") || "Beställning";
         const shippingChoice = urlParams.get("shippingChoice");
         const shippingCost = urlParams.get("shippingCost");
+
         const orderLabelEl = document.getElementById("order-number-label");
         const receiptBoxEl = document.getElementById("receipt-box");
         const disclaimerEl = document.getElementById("price-disclaimer");
 
+        // --- JUSTERAD LOGIK FÖR ATT DÖLJA DISCLAIMER ---
         if (orderType === "Allmän förfrågan") {
-          // Byt texten från Ordernummer till Ärendenummer
           if (orderLabelEl) orderLabelEl.textContent = "Ditt Ärendenummer";
-
-          // Dölj hela den vita kvitto-boxen (inklusive frakt & priser)
           if (receiptBoxEl) receiptBoxEl.style.display = "none";
           if (disclaimerEl) disclaimerEl.style.display = "none";
+        } else if (orderType === "Nybeställning") {
+          // Gömmer enbart rutan om det är ett fast direktköp/nybeställning
+          if (disclaimerEl) disclaimerEl.style.display = "none";
         }
-        // ---- FYLL I STANDARD-DATAN ----
+        // -----------------------------------------------
+
         const displayOrderId = document.getElementById("display-order-number");
         if (displayOrderId) displayOrderId.textContent = orderId;
 
@@ -259,8 +255,6 @@
 
         const displayTypeEl = document.getElementById("display-order-type");
         if (displayTypeEl) displayTypeEl.textContent = orderType;
-
-        // ---- FYLL I KVITTOT ----
 
         // Grundpris
         const basePriceContainer = document.getElementById(
@@ -280,7 +274,8 @@
         if (finalPrice && displayFinalPrice) {
           displayFinalPrice.textContent = finalPrice;
         }
-        // Frakt (Dynamisk!)
+
+        // Frakt
         const shippingContainer = document.getElementById("shipping-container");
         const displayShippingChoice = document.getElementById(
           "display-shipping-choice"
@@ -293,12 +288,11 @@
           shippingContainer.classList.remove("hidden");
           if (displayShippingChoice)
             displayShippingChoice.textContent = shippingChoice;
-
-          // Om shippingCost skickades med (t.ex. "Gratis" eller "149 kr") skriver vi ut det
           if (displayShippingPrice && shippingCost) {
             displayShippingPrice.textContent = shippingCost;
           }
         }
+
         // Tillval
         const upgradeContainer = document.getElementById("upgrade-container");
         const displayCapacity = document.getElementById("display-capacity");
