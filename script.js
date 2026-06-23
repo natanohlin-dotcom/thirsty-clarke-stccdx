@@ -275,7 +275,7 @@ function goToStandaloneSlide(sliderId, index) {
 }
 
 // ==========================================
-// 3. DATABAS & BATTERIKORT (Startsida)
+// 3. DATABAS & BATTERIKORT (Startsida & Produktsida)
 // ==========================================
 let globalBatteryData = [];
 const GOOGLE_SHEET_CSV_URL =
@@ -305,8 +305,18 @@ async function fetchAndRenderBatteries() {
         voltage: cols[2] || "36V",
         original_cap: cols[3],
         prices: [],
-        note: cols[16] || "",
-        images: cols[17] ? [cols[17]] : [],
+
+        note: cols[16] ? cols[16].replace(/\|/g, "\n\n") : "",
+        images: cols[17]
+          ? cols[17]
+              .split(/[,\n]+/)
+              .map((url) => url.trim())
+              .filter(Boolean)
+          : [],
+        slug: cols[18] || "",
+        description: cols[19] ? cols[19].replace(/\|/g, "\n\n") : "",
+        chargingPort: cols[20] || "",
+        process: cols[21] ? cols[21].replace(/\|/g, "\n\n") : "",
       };
 
       if (cols[4])
@@ -334,13 +344,16 @@ async function fetchAndRenderBatteries() {
       globalBatteryData.push(battery);
     });
 
-    renderBatteries(globalBatteryData);
-
-    const loadingState = document.getElementById("loading-state");
     const batteryContainer = document.getElementById("battery-container");
-    if (loadingState && batteryContainer) {
-      loadingState.classList.add("hidden");
+    if (batteryContainer) {
+      renderBatteries(globalBatteryData);
+      const loadingState = document.getElementById("loading-state");
+      if (loadingState) loadingState.classList.add("hidden");
       batteryContainer.classList.remove("hidden");
+    }
+
+    if (typeof renderProductPage === "function") {
+      renderProductPage();
     }
   } catch (error) {
     console.error("Kunde inte ladda batteridatan från Google Sheets:", error);
@@ -366,7 +379,6 @@ function filterBatteries() {
   renderBatteries(filtered);
 }
 
-// NYTT: Nu tar generatePriceRow emot "noteEncoded" så vi kan skicka med varningen in i kassan
 function generatePriceRow(
   brand,
   model,
@@ -380,30 +392,23 @@ function generatePriceRow(
   const badgeHtml = priceObj.badge
     ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full tracking-tighter whitespace-nowrap shadow-sm">Tillgänglig för direktköp</span>`
     : ``;
-  const descHtml = priceObj.desc
-    ? `<span class="text-gray-400 text-xs">${priceObj.desc}</span>`
-    : ``;
   const hasBadge = priceObj.badge ? true : false;
 
   return `
       <div class="${
         isSmall ? "py-3" : "py-5"
       } flex justify-between items-center gap-4">
-          <div class="flex items-center flex-wrap gap-3">
-              ${badgeHtml}
-              ${descHtml}
-          </div>
+          <div class="flex items-center flex-wrap gap-3">${badgeHtml}</div>
           <div class="flex items-center gap-4">
               <span class="${
                 isSmall ? "text-base" : "text-xl"
               } font-medium whitespace-nowrap text-gray-800">Från ${
     priceObj.price
   }</span>
-              
-              <button onclick="openActionModal('${brand}', '${model}', '${
+              <button onclick="event.preventDefault(); openActionModal('${brand}', '${model}', '${
     priceObj.cap
   }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}')" 
-                      class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-70 transition shadow-sm">
+                      class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-70 transition shadow-sm z-20 relative">
                   Välj
               </button>
           </div>
@@ -426,11 +431,11 @@ function renderBatteries(data) {
 
   data.forEach((b, index) => {
     let imageSection = "";
+    const productUrl = b.slug ? `/produkt?model=${b.slug}` : "#";
+
     if (b.images && b.images.length > 0) {
       window.slideStates[index] = 0;
 
-      // NYTT: Den första bilden (i === 0) sätts till 'relative h-auto'.
-      // Detta tvingar containern att bli exakt lika hög och bred som bildens originalproportioner!
       let slidesHtml = b.images
         .map(
           (img, i) => `
@@ -443,16 +448,20 @@ function renderBatteries(data) {
         )
         .join("");
 
+      if (b.slug) {
+        slidesHtml = `<a href="${productUrl}" class="block relative">${slidesHtml}</a>`;
+      }
+
       let controlsHtml = "";
       if (b.images.length > 1) {
         controlsHtml = `
-            <button onclick="changeSlide(${index}, -1, ${
+            <button onclick="event.preventDefault(); changeSlide(${index}, -1, ${
           b.images.length
         })" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-10"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-            <button onclick="changeSlide(${index}, 1, ${
+            <button onclick="event.preventDefault(); changeSlide(${index}, 1, ${
           b.images.length
         })" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-10"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full">
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full pointer-events-none">
                 ${b.images
                   .map(
                     (_, i) =>
@@ -465,17 +474,27 @@ function renderBatteries(data) {
         `;
       }
 
-      // NYTT: Tog bort 'min-h-[300px]' och lade till 'h-fit self-center'
-      // h-fit kramar åt bilden exakt, och self-center centrerar den bredvid texten ifall texten är jättelång.
-      imageSection = `<div class="w-full lg:w-2/5 shrink-0 relative h-fit self-center bg-[#E8E6E1] rounded-[24px] overflow-hidden">${slidesHtml}${controlsHtml}</div>`;
+      imageSection = `
+      <div class="w-full lg:w-2/5 shrink-0 relative z-20 h-fit self-center bg-[#E8E6E1] rounded-[24px] overflow-hidden block">
+        ${slidesHtml}
+        ${controlsHtml}
+      </div>`;
     }
 
     let html = `
-        <div class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500 relative group hover:shadow-lg transition-all cursor-pointer">
+            
+            ${
+              b.slug
+                ? `<a href="${productUrl}" class="absolute inset-0 z-10 rounded-[inherit]"></a>`
+                : ""
+            }
+            
             ${imageSection} 
+            
             <div class="flex-1 w-full flex flex-col justify-center"> 
-                <div class="mb-8">
-                    <h2 class="text-3xl font-medium uppercase mb-1">${
+                <div class="mb-8 block">
+                    <h2 class="text-3xl font-medium uppercase mb-1 text-black">${
                       b.brand
                     }</h2>
                     <p class="text-gray-400 text-sm font-mono uppercase tracking-widest">${
@@ -487,7 +506,7 @@ function renderBatteries(data) {
                         : ""
                     }
                 </div>
-                <div class="divide-y divide-gray-100">
+                <div class="divide-y divide-gray-100 relative z-20">
     `;
 
     const noteEncoded = encodeURIComponent(b.note || "");
@@ -506,27 +525,6 @@ function renderBatteries(data) {
       );
     }
 
-    if (b.isMulti && b.groups) {
-      html += `<div class="grid md:grid-cols-2 gap-12 pt-4">`;
-      b.groups.forEach((g) => {
-        html += `<div class="space-y-2"><h4 class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-6 pb-2 border-b border-gray-50">${g.name}</h4><div class="divide-y divide-gray-50">`;
-        g.prices.forEach((p) => {
-          html += generatePriceRow(
-            b.brand,
-            b.model,
-            p,
-            g.original_cap,
-            g.voltage,
-            "%5B%5D",
-            noteEncoded,
-            true
-          );
-        });
-        html += `</div></div>`;
-      });
-      html += `</div>`;
-    }
-
     html += `</div></div></div>`;
     container.innerHTML += html;
   });
@@ -534,10 +532,155 @@ function renderBatteries(data) {
   lucide.createIcons();
 }
 
+function renderProductPage() {
+  const productContainer = document.getElementById("product-page-container");
+  if (!productContainer) return;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const slug = urlParams.get("model");
+
+  const loadingState = document.getElementById("loading-state");
+  const errorState = document.getElementById("error-state");
+
+  const battery = globalBatteryData.find((b) => b.slug === slug);
+
+  if (!battery) {
+    if (loadingState) loadingState.classList.add("hidden");
+    if (errorState) errorState.classList.remove("hidden");
+    return;
+  }
+
+  document.getElementById("product-brand").innerText = `${battery.brand}`;
+  document.getElementById("product-model").innerText = `${battery.model}`;
+
+  const galleryContainer = document.getElementById("product-gallery");
+  if (battery.images && battery.images.length > 0) {
+    window.slideStates["product"] = 0;
+
+    let slidesHtml = battery.images
+      .map(
+        (img, i) => `
+      <img id="slide-product-${i}" src="${img}" class="w-full object-cover transition-opacity duration-700 ease-in-out ${
+          i === 0
+            ? "relative h-auto opacity-100"
+            : "absolute inset-0 h-full opacity-0"
+        }" alt="${battery.brand} ${battery.model}">
+    `
+      )
+      .join("");
+
+    let controlsHtml = "";
+    if (battery.images.length > 1) {
+      controlsHtml = `
+        <button onclick="changeSlide('product', -1, ${
+          battery.images.length
+        })" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-md text-black transition z-10"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+        <button onclick="changeSlide('product', 1, ${
+          battery.images.length
+        })" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-md text-black transition z-10"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-10 bg-white/50 backdrop-blur-md px-4 py-2.5 rounded-full pointer-events-none">
+            ${battery.images
+              .map(
+                (_, i) =>
+                  `<div id="dot-product-${i}" class="w-2.5 h-2.5 rounded-full transition-colors ${
+                    i === 0 ? "bg-black" : "bg-black/20"
+                  }"></div>`
+              )
+              .join("")}
+        </div>
+      `;
+    }
+    galleryContainer.innerHTML = slidesHtml + controlsHtml;
+  } else {
+    galleryContainer.innerHTML = `<div class="p-24 text-gray-400 flex flex-col items-center"><i data-lucide="image" class="w-16 h-16 mb-4 opacity-50"></i><p>Bild saknas</p></div>`;
+  }
+
+  const pricesContainer = document.getElementById("product-prices");
+  const noteEncoded = encodeURIComponent(battery.note || "");
+  const allPricesEncoded = encodeURIComponent(
+    JSON.stringify(battery.prices || [])
+  );
+
+  if (battery.prices && battery.prices.length > 0) {
+    const basePrice = battery.prices[0];
+    pricesContainer.innerHTML = generatePriceRow(
+      battery.brand,
+      battery.model,
+      basePrice,
+      battery.original_cap,
+      battery.voltage,
+      allPricesEncoded,
+      noteEncoded,
+      false
+    );
+  }
+
+  document.getElementById("tab-desc").innerHTML = battery.description
+    ? `<p class="whitespace-pre-wrap">${battery.description}</p>`
+    : `<p class="italic text-gray-400">Ingen produktbeskrivning inlagd.</p>`;
+
+  let specsHtml = `
+    <ul class="space-y-4 max-w-xl text-base">
+        <li class="flex justify-between border-b border-gray-100 pb-3">
+            <span class="text-gray-500">Spänning</span>
+            <span class="font-medium text-black">${
+              battery.voltage || "-"
+            } V</span>
+        </li>
+        <li class="flex justify-between border-b border-gray-100 pb-3">
+            <span class="text-gray-500">Originalkapacitet</span>
+            <span class="font-medium text-black">${
+              battery.original_cap || "-"
+            } Ah</span>
+        </li>
+        <li class="flex justify-between border-b border-gray-100 pb-3">
+            <span class="text-gray-500">Tillgängliga uppgraderingar</span>
+            <span class="font-medium text-black text-right">${battery.prices
+              .map((p) => p.cap.replace(/ah/gi, "").trim())
+              .join(", ")} Ah</span>
+        </li>
+        <li class="flex justify-between border-b border-gray-100 pb-3">
+            <span class="text-gray-500">Laddkontakt</span>
+            <span class="font-medium text-black">${
+              battery.chargingPort || "Originalkontakt behålls"
+            }</span>
+        </li>
+    </ul>
+  `;
+  document.getElementById("tab-specs").innerHTML = specsHtml;
+  document.getElementById("tab-process").innerHTML = battery.process
+    ? `<p class="whitespace-pre-wrap">${battery.process}</p>`
+    : `<p class="italic text-gray-400">Information om reparationsprocessen saknas för tillfället.</p>`;
+
+  const tabBtns = document.querySelectorAll(".product-tab-btn");
+  const tabContents = document.querySelectorAll(".product-tab-content");
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      tabBtns.forEach((b) => {
+        b.classList.remove("border-black", "text-black");
+        b.classList.add("border-transparent", "text-gray-400");
+      });
+      btn.classList.remove("border-transparent", "text-gray-400");
+      btn.classList.add("border-black", "text-black");
+      tabContents.forEach((content) => content.classList.add("hidden"));
+      document
+        .getElementById(btn.getAttribute("data-target"))
+        .classList.remove("hidden");
+    });
+  });
+
+  if (loadingState) loadingState.classList.add("hidden");
+  productContainer.classList.remove("hidden");
+  lucide.createIcons();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("battery-container");
   const searchInput = document.getElementById("batterySearch");
-  if (container) {
+  const isProductPage = document.getElementById("product-page-container");
+
+  if (container || isProductPage) {
     fetchAndRenderBatteries();
     if (searchInput) searchInput.addEventListener("input", filterBatteries);
   }

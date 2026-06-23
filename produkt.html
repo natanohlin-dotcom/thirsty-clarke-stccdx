@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Produkt | Batterilabbet</title>
+    <meta
+      name="description"
+      content="Läs mer om specifikationerna och boka reparation eller uppgradering av ditt batteri hos Batterilabbet."
+    />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="assets/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/android-chrome-512x512.png"
+    />
+    <link rel="manifest" href="assets/site.webmanifest" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <script defer src="script.js"></script>
+  </head>
+
+  <body class="flex flex-col min-h-screen">
+    <div id="nav-placeholder"></div>
+
+    <main class="flex-grow pt-32 pb-24 px-6 max-w-7xl mx-auto w-full">
+      <div
+        id="loading-state"
+        class="py-24 flex flex-col items-center justify-center text-center"
+      >
+        <i
+          data-lucide="loader-2"
+          class="w-10 h-10 animate-spin text-black mb-4"
+        ></i>
+        <p class="text-lg font-medium text-gray-900">Laddar batterimodell...</p>
+      </div>
+
+      <div
+        id="error-state"
+        class="hidden py-24 flex flex-col items-center justify-center text-center"
+      >
+        <i data-lucide="package-x" class="w-12 h-12 text-gray-400 mb-4"></i>
+        <h1 class="text-2xl font-medium text-gray-900 mb-2">
+          Produkten hittades inte
+        </h1>
+        <p class="text-gray-500 mb-6">
+          Vi kunde tyvärr inte hitta batterimodellen du letar efter. Länken kan
+          vara gammal eller stavad fel.
+        </p>
+        <a
+          href="/hitta-din-modell"
+          class="bg-black text-white px-6 py-3 rounded-full font-medium hover:opacity-80 transition"
+          >Se alla våra modeller</a
+        >
+      </div>
+
+      <div id="product-page-container" class="hidden">
+        <a
+          href="/hitta-din-modell"
+          class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-black transition mb-8 font-['Inter']"
+        >
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Tillbaka till alla
+          modeller
+        </a>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mb-16">
+          <div
+            id="product-gallery"
+            class="lg:col-span-7 relative w-full bg-[#E8E6E1] rounded-[32px] overflow-hidden flex items-center justify-center h-fit shadow-sm"
+          ></div>
+
+          <div class="lg:col-span-5 flex flex-col justify-center">
+            <h1
+              id="product-brand"
+              class="text-4xl lg:text-5xl font-medium uppercase mb-2"
+            >
+              Märke
+            </h1>
+            <p
+              id="product-model"
+              class="text-gray-500 text-lg font-mono uppercase tracking-widest mb-10"
+            >
+              Modell
+            </p>
+
+            <div
+              id="product-prices"
+              class="divide-y divide-gray-100 border-t border-gray-100 pt-2 mb-8"
+            ></div>
+          </div>
+        </div>
+
+        <div class="mt-12 lg:mt-24">
+          <div
+            class="flex gap-6 md:gap-10 border-b border-gray-200 mb-8 overflow-x-auto whitespace-nowrap hide-scrollbar"
+            id="product-tabs"
+          >
+            <button
+              class="product-tab-btn text-lg font-medium pb-3 border-b-2 border-black text-black transition"
+              data-target="tab-desc"
+            >
+              Beskrivning
+            </button>
+            <button
+              class="product-tab-btn text-lg font-medium pb-3 border-b-2 border-transparent text-gray-400 hover:text-black transition"
+              data-target="tab-specs"
+            >
+              Specifikationer
+            </button>
+            <button
+              class="product-tab-btn text-lg font-medium pb-3 border-b-2 border-transparent text-gray-400 hover:text-black transition"
+              data-target="tab-process"
+            >
+              Tillägg & Reparation
+            </button>
+          </div>
+
+          <div class="relative font-['Inter']">
+            <div
+              id="tab-desc"
+              class="product-tab-content animate-in fade-in duration-500 text-gray-600 leading-relaxed max-w-3xl"
+            ></div>
+            <div
+              id="tab-specs"
+              class="product-tab-content hidden animate-in fade-in duration-500 text-gray-600 leading-relaxed max-w-3xl"
+            ></div>
+            <div
+              id="tab-process"
+              class="product-tab-content hidden animate-in fade-in duration-500 text-gray-600 leading-relaxed max-w-3xl"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div
+      id="action-modal"
+      class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 opacity-0"
+    >
+      <div
+        class="bg-white p-8 md:p-12 rounded-[24px] shadow-xl max-w-md w-full mx-4 transform scale-95 transition-transform duration-300"
+      >
+        <h3 class="text-2xl font-medium mb-2 text-center">Nästa steg</h3>
+        <p
+          id="modal-battery-info"
+          class="text-gray-400 text-sm text-center mb-8 font-mono uppercase tracking-widest"
+        ></p>
+
+        <div class="space-y-4">
+          <button
+            onclick="handleModalChoice('repair')"
+            class="w-full flex items-center justify-between p-5 bg-[#f8f5f1] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
+          >
+            <div>
+              <p
+                class="font-medium text-lg text-black group-hover:translate-x-1 transition-transform"
+              >
+                Lämna in batteriet
+              </p>
+              <p class="text-sm text-gray-500 mt-1">
+                Jag vill skicka/lämna in mitt batteri för renovering.
+              </p>
+            </div>
+            <i
+              data-lucide="arrow-right"
+              class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"
+            ></i>
+          </button>
+
+          <button
+            id="modal-order-btn"
+            onclick="handleModalChoice('order')"
+            class="w-full flex items-center justify-between p-5 bg-[#f8f5f1] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
+          >
+            <div>
+              <p
+                class="font-medium text-lg text-black group-hover:translate-x-1 transition-transform"
+              >
+                Beställ batteriet
+              </p>
+              <p class="text-sm text-gray-500 mt-1">
+                Jag vill köpa detta batteri (utan att lämna in ett gammalt).
+              </p>
+            </div>
+            <i
+              data-lucide="arrow-right"
+              class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"
+            ></i>
+          </button>
+
+          <div
+            id="modal-out-of-stock-msg"
+            class="hidden p-5 bg-gray-50 border border-gray-100 rounded-2xl text-left"
+          >
+            <p class="font-medium text-gray-800 text-sm mb-1">
+              Ej i lager för direktköp
+            </p>
+            <p class="text-xs text-gray-500 leading-relaxed">
+              Vi har tyvärr inte detta batteri färdigbyggt på hyllan just nu.
+              Välj "Lämna in batteriet" ovan så reparerar vi ditt gamla batteri.
+            </p>
+          </div>
+        </div>
+        <p
+          class="text-gray-400 font-medium text-sm text-center mb-1 mt-4 tracking-widest"
+        >
+          Kontakta oss via mail om du önskar lämna in fler än ett batteri
+        </p>
+        <button
+          onclick="closeActionModal()"
+          class="w-full mt-6 py-3 text-sm font-medium text-gray-400 hover:text-black transition"
+        >
+          Avbryt
+        </button>
+      </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <div id="cookie-placeholder"></div>
+  </body>
+</html>
