@@ -613,6 +613,12 @@ function renderProductPage() {
       noteEncoded,
       false
     );
+
+    // NYTT: Byt ut "Från" mot "Reparation från" enbart i denna container
+    pricesContainer.innerHTML = pricesContainer.innerHTML.replace(
+      ">Från ",
+      ">Reparation från "
+    );
   }
 
   document.getElementById("tab-desc").innerHTML = battery.description
@@ -650,7 +656,7 @@ function renderProductPage() {
   document.getElementById("tab-specs").innerHTML = specsHtml;
   document.getElementById("tab-process").innerHTML = battery.process
     ? `<p class="whitespace-pre-wrap">${battery.process}</p>`
-    : `<p class="italic text-gray-400">Information om reparationsprocessen saknas för tillfället.</p>`;
+    : `<p>Reparationen för denna modell är vanligtvis klar inom en vecka.</p>`;
 
   const tabBtns = document.querySelectorAll(".product-tab-btn");
   const tabContents = document.querySelectorAll(".product-tab-content");

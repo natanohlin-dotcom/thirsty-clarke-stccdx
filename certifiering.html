@@ -72,19 +72,48 @@
           </h1>
           <p class="text-xl">
             Nedan kan du läsa lite om vårt kvalitetsarbete. Vi tror på transparens, därför delar vi med oss av hur vårt kvalitetsarbete går till
-          </p>
+          </p>          
           <h2>Säkrast i Sverige</h2>
           <p>Vi tar säkerhet längre än någon annan. Vi vidtar bland annat följande åtgärder:</p>
           <ul>
-            <li><strong>Verifierad säkerhet: </strong> Vår reparation uppfyller EU:s strikta krav för hälsa, säkerhet och miljöskydd.</li>
+            <li><strong>Verifierad säkerhet: </strong> Vår reparation uppfyller EU:s strikta krav för hälsa, säkerhet och miljöskydd. Vi är anslutna till El-Kretsen
+            och följer EU 2023/1542 om producentansvar.</li>
             <li><strong>Laboratorietestad hållbarhet: </strong>Processen har genomgått omfattande stresstester för att garantera säker drift i tuffa miljöer.</li>
-            <li><strong>Miljöansvar: </strong>Vi säkerställer att materialval och hantering följer gällande miljödirektiv däribland RoHS 2 (2011/65/EU).
+            <li><strong>Miljöansvar: </strong>Vi säkerställer att materialval och hantering följer gällande miljödirektiv däribland RoHS 2 (2011/65/EU). Genom att vara
+              anslutna till El-Kretsen säkerställer vi att allt avfall från de batterier vi renoverar och har renoverat tas hand om på rätt sätt. 
             </li>
           </ul>
+          <div class="relative w-3/4 md:w-1/2 mx-auto aspect-[3/4] bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group">
+            <img
+              src="assets/certificate_batterikretsen.png"
+              alt="Certifikat från Batterikretsen"
+              class="w-full h-full object-cover" 
+            />
+          </div>
+          <p class="mt-4 mx-auto text-center">
+            Du kan ladda ner certifikatet från Batterikretsen (El-Kretsen)
+            <div class="mx-auto text-center mt-8">
+              <a href="assets/Certifikat_2026_Batterier.pdf" download class="btn-download">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="Status: 4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Ladda ned certifikat (PDF)
+              </a>
+          </div>
+          </p>
           <h2>Digitalt serviceintyg</h2>
           <p>Med varje reparerat batteri finns en QR-kod som leder till vårt digitala serviceintyg, du får även en länk till detta i och med leverans av batteriet.
             I serviceintyget medföljer en användarmanual samt ett testprotokoll för ditt batteri som visar resultaten från de kvalitetskontrollerna batteriet genomgått innan det lämnar vår verkstad.
           Vi gör det här för att du ska känna dig trygg med ditt köp och ta hand om ditt reparerade batteri på rätt sätt.</p>
+          <div class="mt-5 relative w-3/4 md:w-1/2 mx-auto aspect-full bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group">
+            <img
+              src="assets/digitalt_serviceintyg.png"
+              alt="Batterilabbets digitala serviceintyg"
+              class="w-full h-full object-cover" 
+            />
+          </div>
+          <p class="mt-4 mx-auto text-center">
+            Så här ser ditt digitala serviceintyg ut</p>
           <h2>Garanti på vår kompetens</h2>
           <p>När du handlar av eller reparerar hos oss ska du inte bara få ett fungerande batteri, du ska få svart på vitt att jobbet är korrekt utfört. Därför erbjuder vi alltid 24 månaders garanti på våra arbeten.</p>
           <h2>Ta hand om din investering</h2>
@@ -113,7 +142,50 @@
               det begagnade batteriskalet är i nyskick.
             </li>
           </ul>
-        </p>
+          <div
+            id="test-slider"
+            class="swipe-slider mt-4 relative w-3/4 mx-auto aspect-[1] bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group"
+          >
+            <img
+              src="photos/battery_test.jpeg"
+              alt="Egenskaper hos ett batteri testas"
+              class="slider-img -rotate-90 absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-100"
+            />
+
+            <img
+              src="photos/voltage_control.jpg"
+              alt="Spänningen över en cell testas"
+              class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0"
+            />
+
+            <button
+              onclick="moveStandaloneSlide('test-slider', -1)"
+              class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
+            >
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button
+              onclick="moveStandaloneSlide('test-slider', 1)"
+              class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
+            >
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+
+            <div
+              class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full"
+            >
+              <div
+                class="slider-dot w-2 h-2 rounded-full transition-colors bg-black cursor-pointer"
+                onclick="goToStandaloneSlide('test-slider', 0)"
+              ></div>
+              <div
+                class="slider-dot w-2 h-2 rounded-full transition-colors bg-black/20 cursor-pointer"
+                onclick="goToStandaloneSlide('test-slider', 1)"
+              ></div>
+            </div>
+          </div>
+          <p class="mt-4 mx-auto text-center">
+            Så här ser delar av testningen ut</p>
         </div>
       </main>
 
