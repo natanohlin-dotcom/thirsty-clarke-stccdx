@@ -299,6 +299,26 @@ async function fetchAndRenderBatteries() {
       const cols = parseCSVRow(rowString);
       if (!cols[0]) return;
 
+      let discountDiff = 0;
+      const originalBaseStr = cols[6] ? cols[6].trim() : "";
+      const discountBaseStr = cols[22] ? cols[22].trim() : "";
+
+      if (originalBaseStr && discountBaseStr) {
+        const origNum = parseInt(originalBaseStr.replace(/\D/g, "")) || 0;
+        const discNum = parseInt(discountBaseStr.replace(/\D/g, "")) || 0;
+        if (origNum > discNum && discNum > 0) {
+          discountDiff = origNum - discNum;
+        }
+      }
+
+      const applyDiscount = (priceStr) => {
+        if (!priceStr || discountDiff === 0) return priceStr;
+        const num = parseInt(priceStr.replace(/\D/g, "")) || 0;
+        if (num === 0) return priceStr;
+        const newNum = num - discountDiff;
+        return newNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " kr";
+      };
+
       const battery = {
         brand: cols[0],
         model: cols[1],
@@ -317,27 +337,31 @@ async function fetchAndRenderBatteries() {
         description: cols[19] ? cols[19].replace(/\|/g, "\n\n") : "",
         chargingPort: cols[20] || "",
         process: cols[21] ? cols[21].replace(/\|/g, "\n\n") : "",
+
+        discountPrice: discountBaseStr,
+        discountReason: cols[23] ? cols[23].trim() : "",
+        originalBasePrice: originalBaseStr,
       };
 
       if (cols[4])
         battery.prices.push({
           cap: cols[4],
           desc: cols[5],
-          price: cols[6],
+          price: applyDiscount(cols[6]),
           badge: cols[7] === "TRUE",
         });
       if (cols[8])
         battery.prices.push({
           cap: cols[8],
           desc: cols[9],
-          price: cols[10],
+          price: applyDiscount(cols[10]),
           badge: cols[11] === "TRUE",
         });
       if (cols[12])
         battery.prices.push({
           cap: cols[12],
           desc: cols[13],
-          price: cols[14],
+          price: applyDiscount(cols[14]),
           badge: cols[15] === "TRUE",
         });
 
@@ -387,12 +411,39 @@ function generatePriceRow(
   voltage,
   allPricesJson = "%5B%5D",
   noteEncoded = "",
-  isSmall = false
+  isSmall = false,
+  discountPrice = "",
+  discountReason = "",
+  originalBasePrice = ""
 ) {
   const badgeHtml = priceObj.badge
     ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full tracking-tighter whitespace-nowrap shadow-sm">Tillgänglig för direktköp</span>`
     : ``;
   const hasBadge = priceObj.badge ? true : false;
+
+  let priceDisplay = `<span class="${
+    isSmall ? "text-base" : "text-xl"
+  } font-medium whitespace-nowrap text-gray-800">Från ${priceObj.price}</span>`;
+
+  if (discountPrice && originalBasePrice) {
+    priceDisplay = `
+      <div class="flex flex-col items-end">
+        ${
+          discountReason
+            ? `<span class="text-[10px] bg-red-100 text-red-700 px-2 py-[2px] rounded-md font-bold mb-0.5 uppercase tracking-wider">${discountReason}</span>`
+            : ""
+        }
+        <div class="flex items-center gap-2">
+          <span class="line-through text-gray-400 text-xs md:text-sm">${originalBasePrice}</span>
+          <span class="${
+            isSmall ? "text-base" : "text-xl"
+          } font-bold whitespace-nowrap text-red-600">Från ${
+      priceObj.price
+    }</span>
+        </div>
+      </div>
+    `;
+  }
 
   return `
       <div class="${
@@ -400,15 +451,10 @@ function generatePriceRow(
       } flex justify-between items-center gap-4">
           <div class="flex items-center flex-wrap gap-3">${badgeHtml}</div>
           <div class="flex items-center gap-4">
-              <span class="${
-                isSmall ? "text-base" : "text-xl"
-              } font-medium whitespace-nowrap text-gray-800">Från ${
-    priceObj.price
-  }</span>
+              ${priceDisplay}
               <button onclick="event.preventDefault(); openActionModal('${brand}', '${model}', '${
     priceObj.cap
-  }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}')" 
-                      class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-70 transition shadow-sm z-20 relative">
+  }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}', '${discountReason}', '${originalBasePrice}', '${discountPrice}')" class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-70 transition shadow-sm z-20 relative">
                   Välj
               </button>
           </div>
@@ -481,6 +527,12 @@ function renderBatteries(data) {
       </div>`;
     }
 
+    // NYTT: Kontrollerar om det finns uppgraderingsalternativ
+    const upgradeBadgeHtml =
+      b.prices && b.prices.length > 1
+        ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1 rounded-lg text-xs font-medium mr-2"><i data-lucide="arrow-up-circle" class="w-3.5 h-3.5"></i> Kapaciteten kan uppgraderas</span>`
+        : "";
+
     let html = `
         <div class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500 relative group hover:shadow-lg transition-all cursor-pointer">
             
@@ -502,9 +554,10 @@ function renderBatteries(data) {
                     }</p>
                     ${
                       b.seasonOnly
-                        ? `<span class="inline-block mt-3 bg-amber-50 text-amber-700 px-3 py-1 rounded-lg text-xs font-medium">${b.seasonOnly}</span>`
+                        ? `<span class="inline-block mt-3 bg-amber-50 text-amber-700 px-3 py-1 rounded-lg text-xs font-medium mr-2">${b.seasonOnly}</span>`
                         : ""
                     }
+                    ${upgradeBadgeHtml}
                 </div>
                 <div class="divide-y divide-gray-100 relative z-20">
     `;
@@ -521,7 +574,11 @@ function renderBatteries(data) {
         b.original_cap,
         b.voltage,
         allPricesEncoded,
-        noteEncoded
+        noteEncoded,
+        false,
+        b.discountPrice,
+        b.discountReason,
+        b.originalBasePrice
       );
     }
 
@@ -550,8 +607,16 @@ function renderProductPage() {
     return;
   }
 
+  // NYTT: Badge på produktsidan om uppgradering finns
+  const upgradeBadgeProduct =
+    battery.prices && battery.prices.length > 1
+      ? `<br><span class="inline-flex items-center gap-1.5 mt-4 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal normal-case"><i data-lucide="arrow-up-circle" class="w-4 h-4"></i> Kapaciteten kan uppgraderas</span>`
+      : "";
+
   document.getElementById("product-brand").innerText = `${battery.brand}`;
-  document.getElementById("product-model").innerText = `${battery.model}`;
+  document.getElementById(
+    "product-model"
+  ).innerHTML = `${battery.model}${upgradeBadgeProduct}`;
 
   const galleryContainer = document.getElementById("product-gallery");
   if (battery.images && battery.images.length > 0) {
@@ -611,12 +676,14 @@ function renderProductPage() {
       battery.voltage,
       allPricesEncoded,
       noteEncoded,
-      false
+      false,
+      battery.discountPrice,
+      battery.discountReason,
+      battery.originalBasePrice
     );
 
-    // NYTT: Byt ut "Från" mot "Reparation från" enbart i denna container
     pricesContainer.innerHTML = pricesContainer.innerHTML.replace(
-      ">Från ",
+      />Från /g,
       ">Reparation från "
     );
   }
@@ -628,19 +695,17 @@ function renderProductPage() {
   let specsHtml = `
     <ul class="space-y-4 max-w-xl text-base">
         <li class="flex justify-between border-b border-gray-100 pb-3">
-            <span class="text-gray-500">Spänning</span>
-            <span class="font-medium text-black">${
-              battery.voltage || "-"
-            } V</span>
+            <span class="text-gray-500">Spänning (V)</span>
+            <span class="font-medium text-black">${battery.voltage}</span>
         </li>
         <li class="flex justify-between border-b border-gray-100 pb-3">
-            <span class="text-gray-500">Originalkapacitet</span>
+            <span class="text-gray-500">Originalkapacitet (Ah)</span>
             <span class="font-medium text-black">${
               battery.original_cap || "-"
-            } Ah</span>
+            }</span>
         </li>
         <li class="flex justify-between border-b border-gray-100 pb-3">
-            <span class="text-gray-500">Tillgängliga uppgraderingar</span>
+            <span class="text-gray-500">Tillgängliga uppgraderingar (Ah)</span>
             <span class="font-medium text-black text-right">${battery.prices
               .map((p) => p.cap.replace(/ah/gi, "").trim())
               .join(", ")} Ah</span>
@@ -656,7 +721,7 @@ function renderProductPage() {
   document.getElementById("tab-specs").innerHTML = specsHtml;
   document.getElementById("tab-process").innerHTML = battery.process
     ? `<p class="whitespace-pre-wrap">${battery.process}</p>`
-    : `<p>Reparationen för denna modell är vanligtvis klar inom en vecka.</p>`;
+    : `<p class="italic text-gray-400">Information om reparationsprocessen saknas för tillfället.</p>`;
 
   const tabBtns = document.querySelectorAll(".product-tab-btn");
   const tabContents = document.querySelectorAll(".product-tab-content");
@@ -678,6 +743,8 @@ function renderProductPage() {
 
   if (loadingState) loadingState.classList.add("hidden");
   productContainer.classList.remove("hidden");
+
+  // Måste kallas för att rita ut pil-ikonen!
   lucide.createIcons();
 }
 
@@ -697,89 +764,115 @@ document.addEventListener("DOMContentLoaded", function () {
 
 let currentSelectedBattery = null;
 
-window.openActionModal = function (
+function openActionModal(
   brand,
   model,
-  selectedCap,
+  capacity,
   originalCap,
   voltage,
   hasBadge,
-  allPricesEncoded,
-  noteEncoded
+  allPricesJson,
+  noteEncoded,
+  discountReason = "",
+  originalBasePrice = "",
+  discountPrice = ""
 ) {
-  const allPrices = JSON.parse(
-    decodeURIComponent(allPricesEncoded || "%5B%5D")
-  );
+  // FIX: Använder rätt variabelnamn från funktionshuvudet (allPricesJson)
+  const allPrices = JSON.parse(decodeURIComponent(allPricesJson || "%5B%5D"));
   const note = decodeURIComponent(noteEncoded || "");
 
+  // FIX: Sparar ner ALLA variabler i det globala objektet så att handleModalChoice kan läsa dem sen
   currentSelectedBattery = {
     brand,
     model,
-    selectedCap,
+    capacity,
     originalCap,
     voltage,
     allPrices,
     note,
+    discountReason,
+    originalBasePrice,
+    discountPrice,
   };
 
   // Fyll i batteriets information i modalens rubrik/text
-  document.getElementById(
-    "modal-battery-info"
-  ).innerText = `${brand} ${model} (${selectedCap})`;
+  const infoEl = document.getElementById("modal-battery-info");
+  if (infoEl) {
+    infoEl.innerText = `${brand} ${model} (${capacity})`;
+  }
 
   const orderBtn = document.getElementById("modal-order-btn");
   const outOfStockMsg = document.getElementById("modal-out-of-stock-msg");
 
-  if (hasBadge) {
-    // Direktköp finns - Visa köp-knappen
+  if (hasBadge && orderBtn) {
     orderBtn.classList.remove("hidden");
     orderBtn.classList.add("flex");
-  } else {
-    // Direktköp saknas - Dölj köp-knappen helt
+  } else if (orderBtn) {
     orderBtn.classList.remove("flex");
     orderBtn.classList.add("hidden");
   }
 
-  // Vi ser till att "Ej i lager"-texten ALLTID är dold nu,
-  // så att kunden bara ser "Skicka in"-knappen om direktköp saknas.
   if (outOfStockMsg) {
     outOfStockMsg.classList.add("hidden");
   }
 
   // Animera in modalen
   const modal = document.getElementById("action-modal");
-  modal.classList.remove("hidden");
-  setTimeout(() => {
-    modal.classList.remove("opacity-0");
-    modal.firstElementChild.classList.remove("scale-95");
-    modal.firstElementChild.classList.add("scale-100");
-  }, 10);
-};
+  if (modal) {
+    modal.classList.remove("hidden");
+    setTimeout(() => {
+      modal.classList.remove("opacity-0");
+      if (modal.firstElementChild) {
+        modal.firstElementChild.classList.remove("scale-95");
+        modal.firstElementChild.classList.add("scale-100");
+      }
+    }, 10);
+  }
+}
 
 window.closeActionModal = function () {
   const modal = document.getElementById("action-modal");
-  modal.classList.add("opacity-0");
-  modal.firstElementChild.classList.remove("scale-100");
-  modal.firstElementChild.classList.add("scale-95");
-  setTimeout(() => {
-    modal.classList.add("hidden");
-  }, 300);
+  if (modal) {
+    modal.classList.add("opacity-0");
+    if (modal.firstElementChild) {
+      modal.firstElementChild.classList.remove("scale-100");
+      modal.firstElementChild.classList.add("scale-95");
+    }
+    setTimeout(() => {
+      modal.classList.add("hidden");
+    }, 300);
+  }
 };
 
 window.handleModalChoice = function (choice) {
   if (!currentSelectedBattery) return;
-  const { brand, model, selectedCap, originalCap, voltage, allPrices, note } =
-    currentSelectedBattery;
 
+  // Plockar ut exakt rätt sparad data från vårt globala objekt
+  const {
+    brand,
+    model,
+    capacity,
+    originalCap,
+    voltage,
+    allPrices,
+    note,
+    discountReason,
+    originalBasePrice,
+    discountPrice,
+  } = currentSelectedBattery;
+
+  // FIX: Matchar exakt de variabler som sparats och skickas vidare till kassan (sessionStorage)
   const batteryData = {
     brand: brand,
     model: model,
-    capacity: originalCap,
-    selectedCap: selectedCap,
+    capacity: capacity,
+    original_cap: originalCap,
     voltage: voltage,
-    action: choice,
-    options: allPrices,
-    note: note,
+    options: allPrices, // FIX: Använder allPrices istället för trasiga parsedPrices
+    note: note, // FIX: Använder avkodade note istället för trasiga noteDecoded
+    discountReason: discountReason,
+    originalBasePrice: originalBasePrice,
+    discountPrice: discountPrice,
   };
 
   sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
@@ -827,11 +920,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (document.getElementById("form-capacity"))
         document.getElementById("form-capacity").value = battery.capacity || "";
 
-      // HÄR LÄGGER VI IN OBS-TEXTEN (Om den finns)
       if (battery.note && battery.note.trim() !== "") {
-        // Förhindra att den läggs till två gånger om kunden går fram och tillbaka
         if (!document.getElementById("step1-note-box")) {
-          // Leta upp den ljusgrå rutan inuti Steg 1 där vi vill placera varningen
           const step1Card = document.querySelector("#step1 .bg-gray-50");
           if (step1Card) {
             const noteDiv = document.createElement("div");
@@ -851,11 +941,11 @@ document.addEventListener("DOMContentLoaded", function () {
           if (upgradeRadio) upgradeRadio.checked = true;
         }
       }
-      // Läs ut grundpriset från originalbatteriet (index 0) för att kunna räkna ut mellanskillnaden
+
       const baseOptPrice =
         parseInt(String(battery.options[0].price).replace(/\D/g, "")) || 0;
-      // Generera Uppgraderingar
       const upgradeContainer = document.getElementById("upgrade-options");
+
       if (upgradeContainer && battery.options && battery.options.length > 0) {
         upgradeContainer.innerHTML = "";
         battery.options.forEach((opt, index) => {
@@ -863,7 +953,6 @@ document.addEventListener("DOMContentLoaded", function () {
           const labelText = isBase
             ? "Behåll originalkapacitet"
             : "Uppgradera räckvidden";
-          // NYTT: Räkna ut uppgraderingskostnaden!
           const optPrice = parseInt(String(opt.price).replace(/\D/g, "")) || 0;
           const diff = optPrice - baseOptPrice;
           const priceDisplay = isBase ? "Ingår" : `+${diff} kr`;
@@ -912,27 +1001,22 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Funktionen som triggas när kunden byter uppgraderings-val
 window.selectUpgrade = function (index) {
   const battery = window.currentBatteryData;
   if (!battery || !battery.options) return;
 
   const selectedOpt = battery.options[index];
-  const baseOpt = battery.options[0]; // Originalet
+  const baseOpt = battery.options[0];
 
-  // Konvertera priser till siffror
   const priceNum = parseInt(String(selectedOpt.price).replace(/\D/g, "")) || 0;
   const basePriceNum = parseInt(String(baseOpt.price).replace(/\D/g, "")) || 0;
-  const upgradeDiff = priceNum - basePriceNum; // Hur mycket extra kostar det?
+  const upgradeDiff = priceNum - basePriceNum;
 
-  // Uppdatera det totala priset i minnet (som rabatt-koden använder)
   window.currentBasePrice = priceNum;
 
-  // Uppdatera dold kapacitet
   const capField = document.getElementById("form-capacity");
   if (capField) capField.value = selectedOpt.cap;
 
-  // Sätt namnet utan kapacitet (visas separat som tillval i kassan nu)
   const brand = battery.brand || "";
   const model = battery.model || "Okänd modell";
   const displayName = `${brand} ${model}`;
@@ -942,16 +1026,41 @@ window.selectUpgrade = function (index) {
   if (step1Display) step1Display.innerText = displayName;
   if (summaryModel) summaryModel.innerText = displayName;
 
-  // Uppdatera kvitto-vyn i Steg 6
   const basePriceDisplay = document.getElementById("base-price-display");
   const upgradeRow = document.getElementById("upgrade-row");
   const upgradeCapDisplay = document.getElementById("upgrade-cap-display");
   const upgradePriceDisplay = document.getElementById("upgrade-price-display");
 
-  // Visa grundpriset
-  if (basePriceDisplay) basePriceDisplay.innerText = `${basePriceNum} kr`;
+  // Visa originalpris överstreat om kampanj finns
+  if (basePriceDisplay) {
+    if (battery.originalBasePrice && battery.discountReason) {
+      basePriceDisplay.innerText = battery.originalBasePrice;
+      basePriceDisplay.classList.add("text-sm");
+    } else {
+      basePriceDisplay.innerText = `${basePriceNum} kr`;
+      basePriceDisplay.classList.remove("text-sm");
+    }
+  }
 
-  // Visa eller dölj "Tillval"-raden beroende på vad man valt
+  // Injecta en röd kampanj-rad i kvittot
+  if (battery.originalBasePrice && battery.discountReason && basePriceDisplay) {
+    if (!document.getElementById("campaign-row")) {
+      const origN = parseInt(battery.originalBasePrice.replace(/\D/g, ""));
+      const discN =
+        parseInt(String(battery.discountPrice).replace(/\D/g, "")) ||
+        basePriceNum;
+      const diff = origN - discN;
+
+      const campaignHtml = `
+              <div id="campaign-row" class="flex justify-between items-center py-3 border-b border-gray-100">
+                  <span class="text-sm font-medium text-red-600">Kampanj (${battery.discountReason})</span>
+                  <span class="text-sm font-bold text-red-600">-${diff} kr</span>
+              </div>
+          `;
+      basePriceDisplay.parentNode.insertAdjacentHTML("afterend", campaignHtml);
+    }
+  }
+
   if (index > 0 && upgradeRow) {
     upgradeRow.classList.remove("hidden");
     if (upgradeCapDisplay) upgradeCapDisplay.innerText = selectedOpt.cap;
@@ -961,45 +1070,37 @@ window.selectUpgrade = function (index) {
     upgradeRow.classList.add("hidden");
   }
 
-  // Kör resten (totalpris + diagram)
   updatePriceDisplay();
   renderChart(battery.options, index);
 };
 
-// Funktionen som bygger och animerar staplarna
 function renderChart(options, selectedIndex) {
   const chartContainer = document.getElementById("upgrade-chart");
   const chartBars = document.getElementById("chart-bars");
 
-  // Dölj diagrammet om det bara finns ETT (eller noll) val, eller om HTML saknas
   if (!chartContainer || options.length < 2) return;
 
   chartContainer.classList.remove("hidden");
   chartBars.innerHTML = "";
 
-  // Leta upp den största kapaciteten för att räkna ut 100% bredd
   const getCapNum = (str) => parseFloat(str.replace(/[^\d.]/g, "")) || 0;
   const maxCap = Math.max(...options.map((o) => getCapNum(o.cap)));
   const baseCap = getCapNum(options[0].cap);
 
   options.forEach((opt, idx) => {
     const capNum = getCapNum(opt.cap);
-    // Sätt en minsta bredd på 20% så små staplar ändå ser ut som en stapel
     const widthPct = Math.max(20, (capNum / maxCap) * 100);
     const isSelected = idx === selectedIndex;
 
-    // Färg logik
     const barColor = isSelected ? "bg-black" : "bg-gray-300";
     const textColor = isSelected ? "font-bold text-black" : "text-gray-500";
 
-    // Räkna ut procentuell ökning jämfört med originalet
     let increaseBadge = "";
     if (idx > 0 && baseCap > 0 && capNum > baseCap) {
       const increase = Math.round(((capNum - baseCap) / baseCap) * 100);
       increaseBadge = `<span class="text-[10px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full ml-2">+${increase}% räckvidd</span>`;
     }
 
-    // Rita HTML för stapeln
     chartBars.innerHTML += `
          <div>
             <div class="flex items-center text-sm mb-2 ${textColor}">
@@ -1014,7 +1115,6 @@ function renderChart(options, selectedIndex) {
       `;
   });
 
-  // Animerar in staplarna mjukt
   setTimeout(() => {
     chartBars.querySelectorAll("[data-target-width]").forEach((bar) => {
       bar.style.width = bar.getAttribute("data-target-width");
@@ -1114,7 +1214,7 @@ function setCustomerType(type) {
 let currentDiscountCodeUsed = "";
 let currentDiscountPercent = 0;
 const GOOGLE_DISCOUNT_URL =
-  "https://script.google.com/macros/s/AKfycbx-ZW7Z_ZZrCNWGj5Em09_Qvc_0HUC1Qp9rPo2txXVhTzLh1j-yk8RS_dAZSwAfuC-w/exec"; // Ersätt vid behov
+  "https://script.google.com/macros/s/AKfycbx-ZW7Z_ZZrCNWGj5Em09_Qvc_0HUC1Qp9rPo2txXVhTzLh1j-yk8RS_dAZSwAfuC-w/exec";
 
 async function checkDiscountCode() {
   const inputField = document.getElementById("discount-input");
@@ -1190,28 +1290,27 @@ function showMessage(text, colorClass) {
   messageEl.className = `text-sm mt-2 ${colorClass}`;
   messageEl.classList.remove("hidden");
 }
-//
 // ==========================================
 // 7. GOOGLE SHEETS SUBMIT LOGIK & FRAKTDYNAMIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwRcxNnAZv37PxdTyluYe8lGbQ4z88vRofVbPx-2_CFoGQj9BnGhapOHgJB5jetrxwA3w/exec";
+  "https://script.google.com/macros/s/AKfycby2qMQTa4YKvbb40IzfnHM1uMjzZKqcKETUbAHzKZxrtPzbMrGrdNFpYPe1cjut7HvZ3A/exec";
+
+// INSTÄLLNING: Ändra denna siffra för att ta betalt för frakt (t.ex. 149)
+const SHIPPING_COST_POST = 149;
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let randomPart = "";
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 3; i++)
     randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
   return `BL-${timePart}-${randomPart}`;
 }
 
-// NYTT: Funktion för att uppdatera frakttexten i Steg 6 dynamiskt
 function updateShippingSummary() {
   const shipSelf = document.getElementById("ship-self");
   const shipLabel = document.getElementById("ship-label");
-
   const summaryChoiceEl = document.getElementById("summary-shipping-choice");
   const summaryPriceEl = document.getElementById("shipping-price-display");
 
@@ -1222,8 +1321,9 @@ function updateShippingSummary() {
     summaryPriceEl.innerText = "Gratis";
   } else if (shipLabel && shipLabel.checked) {
     summaryChoiceEl.innerText = "(Post)";
-    // Ändra "Gratis" till t.ex. "149 kr" här om du tar betalt för frakt i framtiden
-    summaryPriceEl.innerText = "Gratis";
+    // Koden anpassar texten automatiskt beroende på din variabel
+    summaryPriceEl.innerText =
+      SHIPPING_COST_POST > 0 ? `${SHIPPING_COST_POST} kr` : "Gratis";
   }
 }
 
@@ -1231,7 +1331,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const repairForm = document.getElementById("repairForm");
 
   if (repairForm) {
-    // Koppla lyssnare på frakt-radioknapparna så att Steg 6 uppdateras i realtid när man klickar
     const shipSelf = document.getElementById("ship-self");
     const shipLabel = document.getElementById("ship-label");
     if (shipSelf) shipSelf.addEventListener("change", updateShippingSummary);
@@ -1259,16 +1358,20 @@ document.addEventListener("DOMContentLoaded", function () {
       const selectedError =
         document.querySelector('input[name="error_type"]:checked')?.value || "";
 
-      // Hämta fraktdata för inskicket
       let shippingChoice = "Ej valt";
       let shippingCostDisplay = "Gratis";
+      let shippingCostNum = 0;
 
       if (shipSelf && shipSelf.checked) {
         shippingChoice = shipSelf.value;
         shippingCostDisplay = "Gratis";
+        shippingCostNum = 0;
       } else if (shipLabel && shipLabel.checked) {
         shippingChoice = shipLabel.value;
-        shippingCostDisplay = "Gratis"; // Kan ändras till t.ex. "149 kr"
+        // Koden anpassar variablerna automatiskt
+        shippingCostDisplay =
+          SHIPPING_COST_POST > 0 ? `${SHIPPING_COST_POST} kr` : "Gratis";
+        shippingCostNum = SHIPPING_COST_POST;
       }
 
       let orderType = "Nybeställning";
@@ -1283,8 +1386,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const basePrice =
         document.getElementById("base-price-display")?.innerText || "";
-      const finalPrice =
-        document.getElementById("final-price")?.innerText || "";
       const upgradeRow = document.getElementById("upgrade-row");
       const upgradePrice =
         !upgradeRow || upgradeRow.classList.contains("hidden")
@@ -1295,6 +1396,16 @@ document.addEventListener("DOMContentLoaded", function () {
         !discountRow || discountRow.classList.contains("hidden")
           ? ""
           : document.getElementById("discount-amount")?.innerText || "";
+
+      // Matematiken för slutpriset
+      const currentFinalPriceText =
+        document.getElementById("final-price")?.innerText || "0";
+      const currentFinalPriceNum =
+        parseInt(currentFinalPriceText.replace(/\D/g, "")) || 0;
+      const totalWithShipping = currentFinalPriceNum + shippingCostNum;
+      const finalPrice =
+        totalWithShipping.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") +
+        " kr";
 
       const formData = new FormData();
       formData.append("orderType", orderType);
@@ -1360,7 +1471,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "reference",
         document.getElementById("form-reference")?.value || ""
       );
-
       formData.append("shipping", shippingChoice);
       formData.append("shippingCost", shippingCostDisplay);
 
@@ -1369,17 +1479,30 @@ document.addEventListener("DOMContentLoaded", function () {
           ? currentDiscountCodeUsed
           : "";
       formData.append("discountCode", safeDiscountCode);
-
       formData.append("basePrice", basePrice);
       formData.append("upgradePrice", upgradePrice);
       formData.append("discountAmount", discountAmount);
       formData.append("finalPrice", finalPrice);
 
+      const battery = window.currentBatteryData || {};
+      formData.append("sheetOrigPrice", battery.originalBasePrice || "");
+      formData.append("sheetDiscountReason", battery.discountReason || "");
+
+      const origN = parseInt(
+        (battery.originalBasePrice || "").replace(/\D/g, "")
+      );
+      const discN = parseInt(
+        String(battery.discountPrice || "").replace(/\D/g, "")
+      );
+      const campaignDiff =
+        origN > 0 && discN > 0 && origN > discN ? `-${origN - discN} kr` : "";
+      formData.append("sheetDiscountAmount", campaignDiff);
+
       fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.text()) // FIXAT: Läser som .text() istället för .json() för att klara "Success"
+        .then((response) => response.text())
         .then((text) => {
           if (text.includes("error")) throw new Error(text);
 
@@ -1400,6 +1523,9 @@ document.addEventListener("DOMContentLoaded", function () {
             orderType: orderType,
             shippingChoice: shippingChoice,
             shippingCost: shippingCostDisplay,
+            sheetOrigPrice: battery.originalBasePrice || "",
+            sheetDiscountReason: battery.discountReason || "",
+            sheetDiscountAmount: campaignDiff,
           });
           window.location.href = `/confirmation?${params.toString()}`;
         })

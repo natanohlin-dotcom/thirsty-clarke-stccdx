@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bekräftelse | Batterilabbet</title>
     <meta name="robots" content="noindex, nofollow" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="assets/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="assets/android-chrome-512x512.png"
+    />
+    <link rel="manifest" href="assets/site.webmanifest" />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link
@@ -129,6 +160,7 @@
             id="receipt-box"
             class="bg-white p-4 md:p-5 rounded-xl border border-gray-100"
           >
+            <!-- Standard Grundpris (Döljs om det är en kampanj) -->
             <div
               id="base-price-container"
               class="flex justify-between items-center mb-2"
@@ -137,6 +169,36 @@
               <span
                 id="display-base-price"
                 class="font-medium text-sm md:text-base"
+                >...</span
+              >
+            </div>
+
+            <!-- Originalpris (Visas bara vid kampanj) -->
+            <div
+              id="original-price-container"
+              class="flex justify-between items-center mb-1 hidden"
+            >
+              <span class="text-sm md:text-base text-gray-500"
+                >Originalpris</span
+              >
+              <span
+                id="display-original-price"
+                class="font-medium text-sm md:text-base"
+                >...</span
+              >
+            </div>
+
+            <!-- Kampanjavdrag (Visas bara vid kampanj) -->
+            <div
+              id="campaign-container"
+              class="flex justify-between items-center mb-2 text-red-600 hidden"
+            >
+              <span class="text-sm md:text-base font-semibold"
+                >Kampanj (<span id="display-campaign-reason"></span>)</span
+              >
+              <span
+                id="display-campaign-amount"
+                class="font-bold text-sm md:text-base"
                 >...</span
               >
             </div>
@@ -154,6 +216,7 @@
                 >...</span
               >
             </div>
+
             <div
               id="shipping-container"
               class="flex justify-between items-center mb-2 hidden"
@@ -167,19 +230,20 @@
                 >Laddar...</span
               >
             </div>
+
             <div
               id="discount-container"
               class="flex justify-between items-center mb-2 text-green-600 hidden text-sm md:text-base"
             >
-              <span>Rabatt</span>
-              <span id="display-discount">-0 kr</span>
+              <span class="font-medium">Rabattkod</span>
+              <span id="display-discount" class="font-medium">-0 kr</span>
             </div>
 
             <div
-              class="flex justify-between items-center pt-2 border-t border-gray-100 mt-2"
+              class="flex justify-between items-center pt-3 border-t border-gray-100 mt-3"
             >
-              <span class="font-semibold text-base md:text-lg"
-                >Pris (inklusive moms)</span
+              <span class="font-bold text-base md:text-lg"
+                >Pris (inkl. moms)</span
               >
               <span
                 id="display-final-price"
@@ -229,20 +293,22 @@
         const shippingChoice = urlParams.get("shippingChoice");
         const shippingCost = urlParams.get("shippingCost");
 
+        // Nya kampanj-variabler från URL
+        const sheetOrigPrice = urlParams.get("sheetOrigPrice");
+        const sheetDiscountReason = urlParams.get("sheetDiscountReason");
+        const sheetDiscountAmount = urlParams.get("sheetDiscountAmount");
+
         const orderLabelEl = document.getElementById("order-number-label");
         const receiptBoxEl = document.getElementById("receipt-box");
         const disclaimerEl = document.getElementById("price-disclaimer");
 
-        // --- JUSTERAD LOGIK FÖR ATT DÖLJA DISCLAIMER ---
         if (orderType === "Allmän förfrågan") {
           if (orderLabelEl) orderLabelEl.textContent = "Ditt Ärendenummer";
           if (receiptBoxEl) receiptBoxEl.style.display = "none";
           if (disclaimerEl) disclaimerEl.style.display = "none";
         } else if (orderType === "Nybeställning") {
-          // Gömmer enbart rutan om det är ett fast direktköp/nybeställning
           if (disclaimerEl) disclaimerEl.style.display = "none";
         }
-        // -----------------------------------------------
 
         const displayOrderId = document.getElementById("display-order-number");
         if (displayOrderId) displayOrderId.textContent = orderId;
@@ -256,15 +322,50 @@
         const displayTypeEl = document.getElementById("display-order-type");
         if (displayTypeEl) displayTypeEl.textContent = orderType;
 
-        // Grundpris
+        // --- PRIS & KAMPANJ LOGIK ---
         const basePriceContainer = document.getElementById(
           "base-price-container"
         );
         const displayBasePrice = document.getElementById("display-base-price");
-        if (basePrice && displayBasePrice) {
-          displayBasePrice.textContent = basePrice;
-        } else if (basePriceContainer) {
-          basePriceContainer.style.display = "none";
+
+        const originalPriceContainer = document.getElementById(
+          "original-price-container"
+        );
+        const displayOriginalPrice = document.getElementById(
+          "display-original-price"
+        );
+
+        const campaignContainer = document.getElementById("campaign-container");
+        const displayCampaignReason = document.getElementById(
+          "display-campaign-reason"
+        );
+        const displayCampaignAmount = document.getElementById(
+          "display-campaign-amount"
+        );
+
+        if (sheetOrigPrice && sheetDiscountReason) {
+          // Om kampanj finns: Dölj "Grundpris" och visa Original + Kampanj
+          if (basePriceContainer) basePriceContainer.style.display = "none";
+
+          if (originalPriceContainer) {
+            originalPriceContainer.classList.remove("hidden");
+            if (displayOriginalPrice)
+              displayOriginalPrice.textContent = sheetOrigPrice;
+          }
+          if (campaignContainer) {
+            campaignContainer.classList.remove("hidden");
+            if (displayCampaignReason)
+              displayCampaignReason.textContent = sheetDiscountReason;
+            if (displayCampaignAmount)
+              displayCampaignAmount.textContent = sheetDiscountAmount;
+          }
+        } else {
+          // Inget kampanj-pris, visa vanliga grundpriset
+          if (basePrice && displayBasePrice) {
+            displayBasePrice.textContent = basePrice;
+          } else if (basePriceContainer) {
+            basePriceContainer.style.display = "none";
+          }
         }
 
         // Slutpris
@@ -288,9 +389,8 @@
           shippingContainer.classList.remove("hidden");
           if (displayShippingChoice)
             displayShippingChoice.textContent = shippingChoice;
-          if (displayShippingPrice && shippingCost) {
+          if (displayShippingPrice && shippingCost)
             displayShippingPrice.textContent = shippingCost;
-          }
         }
 
         // Tillval
@@ -306,7 +406,7 @@
             displayUpgradePrice.textContent = upgradePrice;
         }
 
-        // Rabatt
+        // Rabattkod
         const discountContainer = document.getElementById("discount-container");
         const displayDiscount = document.getElementById("display-discount");
         if (discountAmount && discountContainer) {
