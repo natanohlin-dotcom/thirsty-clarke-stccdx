@@ -739,6 +739,71 @@ function renderProductPage() {
     return;
   }
 
+  // ==========================================================
+  // --- NYTT: SEO & SCHEMA MARKUP (Dynamisk sidtitel & meta) ---
+  // ==========================================================
+
+  // 1. Uppdatera Sidtiteln (<title>)
+  document.title = `Reparera ${battery.brand} ${battery.model} | Batterilabbet`;
+
+  // 2. Uppdatera Metabeskrivningen (<meta name="description">)
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) {
+    const defaultDesc = `Läs mer om specifikationerna och boka reparation av ditt ${battery.brand} ${battery.model} batteri hos Batterilabbet.`;
+    // Använd batteriets egen beskrivning om den finns, annars standard. Klipp vid 155 tecken (SEO-standard).
+    metaDesc.content = battery.description
+      ? battery.description.substring(0, 150).replace(/\n/g, " ") + "..."
+      : defaultDesc;
+  }
+
+  // 3. Skapa och injicera Schema.org (Structured Data för "Service")
+  // Vi måste rensa bort "kr" och mellanslag från priset för att Google ska förstå siffran
+  const numericPrice =
+    battery.prices && battery.prices.length > 0
+      ? battery.prices[0].price.replace(/\D/g, "")
+      : "";
+
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Batterireparation",
+    name: `Reparation av ${battery.brand} ${battery.model} batteri`,
+    description:
+      battery.description ||
+      `Reparation, renovering och cellbyte för elcykelbatteri av märket ${battery.brand} modell ${battery.model}.`,
+    provider: {
+      "@type": "Organization",
+      name: "Batterilabbet",
+      url: "https://www.batterilabbet.se",
+    },
+    url: window.location.href,
+  };
+
+  // Lägg till pris (Offer) om det finns
+  if (numericPrice) {
+    schemaData.offers = {
+      "@type": "Offer",
+      priceCurrency: "SEK",
+      price: numericPrice,
+      url: window.location.href,
+    };
+  }
+
+  // Lägg till produktbild om det finns
+  if (battery.images && battery.images.length > 0) {
+    schemaData.image = battery.images[0];
+  }
+
+  // Injicera koden i <head>
+  const scriptTag = document.createElement("script");
+  scriptTag.type = "application/ld+json";
+  scriptTag.text = JSON.stringify(schemaData);
+  document.head.appendChild(scriptTag);
+
+  // ==========================================================
+  // --- SLUT PÅ SEO ---
+  // ==========================================================
+
   const upgradeBadgeProduct =
     battery.prices && battery.prices.length > 1
       ? `<br><span class="inline-flex items-center gap-1.5 mt-4 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal normal-case"><i data-lucide="arrow-up-circle" class="w-4 h-4"></i> Kapaciteten kan uppgraderas</span>`
