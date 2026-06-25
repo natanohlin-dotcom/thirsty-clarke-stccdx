@@ -826,17 +826,17 @@ function renderProductPage() {
   let specsHtml = `
     <ul class="space-y-4 max-w-xl text-base">
         <li class="flex justify-between border-b border-gray-100 pb-3">
-            <span class="text-gray-500">Spänning (V)</span>
-            <span class="font-medium text-black">${battery.voltage}</span>
+            <span class="text-gray-500">Spänning</span>
+            <span class="font-medium text-black">${battery.voltage} V</span>
         </li>
         <li class="flex justify-between border-b border-gray-100 pb-3">
-            <span class="text-gray-500">Originalkapacitet (Ah)</span>
+            <span class="text-gray-500">Originalkapacitet</span>
             <span class="font-medium text-black">${
               battery.original_cap || "-"
-            }</span>
+            } Ah</span>
         </li>
         <li class="flex justify-between border-b border-gray-100 pb-3">
-            <span class="text-gray-500">Tillgängliga uppgraderingar (Ah)</span>
+            <span class="text-gray-500">Tillgängliga kapaciteter</span>
             <span class="font-medium text-black text-right">${battery.prices
               .map((p) => p.cap.replace(/ah/gi, "").trim())
               .join(", ")} Ah</span>
@@ -852,7 +852,7 @@ function renderProductPage() {
   document.getElementById("tab-specs").innerHTML = specsHtml;
   document.getElementById("tab-process").innerHTML = battery.process
     ? `<p class="whitespace-pre-wrap">${battery.process}</p>`
-    : `<p class="italic text-gray-400">Information om reparationsprocessen saknas för tillfället.</p>`;
+    : `<p>Efter reparation kommer batteriet fungera som orginal. Reparationen tar vanligtvis upp till 5 dagar.</p>`;
 
   const tabBtns = document.querySelectorAll(".product-tab-btn");
   const tabContents = document.querySelectorAll(".product-tab-content");
@@ -1245,7 +1245,7 @@ function renderChart(options, selectedIndex) {
     let increaseBadge = "";
     if (idx > 0 && baseCap > 0 && capNum > baseCap) {
       const increase = Math.round(((capNum - baseCap) / baseCap) * 100);
-      increaseBadge = `<span class="text-[10px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full ml-2">+${increase}% räckvidd</span>`;
+      increaseBadge = `<span class="text-[10px] bg-green-100 text-green-800 px-2 py-0.5 rounded-full ml-2">+${increase}% kapacitet</span>`;
     }
 
     chartBars.innerHTML += `
