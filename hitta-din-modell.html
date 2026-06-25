@@ -43,6 +43,16 @@
     <link rel="manifest" href="assets/site.webmanifest" />
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        safelist: [
+          "hover:bg-stone-200",
+          "hover:text-black",
+          "text-stone-600",
+          "hover:border-stone-300",
+        ],
+      };
+    </script>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
@@ -63,19 +73,20 @@
     <div id="nav-placeholder"></div>
 
     <main class="pt-40 pb-32 px-6">
-      <div class="max-w-6xl mx-auto">
-        <header class="mb-12">
+      <div class="max-w-6xl mx-auto flex flex-col items-center">
+        <header class="mb-12 text-center w-full flex flex-col items-center">
           <h1
-            class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 break-words"
+            class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 break-words max-w-4xl"
           >
             Batterimodeller
           </h1>
-          <p class="text-xl text-gray-500 max-w-2xl mb-4">
+          <p class="text-xl text-stone-500 max-w-2xl mb-4">
             Sök efter din batterimodell och kom igång med reparationen
           </p>
-          <details class="group max-w-2xl mb-8">
+
+          <details class="group max-w-2xl mb-8 w-full">
             <summary
-              class="flex items-center gap-2 cursor-pointer font-medium text-black hover:opacity-70 transition list-none [&::-webkit-details-marker]:hidden select-none mb-4 inline-flex"
+              class="flex items-center justify-center gap-2 cursor-pointer font-medium text-black hover:opacity-70 transition list-none [&::-webkit-details-marker]:hidden select-none mb-4 inline-flex mx-auto"
             >
               Läs mer information
               <i
@@ -84,25 +95,27 @@
               ></i>
             </summary>
 
-            <div class="space-y-4 pl-2 border-l-2 border-gray-200 mt-2">
-              <p class="text-m text-gray-500">
+            <div
+              class="space-y-4 px-4 border-l-2 md:border-l-0 md:border-b-2 border-stone-200 pb-4 mt-2 text-left md:text-center max-w-xl mx-auto"
+            >
+              <p class="text-m text-stone-500">
                 Vi har samlat de vanligaste batterimodellerna vi får in på den
                 här sidan. Sök efter cykelåterförsäljaren, cykelmärket eller
                 batterimodellen.
               </p>
-              <p class="text-m text-gray-500">
+              <p class="text-m text-stone-500">
                 Priserna är en uppskattning baserat på tidigare reparationer. Vi
                 genomför alltid en grundlig felsökning för att diagnostisera
                 ditt batteri och lämnar därefter en offert till dig med pris. I
                 majoriteten av fallen skiljer sig detta inte från priset du ser
-                i listan.
+                i listan. Du får aldrig ett högre pris än vad du hittar här.
               </p>
-              <p class="text-m text-gray-500">
+              <p class="text-m text-stone-500">
                 Hittar du inte ditt batteri alls i vår lista behöver du inte
                 heller oroa dig! Hör av dig via vårt
                 <a
                   href="/kontakt#skicka-in"
-                  class="text-black underline decoration-dotted underline-offset-4 hover:text-gray-500 hover:decoration-gray-500 transition-all"
+                  class="text-black underline decoration-dotted underline-offset-4 hover:text-stone-500 hover:decoration-stone-500 transition-all"
                 >
                   formulär
                 </a>
@@ -110,28 +123,109 @@
               </p>
             </div>
           </details>
-          <div class="relative max-w-md">
+
+          <div class="relative w-full max-w-md mb-6">
             <i
               data-lucide="search"
-              class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none"
+              class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 w-5 h-5 pointer-events-none"
             ></i>
 
             <input
               type="text"
               id="batterySearch"
               placeholder="Sök efter cykelmärke eller batterimodell..."
-              class="w-full pr-4 py-4 rounded-2xl border border-black/5 shadow-sm transition-all"
-              style="
-                padding-left: 3rem !important;
-                background-color: white !important;
-              "
+              class="w-full pr-4 py-4 rounded-2xl border border-stone-200 shadow-sm transition-all focus:outline-none focus:border-stone-400 focus:ring-1 focus:ring-stone-400 bg-white text-base"
+              style="padding-left: 3rem !important"
             />
           </div>
+
+          <div
+            class="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-2xl relative z-40"
+          >
+            <div
+              class="relative w-full sm:w-auto min-w-[200px]"
+              id="customBrandDropdown"
+            >
+              <button
+                onclick="toggleCustomDropdown('brandMenu')"
+                class="w-full flex justify-between items-center px-5 py-3 bg-stone-100 border border-stone-200 rounded-xl text-stone-600 hover:text-black hover:bg-stone-200 transition-colors text-base font-medium"
+              >
+                <span id="brandFilterLabel">Alla cykelmärken</span>
+                <i
+                  data-lucide="chevron-down"
+                  class="w-4 h-4 ml-2 text-stone-400 transition-transform duration-200"
+                ></i>
+              </button>
+              <div
+                id="brandMenu"
+                class="hidden absolute left-0 right-0 mt-2 bg-stone-50 border border-stone-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-50 p-2 space-y-0.5 animate-in fade-in slide-in-from-top-2 duration-150 custom-scrollbar"
+              ></div>
+            </div>
+
+            <div
+              class="relative w-full sm:w-auto min-w-[180px]"
+              id="customVoltageDropdown"
+            >
+              <button
+                onclick="toggleCustomDropdown('voltageMenu')"
+                class="w-full flex justify-between items-center px-5 py-3 bg-stone-100 border border-stone-200 rounded-xl text-stone-600 hover:text-black hover:bg-stone-200 transition-colors text-base font-medium"
+              >
+                <span id="voltageFilterLabel">Alla spänningar (V)</span>
+                <i
+                  data-lucide="chevron-down"
+                  class="w-4 h-4 ml-2 text-stone-400 transition-transform duration-200"
+                ></i>
+              </button>
+              <div
+                id="voltageMenu"
+                class="hidden absolute left-0 right-0 mt-2 bg-stone-50 border border-stone-200 rounded-xl shadow-xl max-h-60 overflow-y-auto z-50 p-2 space-y-0.5 animate-in fade-in slide-in-from-top-2 duration-150 custom-scrollbar"
+              ></div>
+            </div>
+
+            <div
+              class="relative w-full sm:w-auto min-w-[160px]"
+              id="customTypeDropdown"
+            >
+              <button
+                onclick="toggleCustomDropdown('typeMenu')"
+                class="w-full flex justify-between items-center px-5 py-3 bg-stone-100 border border-stone-200 rounded-xl text-stone-600 hover:text-black hover:bg-stone-200 transition-colors text-base font-medium"
+              >
+                <span id="typeFilterLabel">Alla typer</span>
+                <i
+                  data-lucide="chevron-down"
+                  class="w-4 h-4 ml-2 text-stone-400 transition-transform duration-200"
+                ></i>
+              </button>
+              <div
+                id="typeMenu"
+                class="hidden absolute left-0 right-0 mt-2 bg-stone-50 border border-stone-200 rounded-xl shadow-xl z-50 p-2 space-y-0.5 animate-in fade-in slide-in-from-top-2 duration-150"
+              >
+                <button
+                  onclick="selectCustomOption('type', '', 'Alla typer')"
+                  class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-stone-200 hover:text-black text-base font-medium transition-colors text-stone-600"
+                >
+                  Alla typer
+                </button>
+                <button
+                  onclick="selectCustomOption('type', 'cykel', 'Elcykel')"
+                  class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-stone-200 hover:text-black text-base font-medium transition-colors text-stone-600"
+                >
+                  Elcykel
+                </button>
+                <button
+                  onclick="selectCustomOption('type', 'moped', 'Elmoped')"
+                  class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-stone-200 hover:text-black text-base font-medium transition-colors text-stone-600"
+                >
+                  Elmoped
+                </button>
+              </div>
+            </div>
+          </div>
         </header>
-        <!-- Laddningsanimation -->
+
         <div
           id="loading-state"
-          class="py-24 flex flex-col items-center justify-center text-center"
+          class="py-24 flex flex-col items-center justify-center text-center w-full"
         >
           <i
             data-lucide="loader-2"
@@ -140,14 +234,20 @@
           <p class="text-lg font-medium text-gray-900">
             Laddar batterimodeller...
           </p>
-          <p class="text-sm text-gray-500 mt-2">
+          <p class="text-sm text-stone-500 mt-2">
             Hämtar det senaste utbudet från vårt system.
           </p>
         </div>
 
-        <div id="battery-container" class="grid grid-cols-1 gap-8"></div>
+        <div
+          id="battery-container"
+          class="grid grid-cols-1 gap-8 w-full relative z-10"
+        ></div>
 
-        <div id="no-results" class="hidden py-20 text-center text-gray-400">
+        <div
+          id="no-results"
+          class="hidden py-20 text-center text-stone-400 w-full"
+        >
           <p>Vi hittade tyvärr inga matchningar för din sökning.</p>
         </div>
 
@@ -161,7 +261,7 @@
             <h3 class="text-2xl font-medium mb-2 text-center">Nästa steg</h3>
             <p
               id="modal-battery-info"
-              class="text-gray-400 text-sm text-center mb-8 font-mono uppercase tracking-widest"
+              class="text-stone-400 text-sm text-center mb-8 font-mono uppercase tracking-widest"
             ></p>
 
             <div class="space-y-4">
@@ -175,13 +275,13 @@
                   >
                     Lämna in batteriet
                   </p>
-                  <p class="text-sm text-gray-500 mt-1">
+                  <p class="text-sm text-stone-500 mt-1">
                     Jag vill skicka/lämna in mitt batteri för renovering.
                   </p>
                 </div>
                 <i
                   data-lucide="arrow-right"
-                  class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"
+                  class="w-5 h-5 text-stone-400 group-hover:text-black transition-colors shrink-0 ml-4"
                 ></i>
               </button>
 
@@ -196,24 +296,24 @@
                   >
                     Beställ batteriet
                   </p>
-                  <p class="text-sm text-gray-500 mt-1">
+                  <p class="text-sm text-stone-500 mt-1">
                     Jag vill köpa detta batteri (utan att lämna in ett gammalt).
                   </p>
                 </div>
                 <i
                   data-lucide="arrow-right"
-                  class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"
+                  class="w-5 h-5 text-stone-400 group-hover:text-black transition-colors shrink-0 ml-4"
                 ></i>
               </button>
 
               <div
                 id="modal-out-of-stock-msg"
-                class="hidden p-5 bg-gray-50 border border-gray-100 rounded-2xl text-left"
+                class="hidden p-5 bg-stone-50 border border-stone-200 rounded-2xl text-left"
               >
-                <p class="font-medium text-gray-800 text-sm mb-1">
+                <p class="font-medium text-stone-800 text-sm mb-1">
                   Ej i lager för direktköp
                 </p>
-                <p class="text-xs text-gray-500 leading-relaxed">
+                <p class="text-xs text-stone-500 leading-relaxed">
                   Vi har tyvärr inte detta batteri färdigbyggt på hyllan just
                   nu. Välj "Lämna in batteriet" ovan så reparerar vi ditt gamla
                   batteri.
@@ -221,20 +321,20 @@
               </div>
             </div>
             <p
-              class="text-gray-400 font-medium text-sm text-center mb-1 mt-4 tracking-widest"
+              class="text-stone-400 font-medium text-sm text-center mb-1 mt-4 tracking-widest"
             >
               Kontakta oss via mail om du önskar lämna in fler än ett batteri
             </p>
             <button
               onclick="closeActionModal()"
-              class="w-full mt-6 py-3 text-sm font-medium text-gray-400 hover:text-black transition"
+              class="w-full mt-6 py-3 text-sm font-medium text-stone-400 hover:text-black transition"
             >
               Avbryt
             </button>
           </div>
         </div>
 
-        <div class="mt-20 text-center px-4">
+        <div class="mt-20 text-center px-4 w-full">
           <a
             href="/kontakt#skicka-in"
             class="inline-block btn-primary px-6 py-4 md:px-12 md:py-6 rounded-3xl md:rounded-full text-base md:text-lg font-medium shadow-xl transition-transform hover:scale-105"
@@ -242,30 +342,24 @@
             Inte hittat din modell? Skicka in själv här
           </a>
         </div>
-        <section id="specialfall" class="py-2 pt-6 px-6">
-          <div class="max-w-3xl mx-auto prose">
+
+        <section id="specialfall" class="py-2 pt-6 px-6 w-full max-w-3xl">
+          <div class="prose mx-auto text-center md:text-left">
             <h2>Specialfall</h2>
             <p>
               Vi reparerar de flesta batterier, men vissa går ej att reparera
               och vissa andra modeller kräver speciell behandling för att kunna
               repareras. Om du inte hittat ditt batteri i listan kan du kika
-              under fliken under fliken "Specialfall" i
+              under fliken "Specialfall" i
               <a
                 href="/faq"
-                class="text-black underline decoration-dotted underline-offset-4 hover:text-gray-500 hover:decoration-gray-500 transition-all"
+                class="text-black underline decoration-dotted underline-offset-4 hover:text-stone-500 hover:decoration-stone-500 transition-all"
               >
                 Vanliga frågor</a
               >.
             </p>
           </div>
         </section>
-        <div
-          class="mt-10 p-6 bg-[#FAF9F6] rounded-2xl text-xs leading-relaxed text-gray-500 border border-black/5 italic"
-        >
-          OBS! Detta är ett prisförslag. Priset kan komma att avvika beroende på
-          felets omfattning, dock aldrig högre än detta prisförslag. Du får
-          alltid en offert med slutgiltigt pris innan reparation påbörjas.
-        </div>
       </div>
     </main>
 

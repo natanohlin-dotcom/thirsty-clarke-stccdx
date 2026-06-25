@@ -2,42 +2,42 @@
 // 0. GLOBALA KOMPONENTER (NAV, FOOTER, COOKIES)
 // ==========================================
 const globalNav = `
-    <nav class="fixed w-full z-50 px-6 py-4">
-      <div class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative">
-        <a href="/" class="flex items-center gap-3 text-xl font-semibold tracking-[0.14em] hover:opacity-70 transition">
-          <span>Batterilabbet</span>
-        </a>
-        <div class="hidden md:flex gap-8 text-sm font-medium">
-          <a href="/om-oss#vad-vi-gor" class="hover:opacity-60 transition">Om batterireparation</a>
-          <a href="/om-oss" class="hover:opacity-60 transition">Om oss</a>
-          <a href="/certifiering" class="hover:opacity-60 transition">Säkerhet och kvalitet</a>
-          <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
-        </div>
-        <div class="flex items-center">
-          <a href="/hitta-din-modell" class="hidden md:inline-flex items-center justify-center gap-1.5 bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:scale-105 transition">
-            <span>Reparera nu</span>
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-          </a>
-          <button id="mobile-menu-btn" class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-2">
-            <i data-lucide="menu" class="w-6 h-6"></i>
-          </button>
-        </div>
-      </div>
-      <div id="mobile-menu" class="hidden md:hidden max-w-7xl mx-auto mt-2">
-        <div class="bg-white/95 backdrop-blur-md rounded-3xl border border-black/5 shadow-xl p-6 flex flex-col gap-6 text-center text-lg font-medium">
-          <a href="/hitta-din-modell" class="mobile-link flex items-center justify-center gap-2 bg-black text-white py-4 rounded-full shadow-md hover:scale-105 transition active:scale-95">
-            <span>Reparera nu</span>
-            <i data-lucide="arrow-right" class="w-5 h-5"></i>
-          </a>
-          <div class="h-px bg-gray-200 w-full rounded-full"></div>
-          <a href="/om-oss#vad-vi-gor" class="mobile-link hover:opacity-60 transition">Om batterireparation</a>
-          <a href="/om-oss" class="mobile-link hover:opacity-60 transition">Om oss</a>
-          <a href="/certifiering" class="mobile-link hover:opacity-60 transition">Säkerhet och kvalitet</a>
-          <a href="/kontakt" class="mobile-link hover:opacity-60 transition">Kontakt</a>
-          <a href="/faq" class="mobile-link hover:opacity-60 transition">Vanliga frågor</a>
-        </div>
-      </div>
-    </nav>
+<nav class="fixed w-full z-50 px-6 py-4">
+<div class="max-w-7xl mx-auto flex justify-between items-center bg-white/80 backdrop-blur-md rounded-full px-4 md:px-8 py-3 md:py-4 border border-black/5 shadow-sm relative">
+  <a href="/" class="flex items-center gap-3 text-xl font-semibold tracking-[0.14em] hover:opacity-70 transition">
+    <span>Batterilabbet</span>
+  </a>
+  <div class="hidden md:flex gap-8 text-sm font-medium">
+    <a href="/om-oss#vad-vi-gor" class="hover:opacity-60 transition">Om batterireparation</a>
+    <a href="/om-oss" class="hover:opacity-60 transition">Om oss</a>
+    <a href="/certifiering" class="hover:opacity-60 transition">Säkerhet och kvalitet</a>
+    <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
+  </div>
+  <div class="flex items-center">
+    <a href="/hitta-din-modell" class="group hidden md:inline-flex items-center justify-center gap-1.5 bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:scale-105 transition">
+      <span>Reparera nu</span>
+      <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+    </a>
+    <button id="mobile-menu-btn" class="md:hidden p-2 text-black hover:bg-gray-100 rounded-full transition ml-2">
+      <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </div>
+</div>
+<div id="mobile-menu" class="hidden md:hidden max-w-7xl mx-auto mt-2">
+  <div class="bg-white/95 backdrop-blur-md rounded-3xl border border-black/5 shadow-xl p-6 flex flex-col gap-6 text-center text-lg font-medium">
+    <a href="/hitta-din-modell" class="mobile-link group flex items-center justify-center gap-2 bg-black text-white py-4 rounded-full shadow-md hover:scale-105 transition active:scale-95">
+      <span>Reparera nu</span>
+      <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+    </a>
+    <div class="h-px bg-gray-200 w-full rounded-full"></div>
+    <a href="/om-oss#vad-vi-gor" class="mobile-link hover:opacity-60 transition">Om batterireparation</a>
+    <a href="/om-oss" class="mobile-link hover:opacity-60 transition">Om oss</a>
+    <a href="/certifiering" class="mobile-link hover:opacity-60 transition">Säkerhet och kvalitet</a>
+    <a href="/kontakt" class="mobile-link hover:opacity-60 transition">Kontakt</a>
+    <a href="/faq" class="mobile-link hover:opacity-60 transition">Vanliga frågor</a>
+  </div>
+</div>
+</nav>
 `;
 
 const globalFooter = `
@@ -281,6 +281,13 @@ let globalBatteryData = [];
 const GOOGLE_SHEET_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc3RNEr_mmiiT26h0YVYCkoJ97HzyHWmpbD1uVm8DFuSVc8t84iSxOMnJ0mBvfwIsG-5w_3Y_k3t-a/pub?gid=0&single=true&output=csv";
 
+// Variabler för de anpassade dropdown-valen
+let activeFilters = {
+  brand: "",
+  voltage: "",
+  type: "",
+};
+
 function parseCSVRow(row) {
   return row
     .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
@@ -320,10 +327,11 @@ async function fetchAndRenderBatteries() {
       };
 
       const battery = {
-        brand: cols[0],
-        model: cols[1],
+        brand: cols[0], // Innehåller Batterimodell
+        model: cols[1], // Innehåller Cykelmärken (komma-separerade)
         voltage: cols[2] || "36V",
         original_cap: cols[3],
+        typeDesc: cols[5] || "",
         prices: [],
 
         note: cols[16] ? cols[16].replace(/\|/g, "\n\n") : "",
@@ -370,7 +378,9 @@ async function fetchAndRenderBatteries() {
 
     const batteryContainer = document.getElementById("battery-container");
     if (batteryContainer) {
-      renderBatteries(globalBatteryData);
+      populateFilters(globalBatteryData);
+      applyFilters();
+
       const loadingState = document.getElementById("loading-state");
       if (loadingState) loadingState.classList.add("hidden");
       batteryContainer.classList.remove("hidden");
@@ -393,14 +403,137 @@ async function fetchAndRenderBatteries() {
   }
 }
 
-function filterBatteries() {
-  const query = document.getElementById("batterySearch").value.toLowerCase();
-  const filtered = globalBatteryData.filter(
-    (b) =>
-      b.brand.toLowerCase().includes(query) ||
-      b.model.toLowerCase().includes(query)
-  );
-  renderBatteries(filtered);
+// Hanterar öppning och stängning av anpassade menyer
+window.toggleCustomDropdown = function (menuId) {
+  const menus = ["brandMenu", "voltageMenu", "typeMenu"];
+
+  menus.forEach((id) => {
+    const menuEl = document.getElementById(id);
+    if (!menuEl) return; // SKYDD: Förhindrar felmeddelanden på andra sidor!
+
+    const iconEl = menuEl.previousElementSibling?.querySelector(
+      '[data-lucide="chevron-down"]'
+    );
+
+    if (id === menuId) {
+      const isHidden = menuEl.classList.contains("hidden");
+      if (isHidden) {
+        menuEl.classList.remove("hidden");
+        if (iconEl) iconEl.style.transform = "rotate(180deg)";
+      } else {
+        menuEl.classList.add("hidden");
+        if (iconEl) iconEl.style.transform = "rotate(0deg)";
+      }
+    } else {
+      menuEl.classList.add("hidden");
+      if (iconEl) iconEl.style.transform = "rotate(0deg)";
+    }
+  });
+};
+
+// Hanterar valet i den anpassade menyn
+window.selectCustomOption = function (filterType, value, labelText) {
+  activeFilters[filterType] = value;
+
+  const labelEl = document.getElementById(`${filterType}FilterLabel`);
+  if (labelEl) labelEl.innerText = labelText;
+
+  toggleCustomDropdown("");
+  applyFilters();
+};
+
+function populateFilters(batteries) {
+  const brandMenu = document.getElementById("brandMenu");
+  const voltageMenu = document.getElementById("voltageMenu");
+
+  if (!brandMenu || !voltageMenu) return;
+
+  const commonBtnClass =
+    "w-full text-left px-4 py-2.5 rounded-lg hover:bg-stone-200 hover:text-black text-base font-medium transition-colors text-stone-600";
+
+  brandMenu.innerHTML = `<button onclick="selectCustomOption('brand', '', 'Alla cykelmärken')" class="${commonBtnClass}">Alla cykelmärken</button>`;
+  voltageMenu.innerHTML = `<button onclick="selectCustomOption('voltage', '', 'Alla spänningar (V)')" class="${commonBtnClass}">Alla spänningar (V)</button>`;
+
+  const uniqueBrands = new Set();
+  const uniqueVoltages = new Set();
+
+  batteries.forEach((b) => {
+    if (b.voltage) uniqueVoltages.add(b.voltage.trim());
+
+    if (b.model) {
+      const brandsArray = b.model.split(",");
+      brandsArray.forEach((brand) => {
+        const cleanBrand = brand.trim();
+        if (cleanBrand && cleanBrand !== "Ej angivet") {
+          uniqueBrands.add(cleanBrand);
+        }
+      });
+    }
+  });
+
+  Array.from(uniqueBrands)
+    .sort()
+    .forEach((brand) => {
+      const btn = document.createElement("button");
+      btn.className = commonBtnClass;
+      btn.textContent = brand;
+      btn.onclick = () =>
+        selectCustomOption("brand", brand.toLowerCase(), brand);
+      brandMenu.appendChild(btn);
+    });
+
+  Array.from(uniqueVoltages)
+    .sort((a, b) => parseFloat(a) - parseFloat(b))
+    .forEach((volt) => {
+      const btn = document.createElement("button");
+      btn.className = commonBtnClass;
+      btn.textContent = volt;
+      btn.onclick = () =>
+        selectCustomOption("voltage", volt.toLowerCase(), volt);
+      voltageMenu.appendChild(btn);
+    });
+}
+
+function applyFilters() {
+  const searchInput = document.getElementById("batterySearch");
+  const searchTerm = searchInput ? searchInput.value.toLowerCase() : "";
+
+  const selectedBrand = activeFilters.brand;
+  const selectedVoltage = activeFilters.voltage;
+  const selectedType = activeFilters.type;
+
+  const filteredBatteries = globalBatteryData.filter((b) => {
+    const matchSearch =
+      b.brand.toLowerCase().includes(searchTerm) ||
+      b.model.toLowerCase().includes(searchTerm);
+
+    let matchBrand = true;
+    if (selectedBrand !== "") {
+      const brandsArray = b.model
+        .toLowerCase()
+        .split(",")
+        .map((s) => s.trim());
+      matchBrand = brandsArray.includes(selectedBrand);
+    }
+
+    let matchVoltage = true;
+    if (selectedVoltage !== "") {
+      matchVoltage = b.voltage.toLowerCase().includes(selectedVoltage);
+    }
+
+    let matchType = true;
+    const isMoped = b.typeDesc.toLowerCase().includes("moped");
+
+    if (selectedType === "moped") {
+      matchType = isMoped;
+    } else if (selectedType === "cykel") {
+      matchType = !isMoped;
+    }
+
+    return matchSearch && matchBrand && matchVoltage && matchType;
+  });
+
+  renderBatteries(filteredBatteries);
 }
 
 function generatePriceRow(
@@ -527,7 +660,6 @@ function renderBatteries(data) {
       </div>`;
     }
 
-    // NYTT: Kontrollerar om det finns uppgraderingsalternativ
     const upgradeBadgeHtml =
       b.prices && b.prices.length > 1
         ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1 rounded-lg text-xs font-medium mr-2"><i data-lucide="arrow-up-circle" class="w-3.5 h-3.5"></i> Kapaciteten kan uppgraderas</span>`
@@ -607,7 +739,6 @@ function renderProductPage() {
     return;
   }
 
-  // NYTT: Badge på produktsidan om uppgradering finns
   const upgradeBadgeProduct =
     battery.prices && battery.prices.length > 1
       ? `<br><span class="inline-flex items-center gap-1.5 mt-4 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal normal-case"><i data-lucide="arrow-up-circle" class="w-4 h-4"></i> Kapaciteten kan uppgraderas</span>`
@@ -744,18 +875,34 @@ function renderProductPage() {
   if (loadingState) loadingState.classList.add("hidden");
   productContainer.classList.remove("hidden");
 
-  // Måste kallas för att rita ut pil-ikonen!
   lucide.createIcons();
 }
 
+// SKYDD 2: Allting körs bara om sidan verkligen kräver det
 document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("battery-container");
-  const searchInput = document.getElementById("batterySearch");
   const isProductPage = document.getElementById("product-page-container");
 
+  // Kör bara Google Sheets-laddning på batterisidan och produktsidan
   if (container || isProductPage) {
     fetchAndRenderBatteries();
-    if (searchInput) searchInput.addEventListener("input", filterBatteries);
+  }
+
+  // Kör BARA lyssnarna om vi är på Hitta-Din-Modell-sidan
+  if (container) {
+    const searchInput = document.getElementById("batterySearch");
+    if (searchInput) searchInput.addEventListener("input", applyFilters);
+
+    // Flyttat klick-lyssnaren hit så att den enbart kollar efter felklick på DENNA sida!
+    document.addEventListener("click", function (e) {
+      if (
+        !e.target.closest("#customBrandDropdown") &&
+        !e.target.closest("#customVoltageDropdown") &&
+        !e.target.closest("#customTypeDropdown")
+      ) {
+        toggleCustomDropdown("");
+      }
+    });
   }
 });
 // ==========================================
@@ -1019,7 +1166,7 @@ window.selectUpgrade = function (index) {
 
   const brand = battery.brand || "";
   const model = battery.model || "Okänd modell";
-  const displayName = `${brand} ${model}`;
+  const displayName = `${brand} - ${model}`;
 
   const step1Display = document.getElementById("display-step1-model");
   const summaryModel = document.getElementById("summary-model");
@@ -1294,10 +1441,10 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK & FRAKTDYNAMIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycby2qMQTa4YKvbb40IzfnHM1uMjzZKqcKETUbAHzKZxrtPzbMrGrdNFpYPe1cjut7HvZ3A/exec";
+  "https://script.google.com/macros/s/AKfycbzz7mWzF_nq1r9oMtYUqd9w4mbNTracZgmYeSXwEc_-YHVaA41pp9L4kzjasp3Vza__AA/exec";
 
 // INSTÄLLNING: Ändra denna siffra för att ta betalt för frakt (t.ex. 149)
-const SHIPPING_COST_POST = 149;
+const SHIPPING_COST_POST = 0;
 
 function generateOrderNumber() {
   const timePart = Date.now().toString(36).toUpperCase();

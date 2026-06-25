@@ -55,16 +55,6 @@
         color: #1a1a1a;
         scroll-behavior: smooth;
       }
-      .btn-primary {
-        background-color: #000;
-        color: #fff;
-        transition: all 0.3s ease;
-        text-align: center;
-      }
-      .btn-primary:hover {
-        background-color: #333;
-        transform: translateY(-2px);
-      }
     </style>
   </head>
 
@@ -85,8 +75,9 @@
     <main
       class="flex-grow flex items-center justify-center pt-32 pb-16 px-4 md:px-6"
     >
+      <!-- Gjort kortet bredare (max-w-2xl) och ökat padding -->
       <div
-        class="max-w-xl w-full mx-auto bg-white p-6 sm:p-8 md:p-12 rounded-3xl md:rounded-[40px] shadow-sm border border-black/5 text-center"
+        class="max-w-2xl w-full mx-auto bg-white p-8 sm:p-10 md:p-14 rounded-3xl md:rounded-[40px] shadow-sm border border-black/5 text-center"
       >
         <div
           class="w-16 h-16 md:w-20 md:h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8"
@@ -94,160 +85,152 @@
           <i data-lucide="check" class="w-8 h-8 md:w-10 md:h-10"></i>
         </div>
 
-        <h1 class="text-2xl md:text-4xl font-medium mb-4">
+        <h1 class="text-3xl md:text-5xl font-medium mb-4 tracking-tight">
           Tack för din förfrågan!
         </h1>
-        <p class="text-gray-500 text-base md:text-lg mb-8">
+        <p class="text-gray-500 text-base md:text-lg mb-10 max-w-lg mx-auto leading-relaxed">
           Vi har mottagit dina uppgifter och en bekräftelse har skickats till
           din e-post. Vi behandlar ditt ärende så snabbt vi kan.
         </p>
 
-        <div
-          class="bg-[#F3F2EE] rounded-2xl p-4 md:p-6 mb-6 inline-block w-full sm:w-auto"
-        >
+        <!-- Ordernummer i en tydligare platta över hela bredden -->
+        <div class="bg-[#F3F2EE] rounded-2xl p-5 md:p-6 mb-10 w-full flex flex-col items-center justify-center border border-black/5">
           <p
             id="order-number-label"
-            class="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-500 mb-1"
+            class="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-400 mb-1"
           >
             Ditt Ordernummer
           </p>
           <p
             id="display-order-number"
-            class="text-xl md:text-2xl font-semibold tracking-wide"
+            class="text-2xl md:text-3xl font-semibold tracking-wide text-gray-900"
           >
             Laddar...
           </p>
         </div>
 
-        <div
-          class="bg-gray-50 border border-gray-100 rounded-2xl p-5 md:p-6 mb-8 text-left w-full mx-auto sm:w-4/5 md:w-3/4"
-        >
-          <h3
-            class="font-medium text-gray-900 mb-3 pb-3 border-b border-gray-200"
-          >
+        <div class="w-full text-left mb-8">
+          <h3 class="font-medium text-xl text-gray-900 mb-4 px-2">
             Din orderöversikt
           </h3>
 
-          <ul class="space-y-3 text-sm md:text-base text-gray-600 mb-6">
-            <li class="flex justify-between items-center">
-              <span class="text-gray-500">Märke:</span>
-              <span
-                id="display-brand"
-                class="font-medium text-gray-900 text-right"
-                >-</span
-              >
-            </li>
-            <li class="flex justify-between items-center">
-              <span class="text-gray-500">Modell:</span>
-              <span
-                id="display-model"
-                class="font-medium text-gray-900 text-right"
-                >-</span
-              >
-            </li>
+          <!-- Ny Grid-design för specifikationerna (istället för ul-lista) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+              <span class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Märke</span>
+              <span id="display-brand" class="font-medium text-gray-900 truncate block">-</span>
+            </div>
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+              <span class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Modell</span>
+              <span id="display-model" class="font-medium text-gray-900 truncate block">-</span>
+            </div>
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center">
+              <span class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Typ</span>
+              <span id="display-order-type" class="font-medium text-gray-900 truncate block">-</span>
+            </div>
+          </div>
 
-            <li class="flex justify-between items-center">
-              <span class="text-gray-500">Typ:</span>
-              <span
-                id="display-order-type"
-                class="font-medium text-gray-900 text-right"
-                >-</span
-              >
-            </li>
-          </ul>
-
+          <!-- Prisspecifikation (Kvitto-rutan) -->
           <div
             id="receipt-box"
-            class="bg-white p-4 md:p-5 rounded-xl border border-gray-100"
+            class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
           >
-            <!-- Standard Grundpris (Döljs om det är en kampanj) -->
-            <div
-              id="base-price-container"
-              class="flex justify-between items-center mb-2"
-            >
-              <span class="text-sm md:text-base text-gray-500">Grundpris</span>
-              <span
-                id="display-base-price"
-                class="font-medium text-sm md:text-base"
-                >...</span
+            <div class="p-5 md:p-7 space-y-4">
+              
+              <!-- Standard Grundpris -->
+              <div
+                id="base-price-container"
+                class="flex justify-between items-center"
               >
+                <span class="text-sm md:text-base text-gray-500">Grundpris</span>
+                <span
+                  id="display-base-price"
+                  class="font-medium text-sm md:text-base"
+                  >...</span
+                >
+              </div>
+
+              <!-- Originalpris (Visas bara vid kampanj) -->
+              <div
+                id="original-price-container"
+                class="flex justify-between items-center hidden"
+              >
+                <span class="text-sm md:text-base text-gray-500"
+                  >Originalpris</span
+                >
+                <span
+                  id="display-original-price"
+                  class="font-medium text-sm md:text-base line-through text-gray-400"
+                  >...</span
+                >
+              </div>
+
+              <!-- Kampanjavdrag: Parenteser borttagna -->
+              <div
+                id="campaign-container"
+                class="flex justify-between items-center text-red-600 hidden"
+              >
+                <div class="flex flex-col">
+                  <span class="text-sm md:text-base font-semibold">Kampanj</span>
+                  <span id="display-campaign-reason" class="text-xs mt-0.5 opacity-80"></span>
+                </div>
+                <span
+                  id="display-campaign-amount"
+                  class="font-bold text-sm md:text-base"
+                  >...</span
+                >
+              </div>
+
+              <!-- Tillval -->
+              <div
+                id="upgrade-container"
+                class="flex justify-between items-center hidden"
+              >
+                <div class="flex flex-col">
+                  <span class="text-sm md:text-base text-gray-500">Kapacitetsuppgradering</span>
+                  <span id="display-capacity" class="text-xs text-gray-400 mt-0.5"></span>
+                </div>
+                <span
+                  id="display-upgrade-price"
+                  class="font-medium text-sm md:text-base text-black"
+                  >...</span
+                >
+              </div>
+
+              <!-- Frakt: Parenteser borttagna -->
+              <div
+                id="shipping-container"
+                class="flex justify-between items-center hidden"
+              >
+                <div class="flex flex-col">
+                  <span class="text-sm md:text-base text-gray-500">Frakt</span>
+                  <span id="display-shipping-choice" class="text-xs text-gray-400 mt-0.5 capitalize"></span>
+                </div>
+                <span
+                  id="display-shipping-price"
+                  class="font-medium text-sm md:text-base text-black"
+                  >Laddar...</span
+                >
+              </div>
+
+              <!-- Rabattkod -->
+              <div
+                id="discount-container"
+                class="flex justify-between items-center text-green-600 hidden"
+              >
+                <span class="font-medium text-sm md:text-base">Rabattkod</span>
+                <span id="display-discount" class="font-bold text-sm md:text-base">-0 kr</span>
+              </div>
             </div>
 
-            <!-- Originalpris (Visas bara vid kampanj) -->
-            <div
-              id="original-price-container"
-              class="flex justify-between items-center mb-1 hidden"
-            >
-              <span class="text-sm md:text-base text-gray-500"
-                >Originalpris</span
-              >
-              <span
-                id="display-original-price"
-                class="font-medium text-sm md:text-base"
-                >...</span
-              >
-            </div>
-
-            <!-- Kampanjavdrag (Visas bara vid kampanj) -->
-            <div
-              id="campaign-container"
-              class="flex justify-between items-center mb-2 text-red-600 hidden"
-            >
-              <span class="text-sm md:text-base font-semibold"
-                >Kampanj (<span id="display-campaign-reason"></span>)</span
-              >
-              <span
-                id="display-campaign-amount"
-                class="font-bold text-sm md:text-base"
-                >...</span
-              >
-            </div>
-
-            <div
-              id="upgrade-container"
-              class="flex justify-between items-center mb-2 hidden"
-            >
-              <span class="text-sm md:text-base text-gray-500"
-                >Tillval: <span id="display-capacity"></span
-              ></span>
-              <span
-                id="display-upgrade-price"
-                class="font-medium text-sm md:text-base text-black"
-                >...</span
-              >
-            </div>
-
-            <div
-              id="shipping-container"
-              class="flex justify-between items-center mb-2 hidden"
-            >
-              <span class="text-sm md:text-base text-gray-500"
-                >Frakt (<span id="display-shipping-choice"></span>)</span
-              >
-              <span
-                id="display-shipping-price"
-                class="font-medium text-sm md:text-base text-black"
-                >Laddar...</span
-              >
-            </div>
-
-            <div
-              id="discount-container"
-              class="flex justify-between items-center mb-2 text-green-600 hidden text-sm md:text-base"
-            >
-              <span class="font-medium">Rabattkod</span>
-              <span id="display-discount" class="font-medium">-0 kr</span>
-            </div>
-
-            <div
-              class="flex justify-between items-center pt-3 border-t border-gray-100 mt-3"
-            >
-              <span class="font-bold text-base md:text-lg"
+            <!-- Totalpris i en grå markerad footer -->
+            <div class="bg-gray-50 p-5 md:p-7 border-t border-gray-200 flex justify-between items-center">
+              <span class="font-bold text-base md:text-lg text-gray-900"
                 >Pris (inkl. moms)</span
               >
               <span
                 id="display-final-price"
-                class="font-bold text-lg md:text-xl"
+                class="font-bold text-xl md:text-2xl text-black"
                 >...</span
               >
             </div>
@@ -256,9 +239,9 @@
 
         <div
           id="price-disclaimer"
-          class="p-4 md:p-5 bg-[#FAF9F6] rounded-xl text-xs md:text-sm leading-relaxed text-gray-500 border border-black/5 italic text-left w-full mx-auto sm:w-4/5 md:w-3/4 mb-8"
+          class="p-4 md:p-5 bg-stone-50 rounded-xl text-xs md:text-sm leading-relaxed text-stone-500 border border-stone-200 italic text-left w-full mb-10 shadow-sm"
         >
-          OBS! Detta är ett prisförslag. Priset kan komma att avvika beroende på
+          <span class="font-bold text-stone-700">OBS!</span> Detta är ett prisförslag. Priset kan komma att avvika beroende på
           felets omfattning, dock aldrig högre än detta prisförslag. Du får
           alltid en offert med slutgiltigt pris innan reparation påbörjas.
         </div>
@@ -266,10 +249,10 @@
         <div>
           <a
             href="/"
-            class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-full text-base font-medium border border-transparent hover:bg-stone-100 transition-all text-stone-500 hover:text-black"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-medium border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all text-gray-600 hover:text-black shadow-sm"
           >
-            <i data-lucide="home" class="w-5 h-5"></i>
-            <span>Till startsidan</span>
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            <span>Tillbaka till startsidan</span>
           </a>
         </div>
       </div>
@@ -290,10 +273,14 @@
         const discountAmount = urlParams.get("discountAmount");
         const finalPrice = urlParams.get("finalPrice");
         const orderType = urlParams.get("orderType") || "Beställning";
-        const shippingChoice = urlParams.get("shippingChoice");
+        
+        // Rensa eventuella gamla parenteser som skickats via URL:en
+        let rawShippingChoice = urlParams.get("shippingChoice") || "";
+        rawShippingChoice = rawShippingChoice.replace(/[()]/g, '');
+        
+        const shippingChoice = rawShippingChoice;
         const shippingCost = urlParams.get("shippingCost");
 
-        // Nya kampanj-variabler från URL
         const sheetOrigPrice = urlParams.get("sheetOrigPrice");
         const sheetDiscountReason = urlParams.get("sheetDiscountReason");
         const sheetDiscountAmount = urlParams.get("sheetDiscountAmount");
@@ -322,7 +309,6 @@
         const displayTypeEl = document.getElementById("display-order-type");
         if (displayTypeEl) displayTypeEl.textContent = orderType;
 
-        // --- PRIS & KAMPANJ LOGIK ---
         const basePriceContainer = document.getElementById(
           "base-price-container"
         );
@@ -344,7 +330,6 @@
         );
 
         if (sheetOrigPrice && sheetDiscountReason) {
-          // Om kampanj finns: Dölj "Grundpris" och visa Original + Kampanj
           if (basePriceContainer) basePriceContainer.style.display = "none";
 
           if (originalPriceContainer) {
@@ -360,7 +345,6 @@
               displayCampaignAmount.textContent = sheetDiscountAmount;
           }
         } else {
-          // Inget kampanj-pris, visa vanliga grundpriset
           if (basePrice && displayBasePrice) {
             displayBasePrice.textContent = basePrice;
           } else if (basePriceContainer) {
@@ -368,7 +352,6 @@
           }
         }
 
-        // Slutpris
         const displayFinalPrice = document.getElementById(
           "display-final-price"
         );
@@ -376,7 +359,6 @@
           displayFinalPrice.textContent = finalPrice;
         }
 
-        // Frakt
         const shippingContainer = document.getElementById("shipping-container");
         const displayShippingChoice = document.getElementById(
           "display-shipping-choice"
@@ -393,7 +375,6 @@
             displayShippingPrice.textContent = shippingCost;
         }
 
-        // Tillval
         const upgradeContainer = document.getElementById("upgrade-container");
         const displayCapacity = document.getElementById("display-capacity");
         const displayUpgradePrice = document.getElementById(
@@ -406,7 +387,6 @@
             displayUpgradePrice.textContent = upgradePrice;
         }
 
-        // Rabattkod
         const discountContainer = document.getElementById("discount-container");
         const displayDiscount = document.getElementById("display-discount");
         if (discountAmount && discountContainer) {
