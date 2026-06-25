@@ -2029,7 +2029,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Öka värdet för att flytta startpunkten längre UT från mitten.
     // Eftersom vänster pelare är kortare på din logga, kan du ge den ett eget värde här.
     const startLeftOffset = isMobile ? 18 : 28; // <- Öka denna på mobil om pricken syns
-    const startRightOffset = isMobile ? 14 : 25;
+    const startRightOffset = isMobile ? 18 : 28;
 
     // 3. CENTRERA MOT "DRIVER FRAMTIDENS MOBILITET" (Y-led)
     // Positivt värde flyttar strecken NER. Negativt värde flyttar dem UPP.
