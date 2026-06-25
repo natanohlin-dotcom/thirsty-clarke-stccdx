@@ -46,7 +46,7 @@ const globalFooter = `
         <div class="flex flex-col">
           <a href="/" class="text-2xl font-semibold tracking-[0.14em] mb-2 text-left hover:opacity-70 transition">Batterilabbet</a>
           <p class="text-gray-400 mb-6">Powered by science. Made in Uppsala.</p>
-          <img src="assets/batterlabbet_potential_logo.png" alt="Batterilabbet" class="w-20 h-20 rounded-md object-cover mb-10" />
+          <img src="assets/batterilabbet_logo_v3_transparent.png" alt="Batterilabbet" class="w-20 h-20 rounded-md object-cover mb-10" />
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-20">
           <div class="space-y-4">
