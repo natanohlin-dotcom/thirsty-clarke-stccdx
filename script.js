@@ -94,7 +94,7 @@ const globalFooter = `
 `;
 
 const globalCookie = `
-    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-[100] p-4 md:p-6 translate-y-full transition-transform duration-700 ease-out flex justify-center">
+    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-[9999] p-4 md:p-6 opacity-0 pointer-events-none transition-opacity duration-700 ease-out flex justify-center">
       <div class="glass-card bg-white/95 backdrop-blur-xl border border-black/10 shadow-2xl rounded-2xl p-6 md:p-8 max-w-4xl w-full flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="flex-1">
           <h3 class="text-lg font-medium mb-2">Vi värnar om din integritet</h3>
@@ -1833,7 +1833,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!cookieConsent) {
     // Har kunden inte valt, skjut upp bannern efter 1 sekund
     setTimeout(() => {
-      cookieBanner.classList.remove("translate-y-full");
+      cookieBanner.classList.remove("opacity-0", "pointer-events-none");
     }, 1000);
   } else if (cookieConsent === "accepted") {
     // Har kunden redan accepterat sedan tidigare, ladda allt direkt
@@ -1858,7 +1858,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function hideBanner() {
-    cookieBanner.classList.add("translate-y-full");
+    cookieBanner.classList.add("opacity-0", "pointer-events-none");
   }
 
   // Funktionen som laddar in Analytics och Trustpilot
@@ -2003,7 +2003,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 // ==========================================
-// 11. LANDING PAGE ANIMATION
+// 11. ANIMATION
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("hero-animation");

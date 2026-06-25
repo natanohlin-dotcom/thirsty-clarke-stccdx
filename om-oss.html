@@ -53,6 +53,9 @@
       rel="stylesheet"
     />
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
 
     <link rel="stylesheet" href="styles.css" />
 
@@ -292,7 +295,67 @@
           </div>
         </div>
       </section>
+      <section
+        id="hero-animation"
+        class="relative bg-[#faf9f6] min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      >
+        <svg
+          id="circuit-svg"
+          class="absolute inset-0 w-full h-full z-20 pointer-events-none"
+        >
+          <path
+            id="path-left"
+            class="circuit-path"
+            stroke="#133756"
+            stroke-width="6"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            id="path-right"
+            class="circuit-path"
+            stroke="#133756"
+            stroke-width="6"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
 
+        <div class="relative z-10 flex flex-col items-center">
+          <div
+            class="logo-container w-40 h-40 md:w-72 md:h-72 flex items-center justify-center"
+          >
+            <object
+              data="assets/logo.svg"
+              type="image/svg+xml"
+              class="w-full h-full pointer-events-none"
+            ></object>
+          </div>
+          <h2
+            class="mt-4 md:mt-8 text-3xl md:text-5xl font-semibold tracking-[0.14em] text-[#133756]"
+          >
+            Batterilabbet
+          </h2>
+        </div>
+
+        <div
+          id="hero-reveal-text"
+          class="absolute bottom-16 md:bottom-32 w-full flex justify-center opacity-0 translate-y-10 z-30 px-6"
+        >
+          <div
+            class="resistor-box flex flex-col items-center text-center max-w-[220px] md:max-w-2xl"
+          >
+            <h1
+              class="text-2xl md:text-5xl font-medium tracking-tight text-[#133756] leading-snug"
+            >
+              För framtidens mobilitet
+            </h1>
+          </div>
+        </div>
+      </section>
+      
       <section id="Mission Vision" class="py-2 px-6">
         <h2 class="text-4xl font-medium mt-0 mb-6 text-center">
           Varför gör vi det här?
@@ -304,7 +367,8 @@
           <p>
             Vårt mål är att skapa en transparent, pålitlig och säker standard
             för hur batterier repareras på ett hållbart sätt. Vi vill förlänga
-            den effektiva livslängden hos varje elcykelbatteri i Sverige.
+            den effektiva livslängden hos elcyklar och på så sätt möjliggöra
+            för hållbar och effektiv mobilitet genom ökningen i antalet elcyklar.
           </p>
           <h2 class="flex items-center gap-3">
             <span>Vår vision </span> <i data-lucide="recycle"></i>
@@ -314,8 +378,21 @@
             bidra till ett mer hållbart samhälle. Vi tror på att återvinna och
             förbättra elcykelbatterier så att deras livslängd blir längre och
             prestanda blir bättre. Detta reducerar farligt avfall och är
-            samtidigt bra för plånboken.
+            samtidigt bra för plånboken. Vi tror på att fler väljer elcykel över bil i framtidens Sverige för vardagsresor
+            och pendling till jobbet. Då blir det än viktigare att batterierna tas omhand på 
+            rätt sätt.
           </p>
+        </div>
+      </section>
+      <div class="mt-5 relative w-3/4 md:w-1/2 mx-auto aspect-full bg-[#E8E6E1] rounded-[40px] overflow-hidden shadow-sm group">
+        <img
+          src="photos/cykel_vid_carro.webp"
+          alt="Batterilabbets digitala serviceintyg"
+          class="w-full h-full object-cover" 
+        />
+      </div>
+      <section id="Mission Vision" class="py-2 px-6">
+        <div class="max-w-3xl mx-auto prose">
           <h2>Varför välja oss?</h2>
           <p>
             Vi tror inte på massproduktion utan själ. Därför byggs alla våra
