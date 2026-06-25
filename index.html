@@ -74,6 +74,8 @@
       rel="stylesheet"
     />
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <link rel="stylesheet" href="styles.css" />
 
@@ -241,6 +243,67 @@
           </div>
         </section>
       </div>
+
+      <section
+        id="hero-animation"
+        class="relative bg-[#faf9f6] min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      >
+        <svg
+          id="circuit-svg"
+          class="absolute inset-0 w-full h-full z-20 pointer-events-none"
+        >
+          <path
+            id="path-left"
+            class="circuit-path"
+            stroke="#133756"
+            stroke-width="6"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            id="path-right"
+            class="circuit-path"
+            stroke="#133756"
+            stroke-width="6"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+
+        <div class="relative z-10 flex flex-col items-center">
+          <div
+            class="logo-container w-40 h-40 md:w-72 md:h-72 flex items-center justify-center"
+          >
+            <object
+              data="assets/logo.svg"
+              type="image/svg+xml"
+              class="w-full h-full pointer-events-none"
+            ></object>
+          </div>
+          <h2
+            class="mt-4 md:mt-8 text-3xl md:text-5xl font-semibold tracking-[0.14em] text-[#133756]"
+          >
+            Batterilabbet
+          </h2>
+        </div>
+
+        <div
+          id="hero-reveal-text"
+          class="absolute bottom-16 md:bottom-32 w-full flex justify-center opacity-0 translate-y-10 z-30 px-6"
+        >
+          <div
+            class="resistor-box flex flex-col items-center text-center max-w-[220px] md:max-w-2xl"
+          >
+            <h1
+              class="text-2xl md:text-5xl font-medium tracking-tight text-[#133756] leading-snug"
+            >
+              Driver framtidens mobilitet
+            </h1>
+          </div>
+        </div>
+      </section>
 
       <section
         id="säkerhet-kvalitet"

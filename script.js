@@ -2002,3 +2002,129 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Fel vid hämtning av serviceintyg:", err);
     });
 });
+// ==========================================
+// 11. LANDING PAGE ANIMATION
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("hero-animation");
+  const logo = document.querySelector(".logo-container");
+  const resistor = document.querySelector(".resistor-box");
+  const pathLeft = document.getElementById("path-left");
+  const pathRight = document.getElementById("path-right");
+
+  const drawCircuitPaths = () => {
+    if (!container || !logo || !resistor || !pathLeft || !pathRight) return;
+
+    const isMobile = window.innerWidth < 768;
+
+    // ==========================================
+    // --- DINA MANUELLA JUSTERINGAR ---
+    // ==========================================
+
+    // 1. JUSTERA HÖJDEN PÅ STRECKET I LOGGAN
+    // Positivt värde flyttar strecket NER. Negativt värde flyttar det UPP.
+    const logoYOffset = isMobile ? 6 : 9;
+
+    // 2. JUSTERA STARTPUNKTERNA INUTI LOGGAN (X-led)
+    // Öka värdet för att flytta startpunkten längre UT från mitten.
+    // Eftersom vänster pelare är kortare på din logga, kan du ge den ett eget värde här.
+    const startLeftOffset = isMobile ? 18 : 28; // <- Öka denna på mobil om pricken syns
+    const startRightOffset = isMobile ? 14 : 25;
+
+    // 3. CENTRERA MOT "DRIVER FRAMTIDENS MOBILITET" (Y-led)
+    // Positivt värde flyttar strecken NER. Negativt värde flyttar dem UPP.
+    const textYOffset = isMobile ? -33 : -40;
+
+    // ÖVRIGA AVSTÅND
+    const edgeMargin = isMobile ? 35 : 150; // Hur nära skärmkanten linjen går ner
+    const gapToText = isMobile ? 25 : 50; // Avstånd mellan linjeslut och text
+    // ==========================================
+
+    const containerRect = container.getBoundingClientRect();
+    const logoRect = logo.getBoundingClientRect();
+    const resRect = resistor.getBoundingClientRect();
+
+    // -- Beräkna Loggan (Cellen) --
+    const centerX = logoRect.left - containerRect.left + logoRect.width / 2;
+
+    // Applicera din manuella Y-justering för loggan här
+    const logoY =
+      logoRect.top - containerRect.top + logoRect.height / 2 + logoYOffset;
+
+    // Applicera dina manuella X-justeringar för loggans startpunkter
+    const startLeftX = centerX - startLeftOffset;
+    const startRightX = centerX + startRightOffset;
+
+    // -- Beräkna Resistorn (Texten) --
+    // Applicera din manuella Y-justering för texten här
+    const endY =
+      resRect.top - containerRect.top + resRect.height / 2 + textYOffset;
+
+    const calculatedLeftX = resRect.left - containerRect.left - gapToText;
+    const calculatedRightX = resRect.right - containerRect.left + gapToText;
+
+    const endLeftX = Math.max(edgeMargin, calculatedLeftX);
+    const endRightX = Math.min(
+      container.offsetWidth - edgeMargin,
+      calculatedRightX
+    );
+
+    const w = container.offsetWidth;
+
+    // -- Bygg SVG-vägarna --
+    const dLeft = `M ${startLeftX} ${logoY} L ${edgeMargin} ${logoY} L ${edgeMargin} ${endY} L ${endLeftX} ${endY}`;
+    const dRight = `M ${startRightX} ${logoY} L ${w - edgeMargin} ${logoY} L ${
+      w - edgeMargin
+    } ${endY} L ${endRightX} ${endY}`;
+
+    pathLeft.setAttribute("d", dLeft);
+    pathRight.setAttribute("d", dRight);
+
+    // -- Preppa för GSAP --
+    [pathLeft, pathRight].forEach((path) => {
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = length + 20;
+      if (
+        path.style.strokeDashoffset === "" ||
+        parseFloat(path.style.strokeDashoffset) > 0
+      ) {
+        path.style.strokeDashoffset = length + 20;
+      }
+    });
+  };
+
+  drawCircuitPaths();
+  window.addEventListener("resize", drawCircuitPaths);
+
+  // --- Animationen ---
+  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const scrollLength = window.innerWidth > 768 ? "+=2500" : "+=1200";
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#hero-animation",
+        start: "top top",
+        end: scrollLength,
+        scrub: 1,
+        pin: true,
+      },
+    });
+
+    tl.to(".circuit-path", {
+      strokeDashoffset: 0,
+      duration: 2,
+      ease: "power1.inOut",
+    }).to(
+      "#hero-reveal-text",
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+      },
+      "-=0.5"
+    );
+  }
+});
