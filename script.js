@@ -552,7 +552,6 @@ function generatePriceRow(
   hasBadge = false,
   pricePrefix = "Från"
 ) {
-  // NYTT: Prefixet ("Reparation från") kan brytas, men priset ("3 500 kr") hålls ihop med whitespace-nowrap
   let priceDisplay = `<span class="${
     isSmall ? "text-base" : "text-xl md:text-2xl"
   } font-medium text-gray-800">${pricePrefix} <span class="whitespace-nowrap">${
@@ -568,7 +567,6 @@ function generatePriceRow(
             : ""
         }
         <div class="flex items-center gap-2 flex-wrap">
-          <!-- originalBasePrice hålls också ihop -->
           <span class="line-through text-gray-400 text-xs md:text-sm whitespace-nowrap">${originalBasePrice}</span>
           <span class="${
             isSmall ? "text-base" : "text-xl md:text-2xl"
@@ -580,21 +578,19 @@ function generatePriceRow(
     `;
   }
 
+  // UPPDATERAD: Tog bort den tomma div:en till vänster för att reducera dött utrymme (whitespace)
   return `
       <div class="${
-        isSmall ? "py-3" : "py-5"
-      } flex flex-wrap sm:flex-nowrap justify-between items-center gap-4 w-full">
-          <!-- Tom div till vänster -->
-          <div class="hidden sm:block"></div> 
+        isSmall ? "py-2" : "py-4"
+      } flex flex-wrap sm:flex-nowrap justify-between items-center gap-4 w-full relative z-20">
           
-          <!-- Huvud-flex för pris och knapp -->
-          <div class="flex flex-row flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-3 sm:gap-4 w-full sm:w-auto">
-              <div class="flex-1 min-w-0">
+          <div class="flex flex-row flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-3 sm:gap-4 w-full">
+              <div class="min-w-0">
                 ${priceDisplay}
               </div>
-              <button onclick="event.preventDefault(); openActionModal('${brand}', '${model}', '${
+              <button onclick="event.stopPropagation(); openActionModal('${brand}', '${model}', '${
     priceObj.cap
-  }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}', '${discountReason}', '${originalBasePrice}', '${discountPrice}')" class="bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:opacity-70 transition shadow-sm z-20 relative shrink-0">
+  }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}', '${discountReason}', '${originalBasePrice}', '${discountPrice}')" class="bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:opacity-70 transition shadow-sm z-30 relative shrink-0">
                   Välj
               </button>
           </div>
@@ -602,13 +598,12 @@ function generatePriceRow(
   `;
 }
 
-// --- UPPDATERAD: renderBatteries (Nu med Swipe-stöd!) ---
+// --- UPPDATERAD: renderBatteries (Gör hela kortet klickbart) ---
 function renderBatteries(data) {
   const container = document.getElementById("battery-container");
   if (!container) return;
   const noResults = document.getElementById("no-results");
 
-  // Det är bäst att samla all HTML i en variabel först för att undvika att skärmen "blinkar"
   let fullHtml = "";
 
   if (data.length === 0) {
@@ -639,19 +634,19 @@ function renderBatteries(data) {
         .join("");
 
       if (b.slug) {
-        slidesHtml = `<a href="${productUrl}" class="block relative">${slidesHtml}</a>`;
+        slidesHtml = `<div class="block relative">${slidesHtml}</div>`;
       }
 
       let controlsHtml = "";
       if (b.images.length > 1) {
         controlsHtml = `
-            <button onclick="event.preventDefault(); changeSlide(${index}, -1, ${
+            <button onclick="event.stopPropagation(); event.preventDefault(); changeSlide(${index}, -1, ${
           b.images.length
-        })" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-10"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-            <button onclick="event.preventDefault(); changeSlide(${index}, 1, ${
+        })" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-30"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+            <button onclick="event.stopPropagation(); event.preventDefault(); changeSlide(${index}, 1, ${
           b.images.length
-        })" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-10"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full pointer-events-none">
+        })" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2.5 rounded-full shadow-sm text-black transition z-30"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30 bg-white/50 backdrop-blur-md px-3 py-2 rounded-full pointer-events-none">
                 ${b.images
                   .map(
                     (_, i) =>
@@ -664,7 +659,6 @@ function renderBatteries(data) {
         `;
       }
 
-      // NYTT: La till id="battery-slider-${index}" så vi kan hitta den efteråt
       imageSection = `
       <div id="battery-slider-${index}" class="w-full lg:w-2/5 shrink-0 relative z-20 h-fit self-center bg-[#E8E6E1] rounded-[24px] overflow-hidden block">
         ${slidesHtml}
@@ -686,19 +680,16 @@ function renderBatteries(data) {
       ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-black text-white px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Tillgänglig för direktköp</span>`
       : "";
 
+    // UPPDATERAD: Den dolda länk-taggen är borttagen. Istället har hela kortet (glass-card) fått en smart onclick-lyssnare.
+    // Vi använder event.target.closest för att säkerställa att klick på knappar och slider INTE triggar produktsidelänken.
     let html = `
-        <div class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500 relative group hover:shadow-lg transition-all cursor-pointer overflow-hidden">
-            
-            ${
-              b.slug
-                ? `<a href="${productUrl}" class="absolute inset-0 z-10 rounded-[inherit]"></a>`
-                : ""
-            }
+        <div onclick="if(!event.target.closest('button') && !event.target.closest('#battery-slider-${index}')) window.location.href='${productUrl}';" 
+             class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500 relative group hover:shadow-lg transition-all cursor-pointer overflow-hidden">
             
             ${imageSection} 
             
             <div class="flex-1 min-w-0 w-full flex flex-col justify-center"> 
-                <div class="mb-8 block">
+                <div class="mb-6 block">
                     <h2 class="text-3xl font-medium uppercase mb-1 text-black truncate">${
                       b.brand
                     }</h2>
@@ -744,22 +735,17 @@ function renderBatteries(data) {
     fullHtml += html;
   });
 
-  // 1. Skjut in all HTML i DOM:en samtidigt (Mycket bättre prestanda)
   container.innerHTML = fullHtml;
-
-  // 2. Aktivera ikonerna
   lucide.createIcons();
 
-  // 3. NYTT: Leta upp alla nyskapade sliders och aktivera swipe!
   data.forEach((b, index) => {
-    // Om batteriet har fler än 1 bild, aktivera swipe på just den containern
     if (b.images && b.images.length > 1) {
       const sliderElement = document.getElementById(`battery-slider-${index}`);
       if (sliderElement) {
         enableSwipe(
           sliderElement,
-          () => changeSlide(index, 1, b.images.length), // Swipe vänster (fingret rör sig vänster) -> Nästa bild (1)
-          () => changeSlide(index, -1, b.images.length) // Swipe höger (fingret rör sig höger) -> Föregående bild (-1)
+          () => changeSlide(index, 1, b.images.length),
+          () => changeSlide(index, -1, b.images.length)
         );
       }
     }
@@ -931,7 +917,7 @@ function renderProductPage() {
 
   document.getElementById("tab-desc").innerHTML = battery.description
     ? `<p class="whitespace-pre-wrap">${battery.description}</p>`
-    : `<p class="italic text-gray-400">Ingen produktbeskrivning inlagd.</p>`;
+    : `<p>Förekommer på cyklar från ${battery.model} m.fl.</p>`;
 
   let specsHtml = `
     <ul class="space-y-4 max-w-xl text-base">
