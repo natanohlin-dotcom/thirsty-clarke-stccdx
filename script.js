@@ -602,15 +602,18 @@ function generatePriceRow(
   `;
 }
 
-// --- UPPDATERAD: renderBatteries ---
+// --- UPPDATERAD: renderBatteries (Nu med Swipe-stöd!) ---
 function renderBatteries(data) {
   const container = document.getElementById("battery-container");
   if (!container) return;
   const noResults = document.getElementById("no-results");
-  container.innerHTML = "";
+
+  // Det är bäst att samla all HTML i en variabel först för att undvika att skärmen "blinkar"
+  let fullHtml = "";
 
   if (data.length === 0) {
     noResults.classList.remove("hidden");
+    container.innerHTML = "";
     return;
   } else {
     noResults.classList.add("hidden");
@@ -661,26 +664,24 @@ function renderBatteries(data) {
         `;
       }
 
+      // NYTT: La till id="battery-slider-${index}" så vi kan hitta den efteråt
       imageSection = `
-      <div class="w-full lg:w-2/5 shrink-0 relative z-20 h-fit self-center bg-[#E8E6E1] rounded-[24px] overflow-hidden block">
+      <div id="battery-slider-${index}" class="w-full lg:w-2/5 shrink-0 relative z-20 h-fit self-center bg-[#E8E6E1] rounded-[24px] overflow-hidden block">
         ${slidesHtml}
         ${controlsHtml}
       </div>`;
     }
 
-    // UPPDATERING: Kontrollera om någon prisnivå har "Tillgänglig för direktköp" (badge === true)
     let hasDirectBuyBadge = false;
     if (b.prices && b.prices.length > 0) {
       hasDirectBuyBadge = b.prices.some((p) => p.badge === true);
     }
 
-    // Skapa "Kapaciteten kan uppgraderas"-badgen
     const upgradeBadgeHtml =
       b.prices && b.prices.length > 1
         ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="arrow-up-circle" class="w-3.5 h-3.5"></i> Kapaciteten kan uppgraderas</span>`
         : "";
 
-    // Skapa "Tillgänglig för direktköp"-badgen (Nu flyttad upp hit)
     const directBuyBadgeHtml = hasDirectBuyBadge
       ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-black text-white px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Tillgänglig för direktköp</span>`
       : "";
@@ -735,15 +736,34 @@ function renderBatteries(data) {
         b.discountPrice,
         b.discountReason,
         b.originalBasePrice,
-        hasDirectBuyBadge // Skickar med om knappen ska veta att det går att beställa direkt
+        hasDirectBuyBadge
       );
     }
 
     html += `</div></div></div>`;
-    container.innerHTML += html;
+    fullHtml += html;
   });
 
+  // 1. Skjut in all HTML i DOM:en samtidigt (Mycket bättre prestanda)
+  container.innerHTML = fullHtml;
+
+  // 2. Aktivera ikonerna
   lucide.createIcons();
+
+  // 3. NYTT: Leta upp alla nyskapade sliders och aktivera swipe!
+  data.forEach((b, index) => {
+    // Om batteriet har fler än 1 bild, aktivera swipe på just den containern
+    if (b.images && b.images.length > 1) {
+      const sliderElement = document.getElementById(`battery-slider-${index}`);
+      if (sliderElement) {
+        enableSwipe(
+          sliderElement,
+          () => changeSlide(index, 1, b.images.length), // Swipe vänster (fingret rör sig vänster) -> Nästa bild (1)
+          () => changeSlide(index, -1, b.images.length) // Swipe höger (fingret rör sig höger) -> Föregående bild (-1)
+        );
+      }
+    }
+  });
 }
 
 function renderProductPage() {
