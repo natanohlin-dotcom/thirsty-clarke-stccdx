@@ -99,7 +99,7 @@
           <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 md:p-6 mb-6 md:mb-8">
             <h4 class="text-base md:text-lg font-semibold mb-2">Renoverat batteri</h4>
             <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-4">
-              Du beställer ett färdigt renoverat batteri. Detta är ingen reparation, utan en färdig enhet byggd för maximal prestanda, med återvunna komponenter.
+              Du beställer ett färdigt renoverat batteri.
             </p>
             <div class="bg-white p-4 rounded-xl border border-gray-100 flex flex-col gap-1">
                <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Vald modell</span>
@@ -137,9 +137,9 @@
           </div>
         </div>
   
-        <div id="step3" class="form-step hidden-step space-y-6">
+        <div id="step4" class="form-step hidden-step space-y-6">
           <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Dina kontaktuppgifter</h3>
-          
+          <p class="text-gray-500 mb-6 text-sm md:text-base">Leverans- och faktureringsadress är samma. Meddela oss om du vill ha leverans till en annan adress i samband med att du skickar in ditt batteri.</p>
           <div class="flex p-1 bg-gray-100 rounded-xl mb-6 md:mb-8">
             <button type="button" id="btn-private" onclick="setCustomerType('private')" class="flex-1 py-2 md:py-3 text-sm md:text-base font-medium rounded-lg transition bg-white shadow-sm text-black">Privatperson</button>
             <button type="button" id="btn-business" onclick="setCustomerType('business')" class="flex-1 py-2 md:py-3 text-sm md:text-base font-medium rounded-lg transition text-gray-500 hover:text-black">Företagskund</button>
@@ -199,16 +199,16 @@
           </div>
   
           <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8">
-            <button type="button" onclick="goToStep(2)" class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition">
+            <button type="button" onclick="goToStep(3)" class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition">
               Bakåt
             </button>
-            <button type="button" onclick="goToStep(4)" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm hover:-translate-y-1 transition-transform">
+            <button type="button" onclick="goToStep(5)" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm hover:-translate-y-1 transition-transform">
               Nästa steg
             </button>
           </div>
         </div>
 
-        <div id="step4" class="form-step hidden-step space-y-6">
+        <div id="step3" class="form-step hidden-step space-y-6">
           <h3 class="text-xl md:text-2xl font-medium mb-2 md:mb-4">Kapacitet & Räckvidd</h3>
           <p class="text-gray-500 mb-6 text-sm md:text-base">Vill du passa på att uppgradera till ett starkare batteri med längre räckvidd? Välj ett av alternativen nedan.</p>
           
@@ -224,8 +224,8 @@
           </div>
         
           <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 pt-6 md:pt-8 border-t border-gray-100 mt-6">
-            <button type="button" onclick="goToStep(3)" class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
-            <button type="button" onclick="goToStep(5)" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm hover:-translate-y-1 transition-transform">Nästa steg</button>
+            <button type="button" onclick="goToStep(2)" class="w-full sm:w-auto sm:flex-1 bg-gray-100 py-4 md:py-5 rounded-xl md:rounded-2xl font-medium hover:bg-gray-200 transition">Bakåt</button>
+            <button type="button" onclick="goToStep(4)" class="w-full sm:w-auto sm:flex-[2] btn-primary py-4 md:py-5 rounded-xl md:rounded-2xl font-medium shadow-sm hover:-translate-y-1 transition-transform">Nästa steg</button>
           </div>
         </div>
 
@@ -262,47 +262,60 @@
         <div id="step6" class="form-step hidden-step space-y-6">
           <h3 class="text-xl md:text-2xl font-medium mb-4 md:mb-8">Bokningsöversikt</h3>
           
-          <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 md:p-6 mb-6">
-            <h4 class="font-semibold text-base md:text-lg border-b border-gray-200 pb-3 mb-4">Sammanfattning</h4>
-            <div class="space-y-3 text-sm md:text-base text-gray-700">
-               <div class="flex justify-between">
-                  <span class="text-gray-500">Produkt</span>
-                  <span id="summary-model" class="font-medium text-right">Laddar...</span>
+          <div class="bg-gray-50 border border-gray-200 rounded-3xl p-6 md:p-8 mb-6">
+            <h4 class="font-medium text-lg text-gray-900 mb-5">Sammanfattning</h4>
+            
+            <div class="grid grid-cols-2 gap-3 mb-6">
+               <div class="bg-white border border-gray-100 rounded-xl p-4 text-center shadow-sm">
+                 <span class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Batteri</span>
+                 <span id="summary-model" class="font-medium text-gray-900 truncate block">Laddar...</span>
                </div>
-               <div class="flex justify-between">
-                  <span class="text-gray-500">Typ</span>
-                  <span class="font-medium">Nybeställning</span>
+               <div class="bg-white border border-gray-100 rounded-xl p-4 text-center shadow-sm">
+                 <span class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1">Typ</span>
+                 <span class="font-medium text-gray-900 truncate block">Nybeställning</span>
                </div>
             </div>
         
-            <div class="mt-6 bg-white p-4 md:p-5 rounded-xl border border-gray-100">
-              
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-sm md:text-base text-gray-500">Grundpris</span>
-                <span id="base-price-display" class="font-medium text-sm md:text-base">...</span>
-              </div>
-        
-              <div id="upgrade-row" class="flex justify-between items-center mb-2 hidden">
-                <span class="text-sm md:text-base text-gray-500">Extra kapacitet: <span id="upgrade-cap-display"></span></span>
-                <span id="upgrade-price-display" class="font-medium text-sm md:text-base text-black">...</span>
-              </div>
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              <div class="p-5 md:p-6 space-y-4">
+                
+                <div class="flex justify-between items-center">
+                  <span class="text-sm md:text-base text-gray-500">Grundpris reparation</span>
+                  <span id="base-price-display" class="font-medium text-sm md:text-base">...</span>
+                </div>
+          
+                <div id="upgrade-row" class="flex justify-between items-center hidden">
+                  <div class="flex flex-col">
+                    <span class="text-sm md:text-base text-gray-500">Extra kapacitet</span>
+                    <span id="upgrade-cap-display" class="text-xs text-gray-400 mt-0.5"></span>
+                  </div>
+                  <span id="upgrade-price-display" class="font-medium text-sm md:text-base text-black">...</span>
+                </div>
 
-              <div id="shipping-row" class="flex justify-between items-center mb-2">
-                <span class="text-sm md:text-base text-gray-500">Frakt <span id="summary-shipping-choice" class="text-xs text-gray-400 font-normal"></span></span>
-                <span id="shipping-price-display" class="font-medium text-sm md:text-base text-black">Gratis</span>
-              </div>
-              
-              <div id="discount-row" class="flex justify-between items-center mb-2 text-green-600 hidden text-sm md:text-base">
-                <span>Rabatt (<span id="discount-percent-display">0</span>%)</span>
-                <span id="discount-amount">-0 kr</span>
+                <div id="shipping-row" class="flex justify-between items-center">
+                  <div class="flex flex-col">
+                    <span class="text-sm md:text-base text-gray-500">Frakt</span>
+                    <span id="summary-shipping-choice" class="text-xs text-gray-400 mt-0.5 capitalize"></span>
+                  </div>
+                  <span id="shipping-price-display" class="font-medium text-sm md:text-base text-black">Gratis</span>
+                </div>
+                
+                <div id="discount-row" class="flex justify-between items-center text-green-600 hidden">
+                  <div class="flex flex-col">
+                    <span class="text-sm md:text-base font-medium">Rabatt</span>
+                    <span class="text-xs mt-0.5 opacity-80"><span id="discount-percent-display">0</span>% avdrag</span>
+                  </div>
+                  <span id="discount-amount" class="font-bold text-sm md:text-base">-0 kr</span>
+                </div>
               </div>
         
-              <div class="flex justify-between items-center pt-2 border-t border-gray-100 mt-2">
-                <span class="font-semibold text-base md:text-lg">Pris (inklusive moms)</span>
-                <span id="final-price" class="font-bold text-lg md:text-xl">...</span>
+              <div class="bg-gray-50 p-5 md:p-6 border-t border-gray-200 flex justify-between items-center">
+                <span class="font-bold text-base md:text-lg text-gray-900">Pris (inkl. moms)</span>
+                <span id="final-price" class="font-bold text-lg md:text-xl text-black">...</span>
               </div>
             </div>
           </div>
+
           <div class="mb-6 md:mb-8">
             <label class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-2">Har du en rabattkod?</label>
             <div class="flex flex-col sm:flex-row gap-3">
@@ -315,13 +328,15 @@
           </div>
         
           <div class="space-y-4 pt-6 border-t border-gray-200">
-            <span class="text-gray-700">Betalning görs via faktura i samband med att du får ditt renoverade batteri. Du har 10 dagar på dig att betala från och med den dag batteriet skickas till dig. Du kan alltid kontakta oss om du undrar något.</span>
+            <div class="ml-3 text-xs md:text-sm">
+                <span class="text-gray-700">Betalning görs via faktura. Du har 10 dagar på dig att betala från och med den dag batteriet skickas till dig. Du kan alltid kontakta oss om du undrar något.</span>
+              </div>
             <label class="flex items-start cursor-pointer group">
               <div class="flex items-center h-5">
                 <input type="checkbox" id="form-terms" class="w-4 h-4 md:w-5 md:h-5 border-gray-300 rounded text-black focus:ring-black shrink-0" required />
               </div>
               <div class="ml-3 text-xs md:text-sm">
-                <span class="text-gray-700">Jag godkänner </span>
+                <span class="text-gray-700">Jag godkänner allmänna villkor samt beställningen av denna produkt i enlighet med Konsumentköplagen. </span>
                 <a href="/allmanna-villkor.html" target="_blank" class="text-black underline hover:text-gray-600">allmänna villkor & fraktvillkor</a>
                 <span class="text-red-500">*</span>
               </div>

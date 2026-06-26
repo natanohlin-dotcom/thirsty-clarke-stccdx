@@ -549,41 +549,49 @@ function generatePriceRow(
   discountPrice = "",
   discountReason = "",
   originalBasePrice = "",
-  hasBadge = false // Skickas nu bara in för att knappen ska veta om det är direktköp
+  hasBadge = false,
+  pricePrefix = "Från"
 ) {
+  // NYTT: Prefixet ("Reparation från") kan brytas, men priset ("3 500 kr") hålls ihop med whitespace-nowrap
   let priceDisplay = `<span class="${
-    isSmall ? "text-base" : "text-xl"
-  } font-medium whitespace-nowrap text-gray-800">Från ${priceObj.price}</span>`;
+    isSmall ? "text-base" : "text-xl md:text-2xl"
+  } font-medium text-gray-800">${pricePrefix} <span class="whitespace-nowrap">${
+    priceObj.price
+  }</span></span>`;
 
   if (discountPrice && originalBasePrice) {
     priceDisplay = `
-      <div class="flex flex-col items-end">
+      <div class="flex flex-col items-start sm:items-end">
         ${
           discountReason
             ? `<span class="text-[10px] bg-red-100 text-red-700 px-2 py-[2px] rounded-md font-bold mb-0.5 uppercase tracking-wider">${discountReason}</span>`
             : ""
         }
-        <div class="flex items-center gap-2">
-          <span class="line-through text-gray-400 text-xs md:text-sm">${originalBasePrice}</span>
+        <div class="flex items-center gap-2 flex-wrap">
+          <!-- originalBasePrice hålls också ihop -->
+          <span class="line-through text-gray-400 text-xs md:text-sm whitespace-nowrap">${originalBasePrice}</span>
           <span class="${
-            isSmall ? "text-base" : "text-xl"
-          } font-bold whitespace-nowrap text-red-600">Från ${
+            isSmall ? "text-base" : "text-xl md:text-2xl"
+          } font-bold text-red-600">${pricePrefix} <span class="whitespace-nowrap">${
       priceObj.price
-    }</span>
+    }</span></span>
         </div>
       </div>
     `;
   }
 
-  // UPPDATERING: Flexboxen är nu säkrad med flex-wrap för mobiler så att inget trycks ut
   return `
       <div class="${
         isSmall ? "py-3" : "py-5"
-      } flex flex-wrap justify-between items-center gap-4 w-full">
+      } flex flex-wrap sm:flex-nowrap justify-between items-center gap-4 w-full">
+          <!-- Tom div till vänster -->
           <div class="hidden sm:block"></div> 
           
-          <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
-              ${priceDisplay}
+          <!-- Huvud-flex för pris och knapp -->
+          <div class="flex flex-row flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-3 sm:gap-4 w-full sm:w-auto">
+              <div class="flex-1 min-w-0">
+                ${priceDisplay}
+              </div>
               <button onclick="event.preventDefault(); openActionModal('${brand}', '${model}', '${
     priceObj.cap
   }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}', '${discountReason}', '${originalBasePrice}', '${discountPrice}')" class="bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:opacity-70 transition shadow-sm z-20 relative shrink-0">
@@ -674,7 +682,7 @@ function renderBatteries(data) {
 
     // Skapa "Tillgänglig för direktköp"-badgen (Nu flyttad upp hit)
     const directBuyBadgeHtml = hasDirectBuyBadge
-      ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-black text-white px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Tillgänglig för direktköp</span>`
+      ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-black text-white px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Tillgänglig för direktköp</span>`
       : "";
 
     let html = `
@@ -892,13 +900,13 @@ function renderProductPage() {
       false,
       battery.discountPrice,
       battery.discountReason,
-      battery.originalBasePrice
+      battery.originalBasePrice,
+      false, // hasBadge sätts till false här inne
+      "Reparation från" // <-- Våran nya prefix-variabel!
     );
 
-    pricesContainer.innerHTML = pricesContainer.innerHTML.replace(
-      />Från /g,
-      ">Reparation från "
-    );
+    // TA BORT REPLACE-RADEN SOM FANNS HÄR TIDIGARE!
+    // pricesContainer.innerHTML = pricesContainer.innerHTML.replace(/>Från /g, ">Reparation från ");
   }
 
   document.getElementById("tab-desc").innerHTML = battery.description
@@ -956,7 +964,33 @@ function renderProductPage() {
 
   if (loadingState) loadingState.classList.add("hidden");
   productContainer.classList.remove("hidden");
+  // ==========================================================
+  // --- NYTT: GÖR NAV-KNAPPEN SMART PÅ PRODUKTSIDAN ---
+  // ==========================================================
 
+  // Hitta båda knapparna i menyn (desktop och mobil)
+  const navCtas = document.querySelectorAll('nav a[href="/hitta-din-modell"]');
+
+  navCtas.forEach((btn) => {
+    // Ta bort standardlänken
+    btn.setAttribute("href", "#");
+
+    // Lägg till nytt klickbeteende
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // Hitta "Välj"-knappen som genererades i pris-raden
+      const productSelectBtn = document.querySelector("#product-prices button");
+
+      if (productSelectBtn) {
+        // Simulera ett klick på den riktiga knappen (öppnar modalen perfekt!)
+        productSelectBtn.click();
+      } else {
+        // Fallback om något går fel (skickar dem till söksidan)
+        window.location.href = "/hitta-din-modell";
+      }
+    });
+  });
   lucide.createIcons();
 }
 
@@ -1027,7 +1061,7 @@ function openActionModal(
   // Fyll i batteriets information i modalens rubrik/text
   const infoEl = document.getElementById("modal-battery-info");
   if (infoEl) {
-    infoEl.innerText = `${brand} ${model} (${capacity})`;
+    infoEl.innerText = `${brand} - ${model}`;
   }
 
   const orderBtn = document.getElementById("modal-order-btn");
