@@ -278,8 +278,7 @@ function goToStandaloneSlide(sliderId, index) {
 // 3. DATABAS & BATTERIKORT (Startsida & Produktsida)
 // ==========================================
 let globalBatteryData = [];
-const GOOGLE_SHEET_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc3RNEr_mmiiT26h0YVYCkoJ97HzyHWmpbD1uVm8DFuSVc8t84iSxOMnJ0mBvfwIsG-5w_3Y_k3t-a/pub?gid=0&single=true&output=csv";
+const GOOGLE_SHEET_CSV_URL = "assets/databas_v1.csv";
 
 // Variabler för de anpassade dropdown-valen
 let activeFilters = {
