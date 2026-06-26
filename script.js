@@ -8,7 +8,7 @@ const globalNav = `
     <span>Batterilabbet</span>
   </a>
   <div class="hidden md:flex gap-8 text-sm font-medium">
-    <a href="/om-oss#vad-vi-gor" class="hover:opacity-60 transition">Om batterireparation</a>
+    <a href="/batterireparation" class="hover:opacity-60 transition">Batterireparation</a>
     <a href="/om-oss" class="hover:opacity-60 transition">Om oss</a>
     <a href="/certifiering" class="hover:opacity-60 transition">Säkerhet och kvalitet</a>
     <a href="/kontakt" class="hover:opacity-60 transition">Kontakt</a>
@@ -30,7 +30,7 @@ const globalNav = `
       <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
     </a>
     <div class="h-px bg-gray-200 w-full rounded-full"></div>
-    <a href="/om-oss#vad-vi-gor" class="mobile-link hover:opacity-60 transition">Om batterireparation</a>
+    <a href="/batterireparation" class="mobile-link hover:opacity-60 transition">Batterireparation</a>
     <a href="/om-oss" class="mobile-link hover:opacity-60 transition">Om oss</a>
     <a href="/certifiering" class="mobile-link hover:opacity-60 transition">Säkerhet och kvalitet</a>
     <a href="/kontakt" class="mobile-link hover:opacity-60 transition">Kontakt</a>

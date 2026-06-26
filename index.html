@@ -74,7 +74,7 @@
       rel="stylesheet"
     />
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <link rel="stylesheet" href="styles.css" />
 
     <script defer src="script.js"></script>
@@ -89,24 +89,37 @@
 
         <section class="relative pt-40 pb-4 px-6">
           <div class="max-w-4xl mx-auto text-center">
-            <h1 class="text-6xl md:text-8xl font-medium tracking-tight mb-16">
+            <!-- RUBRIK (Avståndet minskat något för att få plats med bannern) -->
+            <h1 class="text-6xl md:text-8xl font-medium tracking-tight mb-8">
               Ge ditt batteri
               <br />
-
               <span
-                class="relative inline-block italic bg-gradient-to-tr from-[#ada8a8] to-[#4d4949] text-transparent bg-clip-text pr-4"
+                class="inline-block italic bg-gradient-to-tr from-[#ada8a8] to-[#4d4949] text-transparent bg-clip-text pr-4"
               >
                 nytt liv
-                <!--HÄR LÄGGS KAMPANNJ IN-->
-                <div
-                  id="campaign-banner"
-                  class="empty:hidden absolute -top-4 -right-8 md:-top-6 md:-right-12 rotate-[12deg] bg-amber-400 text-black text-sm md:text-lg font-bold px-4 py-1.5 rounded-full shadow-md border-2 border-white normal-case not-italic tracking-normal z-10"
-                >
-                  Sommarkampanj!
-                </div>
               </span>
             </h1>
 
+            <!-- HÄR LÄGGS KAMPANJEN IN NU (Som en klickbar länk) -->
+            <div class="flex justify-center mb-10">
+              <a
+                href="/hitta-din-modell"
+                id="campaign-banner"
+                class="group inline-flex items-center bg-amber-400 text-black text-sm md:text-base font-bold px-6 py-2 rounded-full shadow-sm border-2 border-white hover:-translate-y-1 hover:shadow-md transition-all duration-300"
+              >
+                <!-- Ikonen animeras (roterar och växer) när man hovrar över hela bannern -->
+                <i
+                  data-lucide="badge-percent"
+                  class="w-5 h-5 mr-2 shrink-0 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-125"
+                ></i>
+                <!-- Det är den här texten du ändrar/tömmer för att styra kampanjen -->
+                <span id="campaign-text"
+                  >Sommarkampanj! 500 kr rabatt på reparationer</span
+                >
+              </a>
+            </div>
+
+            <!-- KNAPPAR OCH TEXT -->
             <div class="flex flex-col items-center">
               <div
                 class="flex flex-col md:flex-row justify-center gap-4 w-full"
@@ -144,7 +157,8 @@
                 id="campaign-subtext"
                 class="text-sm font-medium text-gray-400 mt-5"
               >
-                Välj din modell för att se ditt kampanjpris.
+                Välj din modell för att se ditt kampanjpris. Gäller utvalda
+                modeller.
               </p>
             </div>
 
@@ -156,12 +170,17 @@
             </h2>
           </div>
 
+          <!-- UPPDATERAT JAVASCRIPT -->
           <script>
             document.addEventListener("DOMContentLoaded", function () {
               const banner = document.getElementById("campaign-banner");
+              const campaignText = document.getElementById("campaign-text");
 
-              // Kollar om bannern är tom (eller bara innehåller mellanslag)
-              if (!banner || banner.textContent.trim() === "") {
+              // Vi kollar nu om inre span-taggen (texten) är tom, istället för hela bannern
+              if (!campaignText || campaignText.textContent.trim() === "") {
+                // Gömmer hela bannern om texten är raderad
+                if (banner) banner.style.display = "none";
+
                 const dot = document.getElementById("campaign-dot");
                 const btnText = document.getElementById("campaign-btn-text");
                 const subtext = document.getElementById("campaign-subtext");
