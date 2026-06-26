@@ -536,6 +536,7 @@ function applyFilters() {
   renderBatteries(filteredBatteries);
 }
 
+// --- UPPDATERAD: generatePriceRow (Badgen är nu borttagen härifrån) ---
 function generatePriceRow(
   brand,
   model,
@@ -547,13 +548,9 @@ function generatePriceRow(
   isSmall = false,
   discountPrice = "",
   discountReason = "",
-  originalBasePrice = ""
+  originalBasePrice = "",
+  hasBadge = false // Skickas nu bara in för att knappen ska veta om det är direktköp
 ) {
-  const badgeHtml = priceObj.badge
-    ? `<span class="bg-black text-white text-[10px] px-2 py-[3px] rounded-full tracking-tighter whitespace-nowrap shadow-sm">Tillgänglig för direktköp</span>`
-    : ``;
-  const hasBadge = priceObj.badge ? true : false;
-
   let priceDisplay = `<span class="${
     isSmall ? "text-base" : "text-xl"
   } font-medium whitespace-nowrap text-gray-800">Från ${priceObj.price}</span>`;
@@ -578,16 +575,18 @@ function generatePriceRow(
     `;
   }
 
+  // UPPDATERING: Flexboxen är nu säkrad med flex-wrap för mobiler så att inget trycks ut
   return `
       <div class="${
         isSmall ? "py-3" : "py-5"
-      } flex justify-between items-center gap-4">
-          <div class="flex items-center flex-wrap gap-3">${badgeHtml}</div>
-          <div class="flex items-center gap-4">
+      } flex flex-wrap justify-between items-center gap-4 w-full">
+          <div class="hidden sm:block"></div> 
+          
+          <div class="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
               ${priceDisplay}
               <button onclick="event.preventDefault(); openActionModal('${brand}', '${model}', '${
     priceObj.cap
-  }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}', '${discountReason}', '${originalBasePrice}', '${discountPrice}')" class="bg-black text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-70 transition shadow-sm z-20 relative">
+  }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}', '${discountReason}', '${originalBasePrice}', '${discountPrice}')" class="bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:opacity-70 transition shadow-sm z-20 relative shrink-0">
                   Välj
               </button>
           </div>
@@ -595,6 +594,7 @@ function generatePriceRow(
   `;
 }
 
+// --- UPPDATERAD: renderBatteries ---
 function renderBatteries(data) {
   const container = document.getElementById("battery-container");
   if (!container) return;
@@ -660,13 +660,25 @@ function renderBatteries(data) {
       </div>`;
     }
 
+    // UPPDATERING: Kontrollera om någon prisnivå har "Tillgänglig för direktköp" (badge === true)
+    let hasDirectBuyBadge = false;
+    if (b.prices && b.prices.length > 0) {
+      hasDirectBuyBadge = b.prices.some((p) => p.badge === true);
+    }
+
+    // Skapa "Kapaciteten kan uppgraderas"-badgen
     const upgradeBadgeHtml =
       b.prices && b.prices.length > 1
-        ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1 rounded-lg text-xs font-medium mr-2"><i data-lucide="arrow-up-circle" class="w-3.5 h-3.5"></i> Kapaciteten kan uppgraderas</span>`
+        ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="arrow-up-circle" class="w-3.5 h-3.5"></i> Kapaciteten kan uppgraderas</span>`
         : "";
 
+    // Skapa "Tillgänglig för direktköp"-badgen (Nu flyttad upp hit)
+    const directBuyBadgeHtml = hasDirectBuyBadge
+      ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-black text-white px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Tillgänglig för direktköp</span>`
+      : "";
+
     let html = `
-        <div class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500 relative group hover:shadow-lg transition-all cursor-pointer">
+        <div class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500 relative group hover:shadow-lg transition-all cursor-pointer overflow-hidden">
             
             ${
               b.slug
@@ -676,22 +688,26 @@ function renderBatteries(data) {
             
             ${imageSection} 
             
-            <div class="flex-1 w-full flex flex-col justify-center"> 
+            <div class="flex-1 min-w-0 w-full flex flex-col justify-center"> 
                 <div class="mb-8 block">
-                    <h2 class="text-3xl font-medium uppercase mb-1 text-black">${
+                    <h2 class="text-3xl font-medium uppercase mb-1 text-black truncate">${
                       b.brand
                     }</h2>
-                    <p class="text-gray-400 text-sm font-mono uppercase tracking-widest">${
+                    <p class="text-gray-400 text-sm font-mono uppercase tracking-widest break-words">${
                       b.model
                     }</p>
-                    ${
-                      b.seasonOnly
-                        ? `<span class="inline-block mt-3 bg-amber-50 text-amber-700 px-3 py-1 rounded-lg text-xs font-medium mr-2">${b.seasonOnly}</span>`
-                        : ""
-                    }
-                    ${upgradeBadgeHtml}
+                    
+                    <div class="flex flex-wrap gap-y-2 mt-2">
+                      ${
+                        b.seasonOnly
+                          ? `<span class="inline-block mt-3 bg-amber-50 text-amber-700 px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap">${b.seasonOnly}</span>`
+                          : ""
+                      }
+                      ${upgradeBadgeHtml}
+                      ${directBuyBadgeHtml}
+                    </div>
                 </div>
-                <div class="divide-y divide-gray-100 relative z-20">
+                <div class="divide-y divide-gray-100 relative z-20 w-full">
     `;
 
     const noteEncoded = encodeURIComponent(b.note || "");
@@ -710,7 +726,8 @@ function renderBatteries(data) {
         false,
         b.discountPrice,
         b.discountReason,
-        b.originalBasePrice
+        b.originalBasePrice,
+        hasDirectBuyBadge // Skickar med om knappen ska veta att det går att beställa direkt
       );
     }
 
