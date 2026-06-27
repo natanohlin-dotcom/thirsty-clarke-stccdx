@@ -881,7 +881,19 @@ function renderProductPage() {
         </div>
       `;
     }
+
     galleryContainer.innerHTML = slidesHtml + controlsHtml;
+
+    // ==========================================================
+    // --- NYTT: AKTIVERA SWIPE FÖR PRODUKTGALLERIET ---
+    // ==========================================================
+    if (battery.images.length > 1) {
+      enableSwipe(
+        galleryContainer,
+        () => changeSlide("product", 1, battery.images.length), // Swipe vänster -> Nästa bild
+        () => changeSlide("product", -1, battery.images.length) // Swipe höger -> Föregående bild
+      );
+    }
   } else {
     galleryContainer.innerHTML = `<div class="p-24 text-gray-400 flex flex-col items-center"><i data-lucide="image" class="w-16 h-16 mb-4 opacity-50"></i><p>Bild saknas</p></div>`;
   }
@@ -909,9 +921,6 @@ function renderProductPage() {
       false, // hasBadge sätts till false här inne
       "Reparation från" // <-- Våran nya prefix-variabel!
     );
-
-    // TA BORT REPLACE-RADEN SOM FANNS HÄR TIDIGARE!
-    // pricesContainer.innerHTML = pricesContainer.innerHTML.replace(/>Från /g, ">Reparation från ");
   }
 
   document.getElementById("tab-desc").innerHTML = battery.description
@@ -969,6 +978,7 @@ function renderProductPage() {
 
   if (loadingState) loadingState.classList.add("hidden");
   productContainer.classList.remove("hidden");
+
   // ==========================================================
   // --- NYTT: GÖR NAV-KNAPPEN SMART PÅ PRODUKTSIDAN ---
   // ==========================================================
@@ -996,6 +1006,7 @@ function renderProductPage() {
       }
     });
   });
+
   lucide.createIcons();
 }
 
