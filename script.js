@@ -2071,6 +2071,29 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // --- NY FUNKTION: Tvinga nedladdning av Google Drive-filer ---
+  function getDirectDownloadLink(url) {
+    if (!url) return null;
+    let fileId = "";
+
+    // Försök hitta filens ID (vanligtvis 33 tecken) i vanliga Drive-länkar
+    const matchD = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (matchD) fileId = matchD[1];
+
+    // Om det är det andra typen av format (open?id=...)
+    if (!fileId) {
+      const matchId = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (matchId) fileId = matchId[1];
+    }
+
+    // Om ett ID hittades, bygg en tvingande nedladdningslänk, annars använd originalet
+    if (fileId) {
+      return `https://drive.google.com/uc?export=download&id=${fileId}`;
+    }
+    return url;
+  }
+  // --------------------------------------------------------------
+
   // 2. Hämta datan från Google Sheets
   fetch(`${SERVICE_API_URL}?id=${orderId}`)
     .then((response) => response.json())
@@ -2089,7 +2112,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const btnManual = document.getElementById("btn-manual");
 
         if (result.data.protocolLink) {
-          btnProtocol.href = result.data.protocolLink;
+          // Använd vår nya funktion här!
+          btnProtocol.href = getDirectDownloadLink(result.data.protocolLink);
         } else {
           btnProtocol.classList.add("opacity-50", "pointer-events-none");
           if (btnProtocol.querySelector("span"))
@@ -2098,7 +2122,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (result.data.manualLink) {
-          btnManual.href = result.data.manualLink;
+          // Och här!
+          btnManual.href = getDirectDownloadLink(result.data.manualLink);
         } else {
           btnManual.classList.add("opacity-50", "pointer-events-none");
           if (btnManual.querySelector("span"))
