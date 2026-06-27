@@ -52,7 +52,7 @@ const globalFooter = `
           <div class="space-y-4">
             <p class="font-medium">Tjänsten</p>
             <a href="/" class="block text-gray-500 hover:text-black">Hem</a>
-            <a href="/om-oss#vad-vi-gor" class="block text-gray-500 hover:text-black">Om batterireparation</a>
+            <a href="/batterireparation" class="block text-gray-500 hover:text-black">Batterireparation</a>
             <a href="/hitta-din-modell" class="block text-gray-500 hover:text-black">Reparera nu</a>
           </div>
           <div class="space-y-4">
