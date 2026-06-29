@@ -278,7 +278,7 @@ function goToStandaloneSlide(sliderId, index) {
 // 3. DATABAS & BATTERIKORT (Startsida & Produktsida)
 // ==========================================
 let globalBatteryData = [];
-const GOOGLE_SHEET_CSV_URL = "assets/databas_v1.csv";
+const GOOGLE_SHEET_CSV_URL = "assets/databas.csv";
 
 // Variabler för de anpassade dropdown-valen
 let activeFilters = {
@@ -1573,7 +1573,7 @@ function showMessage(text, colorClass) {
 // 7. GOOGLE SHEETS SUBMIT LOGIK & FRAKTDYNAMIK
 // ==========================================
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzz7mWzF_nq1r9oMtYUqd9w4mbNTracZgmYeSXwEc_-YHVaA41pp9L4kzjasp3Vza__AA/exec";
+  "https://script.google.com/macros/s/AKfycbwzlTH_n-XMj3pp6XEVJOgJA6fynOjhYks6CBFKwVZgkIhGuhnf1lauDsVVPMzS9EXhqg/exec";
 
 // INSTÄLLNING: Ändra denna siffra för att ta betalt för frakt (t.ex. 149)
 const SHIPPING_COST_POST = 0;
