@@ -685,7 +685,7 @@ function renderBatteries(data) {
         : "";
 
     const directBuyBadgeHtml = hasDirectBuyBadge
-      ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-black text-white px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Tillgänglig för direktköp</span>`
+      ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-black text-white px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Köp direkt</span>`
       : "";
 
     let html = `
@@ -766,7 +766,6 @@ function renderBatteries(data) {
   });
 }
 
-// --- UPPDATERAD: renderBatteries ---
 function renderProductPage() {
   const productContainer = document.getElementById("product-page-container");
   if (!productContainer) return;
@@ -841,15 +840,34 @@ function renderProductPage() {
   // --- SLUT PÅ SEO ---
   // ==========================================================
 
+  // --- NYTT: Kollar om direktköp är tillgängligt ---
+  let hasDirectBuyBadge = false;
+  if (battery.prices && battery.prices.length > 0) {
+    hasDirectBuyBadge = battery.prices.some((p) => p.badge === true);
+  }
+
+  // Bygger uppgraderings-badgen
   const upgradeBadgeProduct =
     battery.prices && battery.prices.length > 1
-      ? `<br><span class="inline-flex items-center gap-1.5 mt-4 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal normal-case"><i data-lucide="arrow-up-circle" class="w-4 h-4"></i> Kapaciteten kan uppgraderas</span>`
+      ? `<span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal normal-case"><i data-lucide="arrow-up-circle" class="w-4 h-4"></i> Kapaciteten kan uppgraderas</span>`
+      : "";
+
+  // Bygger direktköps-badgen
+  const directBuyBadgeProduct = hasDirectBuyBadge
+    ? `<span class="inline-flex items-center gap-1.5 bg-black text-white px-3 py-1.5 rounded-lg text-xs font-medium tracking-normal normal-case"><i data-lucide="shopping-cart" class="w-4 h-4"></i> Köp direkt</span>`
+    : "";
+
+  // Slår ihop badges i en flex-container så de lägger sig snyggt bredvid varandra
+  const badgesContainer =
+    upgradeBadgeProduct || directBuyBadgeProduct
+      ? `<div class="flex flex-wrap gap-2 mt-4">${upgradeBadgeProduct}${directBuyBadgeProduct}</div>`
       : "";
 
   document.getElementById("product-brand").innerText = `${battery.brand}`;
+  // Lägger in badges direkt under modellen
   document.getElementById(
     "product-model"
-  ).innerHTML = `${battery.model}${upgradeBadgeProduct}`;
+  ).innerHTML = `${battery.model}${badgesContainer}`;
 
   const galleryContainer = document.getElementById("product-gallery");
   if (battery.images && battery.images.length > 0) {
@@ -915,8 +933,6 @@ function renderProductPage() {
   if (battery.prices && battery.prices.length > 0) {
     const basePrice = battery.prices[0];
 
-    // --- NY LOGIK FÖR PREFIX ---
-    // Om det är en drönare skriver vi bara "Från", annars "Reparation från"
     const displayPrefix = isDronare ? "Från" : "Reparation från";
 
     pricesContainer.innerHTML = generatePriceRow(
@@ -931,8 +947,8 @@ function renderProductPage() {
       battery.discountPrice,
       battery.discountReason,
       battery.originalBasePrice,
-      false,
-      displayPrefix, // <-- Skickar in vår smarta variabel här
+      hasDirectBuyBadge, // FIX: Skickar in variabeln istället för 'false' så knappen vet om direktköp finns
+      displayPrefix,
       isDronare
     );
   }
@@ -994,7 +1010,6 @@ function renderProductPage() {
   if (loadingState) loadingState.classList.add("hidden");
   productContainer.classList.remove("hidden");
 
-  // Hitta båda knapparna i menyn (desktop och mobil)
   const navCtas = document.querySelectorAll('nav a[href="/hitta-din-modell"]');
 
   navCtas.forEach((btn) => {
