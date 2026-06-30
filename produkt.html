@@ -182,11 +182,12 @@
         <h3 class="text-2xl font-medium mb-2 text-center">Nästa steg</h3>
         <p
           id="modal-battery-info"
-          class="text-gray-400 text-sm text-center mb-8 font-mono uppercase tracking-widest"
+          class="text-stone-400 text-sm text-center mb-8 font-mono uppercase tracking-widest"
         ></p>
 
         <div class="space-y-4">
           <button
+            id="modal-repair-btn"
             onclick="handleModalChoice('repair')"
             class="w-full flex items-center justify-between p-5 bg-[#f8f5f1] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
           >
@@ -196,13 +197,13 @@
               >
                 Lämna in batteriet
               </p>
-              <p class="text-sm text-gray-500 mt-1">
+              <p class="text-sm text-stone-500 mt-1">
                 Jag vill skicka/lämna in mitt batteri för renovering.
               </p>
             </div>
             <i
               data-lucide="arrow-right"
-              class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"
+              class="w-5 h-5 text-stone-400 group-hover:text-black transition-colors shrink-0 ml-4"
             ></i>
           </button>
 
@@ -217,37 +218,37 @@
               >
                 Beställ batteriet
               </p>
-              <p class="text-sm text-gray-500 mt-1">
+              <p class="text-sm text-stone-500 mt-1">
                 Jag vill köpa detta batteri (utan att lämna in ett gammalt).
               </p>
             </div>
             <i
               data-lucide="arrow-right"
-              class="w-5 h-5 text-gray-400 group-hover:text-black transition-colors shrink-0 ml-4"
+              class="w-5 h-5 text-stone-400 group-hover:text-black transition-colors shrink-0 ml-4"
             ></i>
           </button>
 
           <div
             id="modal-out-of-stock-msg"
-            class="hidden p-5 bg-gray-50 border border-gray-100 rounded-2xl text-left"
+            class="hidden p-5 bg-stone-50 border border-stone-200 rounded-2xl text-left"
           >
-            <p class="font-medium text-gray-800 text-sm mb-1">
+            <p class="font-medium text-stone-800 text-sm mb-1">
               Ej i lager för direktköp
             </p>
-            <p class="text-xs text-gray-500 leading-relaxed">
+            <p class="text-xs text-stone-500 leading-relaxed">
               Vi har tyvärr inte detta batteri färdigbyggt på hyllan just nu.
               Välj "Lämna in batteriet" ovan så reparerar vi ditt gamla batteri.
             </p>
           </div>
         </div>
         <p
-          class="text-gray-400 font-medium text-sm text-center mb-1 mt-4 tracking-widest"
+          class="text-stone-400 font-medium text-sm text-center mb-1 mt-4 tracking-widest"
         >
           Kontakta oss via mail om du önskar lämna in fler än ett batteri
         </p>
         <button
           onclick="closeActionModal()"
-          class="w-full mt-6 py-3 text-sm font-medium text-gray-400 hover:text-black transition"
+          class="w-full mt-6 py-3 text-sm font-medium text-stone-400 hover:text-black transition"
         >
           Avbryt
         </button>

@@ -278,7 +278,8 @@ function goToStandaloneSlide(sliderId, index) {
 // 3. DATABAS & BATTERIKORT (Startsida & Produktsida)
 // ==========================================
 let globalBatteryData = [];
-const GOOGLE_SHEET_CSV_URL = "assets/databas.csv";
+const GOOGLE_SHEET_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc3RNEr_mmiiT26h0YVYCkoJ97HzyHWmpbD1uVm8DFuSVc8t84iSxOMnJ0mBvfwIsG-5w_3Y_k3t-a/pub?gid=0&single=true&output=csv";
 
 // Variabler för de anpassade dropdown-valen
 let activeFilters = {
@@ -408,7 +409,7 @@ window.toggleCustomDropdown = function (menuId) {
 
   menus.forEach((id) => {
     const menuEl = document.getElementById(id);
-    if (!menuEl) return; // SKYDD: Förhindrar felmeddelanden på andra sidor!
+    if (!menuEl) return;
 
     const iconEl = menuEl.previousElementSibling?.querySelector(
       '[data-lucide="chevron-down"]'
@@ -502,10 +503,12 @@ function applyFilters() {
   const selectedType = activeFilters.type;
 
   const filteredBatteries = globalBatteryData.filter((b) => {
+    // 1. Söktext
     const matchSearch =
       b.brand.toLowerCase().includes(searchTerm) ||
       b.model.toLowerCase().includes(searchTerm);
 
+    // 2. Cykelmärke
     let matchBrand = true;
     if (selectedBrand !== "") {
       const brandsArray = b.model
@@ -515,18 +518,26 @@ function applyFilters() {
       matchBrand = brandsArray.includes(selectedBrand);
     }
 
+    // 3. Spänning
     let matchVoltage = true;
     if (selectedVoltage !== "") {
       matchVoltage = b.voltage.toLowerCase().includes(selectedVoltage);
     }
 
+    // 4. Fordonstyp
     let matchType = true;
-    const isMoped = b.typeDesc.toLowerCase().includes("moped");
+    const typeDescLower = b.typeDesc ? b.typeDesc.toLowerCase() : "";
+
+    const isMoped = typeDescLower.includes("moped");
+    const isDronare =
+      typeDescLower.includes("drönar") || typeDescLower.includes("drone");
 
     if (selectedType === "moped") {
       matchType = isMoped;
+    } else if (selectedType === "drönare") {
+      matchType = isDronare;
     } else if (selectedType === "cykel") {
-      matchType = !isMoped;
+      matchType = !isMoped && !isDronare;
     }
 
     return matchSearch && matchBrand && matchVoltage && matchType;
@@ -535,7 +546,7 @@ function applyFilters() {
   renderBatteries(filteredBatteries);
 }
 
-// --- UPPDATERAD: generatePriceRow (Badgen är nu borttagen härifrån) ---
+// --- UPPDATERAD: generatePriceRow ---
 function generatePriceRow(
   brand,
   model,
@@ -549,7 +560,8 @@ function generatePriceRow(
   discountReason = "",
   originalBasePrice = "",
   hasBadge = false,
-  pricePrefix = "Från"
+  pricePrefix = "Från",
+  isDronare = false // NY PARAMETER
 ) {
   let priceDisplay = `<span class="${
     isSmall ? "text-base" : "text-xl md:text-2xl"
@@ -577,7 +589,7 @@ function generatePriceRow(
     `;
   }
 
-  // UPPDATERAD: Tog bort den tomma div:en till vänster för att reducera dött utrymme (whitespace)
+  // UPPDATERAD: Skickar med ${isDronare} i openActionModal
   return `
       <div class="${
         isSmall ? "py-2" : "py-4"
@@ -589,7 +601,7 @@ function generatePriceRow(
               </div>
               <button onclick="event.stopPropagation(); openActionModal('${brand}', '${model}', '${
     priceObj.cap
-  }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}', '${discountReason}', '${originalBasePrice}', '${discountPrice}')" class="bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:opacity-70 transition shadow-sm z-30 relative shrink-0">
+  }', '${originalCap}', '${voltage}', ${hasBadge}, '${allPricesJson}', '${noteEncoded}', '${discountReason}', '${originalBasePrice}', '${discountPrice}', ${isDronare})" class="bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:opacity-70 transition shadow-sm z-30 relative shrink-0">
                   Välj
               </button>
           </div>
@@ -597,7 +609,7 @@ function generatePriceRow(
   `;
 }
 
-// --- UPPDATERAD: renderBatteries (Gör hela kortet klickbart) ---
+// --- UPPDATERAD: renderBatteries ---
 function renderBatteries(data) {
   const container = document.getElementById("battery-container");
   if (!container) return;
@@ -679,8 +691,6 @@ function renderBatteries(data) {
       ? `<span class="inline-flex items-center gap-1.5 mt-3 bg-black text-white px-3 py-1 rounded-lg text-xs font-medium mr-2 whitespace-nowrap"><i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Tillgänglig för direktköp</span>`
       : "";
 
-    // UPPDATERAD: Den dolda länk-taggen är borttagen. Istället har hela kortet (glass-card) fått en smart onclick-lyssnare.
-    // Vi använder event.target.closest för att säkerställa att klick på knappar och slider INTE triggar produktsidelänken.
     let html = `
         <div onclick="if(!event.target.closest('button') && !event.target.closest('#battery-slider-${index}')) window.location.href='${productUrl}';" 
              class="glass-card p-6 md:p-10 bg-white border border-black/5 flex flex-col lg:flex-row gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-500 relative group hover:shadow-lg transition-all cursor-pointer overflow-hidden">
@@ -714,6 +724,12 @@ function renderBatteries(data) {
 
     if (!b.isMulti && b.prices && b.prices.length > 0) {
       const basePrice = b.prices[0];
+
+      // UPPDATERAD: Kollar drönare för att skicka med i generatePriceRow
+      const typeDescLower = b.typeDesc ? b.typeDesc.toLowerCase() : "";
+      const isDronare =
+        typeDescLower.includes("drönar") || typeDescLower.includes("drone");
+
       html += generatePriceRow(
         b.brand,
         b.model,
@@ -726,7 +742,9 @@ function renderBatteries(data) {
         b.discountPrice,
         b.discountReason,
         b.originalBasePrice,
-        hasDirectBuyBadge
+        hasDirectBuyBadge,
+        "Från", // Skickar uttryckligen "Från" eftersom vi skickar in en extra variabel efteråt
+        isDronare
       );
     }
 
@@ -770,24 +788,18 @@ function renderProductPage() {
   }
 
   // ==========================================================
-  // --- NYTT: SEO & SCHEMA MARKUP (Dynamisk sidtitel & meta) ---
+  // --- SEO & SCHEMA MARKUP ---
   // ==========================================================
-
-  // 1. Uppdatera Sidtiteln (<title>)
   document.title = `Reparera ${battery.brand} ${battery.model} | Batterilabbet`;
 
-  // 2. Uppdatera Metabeskrivningen (<meta name="description">)
   const metaDesc = document.querySelector('meta[name="description"]');
   if (metaDesc) {
     const defaultDesc = `Läs mer om specifikationerna och boka reparation av ditt ${battery.brand} ${battery.model} batteri hos Batterilabbet.`;
-    // Använd batteriets egen beskrivning om den finns, annars standard. Klipp vid 155 tecken (SEO-standard).
     metaDesc.content = battery.description
       ? battery.description.substring(0, 150).replace(/\n/g, " ") + "..."
       : defaultDesc;
   }
 
-  // 3. Skapa och injicera Schema.org (Structured Data för "Service")
-  // Vi måste rensa bort "kr" och mellanslag från priset för att Google ska förstå siffran
   const numericPrice =
     battery.prices && battery.prices.length > 0
       ? battery.prices[0].price.replace(/\D/g, "")
@@ -809,7 +821,6 @@ function renderProductPage() {
     url: window.location.href,
   };
 
-  // Lägg till pris (Offer) om det finns
   if (numericPrice) {
     schemaData.offers = {
       "@type": "Offer",
@@ -819,12 +830,10 @@ function renderProductPage() {
     };
   }
 
-  // Lägg till produktbild om det finns
   if (battery.images && battery.images.length > 0) {
     schemaData.image = battery.images[0];
   }
 
-  // Injicera koden i <head>
   const scriptTag = document.createElement("script");
   scriptTag.type = "application/ld+json";
   scriptTag.text = JSON.stringify(schemaData);
@@ -884,14 +893,11 @@ function renderProductPage() {
 
     galleryContainer.innerHTML = slidesHtml + controlsHtml;
 
-    // ==========================================================
-    // --- NYTT: AKTIVERA SWIPE FÖR PRODUKTGALLERIET ---
-    // ==========================================================
     if (battery.images.length > 1) {
       enableSwipe(
         galleryContainer,
-        () => changeSlide("product", 1, battery.images.length), // Swipe vänster -> Nästa bild
-        () => changeSlide("product", -1, battery.images.length) // Swipe höger -> Föregående bild
+        () => changeSlide("product", 1, battery.images.length),
+        () => changeSlide("product", -1, battery.images.length)
       );
     }
   } else {
@@ -906,6 +912,14 @@ function renderProductPage() {
 
   if (battery.prices && battery.prices.length > 0) {
     const basePrice = battery.prices[0];
+
+    // UPPDATERAD: Kollar drönare även på produktsidan!
+    const typeDescLower = battery.typeDesc
+      ? battery.typeDesc.toLowerCase()
+      : "";
+    const isDronare =
+      typeDescLower.includes("drönar") || typeDescLower.includes("drone");
+
     pricesContainer.innerHTML = generatePriceRow(
       battery.brand,
       battery.model,
@@ -918,8 +932,9 @@ function renderProductPage() {
       battery.discountPrice,
       battery.discountReason,
       battery.originalBasePrice,
-      false, // hasBadge sätts till false här inne
-      "Reparation från" // <-- Våran nya prefix-variabel!
+      false, // hasBadge sätts till false här inne på produktsidan (kan ändras om du vill)
+      "Reparation från",
+      isDronare // Skickas med in i generatePriceRow!
     );
   }
 
@@ -979,29 +994,17 @@ function renderProductPage() {
   if (loadingState) loadingState.classList.add("hidden");
   productContainer.classList.remove("hidden");
 
-  // ==========================================================
-  // --- NYTT: GÖR NAV-KNAPPEN SMART PÅ PRODUKTSIDAN ---
-  // ==========================================================
-
   // Hitta båda knapparna i menyn (desktop och mobil)
   const navCtas = document.querySelectorAll('nav a[href="/hitta-din-modell"]');
 
   navCtas.forEach((btn) => {
-    // Ta bort standardlänken
     btn.setAttribute("href", "#");
-
-    // Lägg till nytt klickbeteende
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-
-      // Hitta "Välj"-knappen som genererades i pris-raden
       const productSelectBtn = document.querySelector("#product-prices button");
-
       if (productSelectBtn) {
-        // Simulera ett klick på den riktiga knappen (öppnar modalen perfekt!)
         productSelectBtn.click();
       } else {
-        // Fallback om något går fel (skickar dem till söksidan)
         window.location.href = "/hitta-din-modell";
       }
     });
@@ -1015,17 +1018,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("battery-container");
   const isProductPage = document.getElementById("product-page-container");
 
-  // Kör bara Google Sheets-laddning på batterisidan och produktsidan
   if (container || isProductPage) {
     fetchAndRenderBatteries();
   }
 
-  // Kör BARA lyssnarna om vi är på Hitta-Din-Modell-sidan
   if (container) {
     const searchInput = document.getElementById("batterySearch");
     if (searchInput) searchInput.addEventListener("input", applyFilters);
 
-    // Flyttat klick-lyssnaren hit så att den enbart kollar efter felklick på DENNA sida!
     document.addEventListener("click", function (e) {
       if (
         !e.target.closest("#customBrandDropdown") &&
@@ -1054,13 +1054,12 @@ function openActionModal(
   noteEncoded,
   discountReason = "",
   originalBasePrice = "",
-  discountPrice = ""
+  discountPrice = "",
+  isDronare = false // <-- NY PARAMETER
 ) {
-  // FIX: Använder rätt variabelnamn från funktionshuvudet (allPricesJson)
   const allPrices = JSON.parse(decodeURIComponent(allPricesJson || "%5B%5D"));
   const note = decodeURIComponent(noteEncoded || "");
 
-  // FIX: Sparar ner ALLA variabler i det globala objektet så att handleModalChoice kan läsa dem sen
   currentSelectedBattery = {
     brand,
     model,
@@ -1072,27 +1071,46 @@ function openActionModal(
     discountReason,
     originalBasePrice,
     discountPrice,
+    isDronare, // Sparas globalt
   };
 
-  // Fyll i batteriets information i modalens rubrik/text
   const infoEl = document.getElementById("modal-battery-info");
   if (infoEl) {
     infoEl.innerText = `${brand} - ${model}`;
   }
 
   const orderBtn = document.getElementById("modal-order-btn");
+  const repairBtn = document.getElementById("modal-repair-btn"); // Hitta reparationsknappen
   const outOfStockMsg = document.getElementById("modal-out-of-stock-msg");
 
-  if (hasBadge && orderBtn) {
-    orderBtn.classList.remove("hidden");
-    orderBtn.classList.add("flex");
-  } else if (orderBtn) {
-    orderBtn.classList.remove("flex");
-    orderBtn.classList.add("hidden");
-  }
+  // --- NY LOGIK FÖR DRÖNARE ---
+  if (isDronare) {
+    // Om det är en drönare: Göm reparation, visa ALLTID beställning (checkout)
+    if (repairBtn) {
+      repairBtn.classList.remove("flex");
+      repairBtn.classList.add("hidden");
+    }
+    if (orderBtn) {
+      orderBtn.classList.remove("hidden");
+      orderBtn.classList.add("flex");
+    }
+    if (outOfStockMsg) {
+      outOfStockMsg.classList.add("hidden");
+    }
+  } else {
+    // Standardbeteende för elcyklar/elmopeder
+    if (repairBtn) {
+      repairBtn.classList.remove("hidden");
+      repairBtn.classList.add("flex");
+    }
 
-  if (outOfStockMsg) {
-    outOfStockMsg.classList.add("hidden");
+    if (hasBadge && orderBtn) {
+      orderBtn.classList.remove("hidden");
+      orderBtn.classList.add("flex");
+    } else if (orderBtn) {
+      orderBtn.classList.remove("flex");
+      orderBtn.classList.add("hidden");
+    }
   }
 
   // Animera in modalen
@@ -1126,7 +1144,6 @@ window.closeActionModal = function () {
 window.handleModalChoice = function (choice) {
   if (!currentSelectedBattery) return;
 
-  // Plockar ut exakt rätt sparad data från vårt globala objekt
   const {
     brand,
     model,
@@ -1140,15 +1157,14 @@ window.handleModalChoice = function (choice) {
     discountPrice,
   } = currentSelectedBattery;
 
-  // FIX: Matchar exakt de variabler som sparats och skickas vidare till kassan (sessionStorage)
   const batteryData = {
     brand: brand,
     model: model,
     capacity: capacity,
     original_cap: originalCap,
     voltage: voltage,
-    options: allPrices, // FIX: Använder allPrices istället för trasiga parsedPrices
-    note: note, // FIX: Använder avkodade note istället för trasiga noteDecoded
+    options: allPrices,
+    note: note,
     discountReason: discountReason,
     originalBasePrice: originalBasePrice,
     discountPrice: discountPrice,
@@ -1157,7 +1173,6 @@ window.handleModalChoice = function (choice) {
   sessionStorage.setItem("prefilledBattery", JSON.stringify(batteryData));
   closeActionModal();
 
-  // Dirigera kunden till rätt sida beroende på val
   if (choice === "repair") {
     window.location.href = "/skicka-in";
   } else if (choice === "order") {

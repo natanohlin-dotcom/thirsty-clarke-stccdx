@@ -81,7 +81,8 @@
             Batterimodeller
           </h1>
           <p class="text-xl text-stone-500 max-w-2xl mb-4">
-            Sök efter din batterimodell och kom igång med reparationen
+            Sök efter din batterimodell och kom igång med reparationen. Filtrera
+            efter elcykel, elmoped eller FPV-drönare.
           </p>
 
           <details class="group max-w-2xl mb-8 w-full">
@@ -218,6 +219,12 @@
                 >
                   Elmoped
                 </button>
+                <button
+                  onclick="selectCustomOption('type', 'drönare', 'Drönare')"
+                  class="w-full text-left px-4 py-2.5 rounded-lg hover:bg-stone-200 hover:text-black text-base font-medium transition-colors text-stone-600"
+                >
+                  FPV-Drönare
+                </button>
               </div>
             </div>
           </div>
@@ -266,6 +273,7 @@
 
             <div class="space-y-4">
               <button
+                id="modal-repair-btn"
                 onclick="handleModalChoice('repair')"
                 class="w-full flex items-center justify-between p-5 bg-[#f8f5f1] hover:bg-[#E8E6E1] rounded-2xl transition group text-left"
               >
