@@ -278,8 +278,7 @@ function goToStandaloneSlide(sliderId, index) {
 // 3. DATABAS & BATTERIKORT (Startsida & Produktsida)
 // ==========================================
 let globalBatteryData = [];
-const GOOGLE_SHEET_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSc3RNEr_mmiiT26h0YVYCkoJ97HzyHWmpbD1uVm8DFuSVc8t84iSxOMnJ0mBvfwIsG-5w_3Y_k3t-a/pub?gid=0&single=true&output=csv";
+const GOOGLE_SHEET_CSV_URL = "assets/databas.csv";
 
 // Variabler för de anpassade dropdown-valen
 let activeFilters = {
@@ -608,8 +607,6 @@ function generatePriceRow(
       </div>
   `;
 }
-
-// --- UPPDATERAD: renderBatteries ---
 function renderBatteries(data) {
   const container = document.getElementById("battery-container");
   if (!container) return;
@@ -769,6 +766,7 @@ function renderBatteries(data) {
   });
 }
 
+// --- UPPDATERAD: renderBatteries ---
 function renderProductPage() {
   const productContainer = document.getElementById("product-page-container");
   if (!productContainer) return;
@@ -910,15 +908,16 @@ function renderProductPage() {
     JSON.stringify(battery.prices || [])
   );
 
+  const typeDescLower = battery.typeDesc ? battery.typeDesc.toLowerCase() : "";
+  const isDronare =
+    typeDescLower.includes("drönar") || typeDescLower.includes("drone");
+
   if (battery.prices && battery.prices.length > 0) {
     const basePrice = battery.prices[0];
 
-    // UPPDATERAD: Kollar drönare även på produktsidan!
-    const typeDescLower = battery.typeDesc
-      ? battery.typeDesc.toLowerCase()
-      : "";
-    const isDronare =
-      typeDescLower.includes("drönar") || typeDescLower.includes("drone");
+    // --- NY LOGIK FÖR PREFIX ---
+    // Om det är en drönare skriver vi bara "Från", annars "Reparation från"
+    const displayPrefix = isDronare ? "Från" : "Reparation från";
 
     pricesContainer.innerHTML = generatePriceRow(
       battery.brand,
@@ -932,9 +931,9 @@ function renderProductPage() {
       battery.discountPrice,
       battery.discountReason,
       battery.originalBasePrice,
-      false, // hasBadge sätts till false här inne på produktsidan (kan ändras om du vill)
-      "Reparation från",
-      isDronare // Skickas med in i generatePriceRow!
+      false,
+      displayPrefix, // <-- Skickar in vår smarta variabel här
+      isDronare
     );
   }
 
@@ -968,6 +967,7 @@ function renderProductPage() {
         </li>
     </ul>
   `;
+
   document.getElementById("tab-specs").innerHTML = specsHtml;
   document.getElementById("tab-process").innerHTML = battery.process
     ? `<p class="whitespace-pre-wrap">${battery.process}</p>`
